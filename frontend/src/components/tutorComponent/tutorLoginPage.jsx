@@ -36,7 +36,7 @@ const TutorLoginPage = () => {
           ...res,
         })
       );
-      navigate("/tutor/login");
+      navigate("/tutor/home");
     } catch (err) {
       toast.error(err?.data?.message || err.error);
       

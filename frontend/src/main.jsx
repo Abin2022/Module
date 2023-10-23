@@ -11,7 +11,7 @@ import { Provider } from "react-redux";
 import App from "./App.jsx";
 import "./index.css";
 import PrivateRoute from "./components/PrivateRoute.jsx";
-import "bootstrap/dist/css/bootstrap.min.css";
+// import "bootstrap/dist/css/bootstrap.min.css";
 import HomeScreen from "./screens/HomeScreen.jsx";
 import LoginScreen from "./screens/LoginScreen.jsx";
 import RegisterScreen from "./screens/RegisterScreen.jsx";
@@ -41,16 +41,23 @@ const router = createBrowserRouter(
       <Route path="/register" element={<RegisterScreen />} />
       <Route path="" element={<PrivateRoute />}>
         <Route path="/profile" element={<ProfileScreen />} />
-
+       
         <Route  path="/tutor" element={<TutorPage/>}/>
         <Route path = '/tutor/login' element={<TutorLoginPage/>}/>
         <Route  path="/tutor/signup" element={<TutorSignPage/>}/>
         <Route path = '/tutor/home' element={<TutorHomePage/>}/>
 
-    </Route>
+    
 
     {/* <Route  index={true} path="/tutor/login" element={<TutorHomePage/>}/> */}
 
+    <Route index={true} path = '/tutor/home' element={<TutorHomePage/>}/>
+          <Route  path="/tutor" element={<TutorPage/>}/>
+          <Route path = '/tutor/login' element={<TutorLoginPage/>}/>
+        <Route  path="/tutor/signup" element={<TutorSignPage/>}/>
+        {/* <Route path = '/tutor/home' element={<TutorHomePage/>}/> */}
+
+          </Route> 
 
       <Route index={true} path='/admin' element={<AdminHomeScreen/>}/>
       <Route path = '/adminlogin' element={<AdminLoginScreen/>}/>
@@ -59,8 +66,9 @@ const router = createBrowserRouter(
       <Route path= "/admin/tutorList" element= {<TutorList/>}/>
 
     </Route>
+  
 
-
+  
     
    
   )

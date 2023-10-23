@@ -2,7 +2,7 @@ import Header from "./components/Header";
 import AdminHeader from "./components/AdminHeader";
 
 import React from "react";
-import { Container } from "react-bootstrap";
+// import { Container } from "react-bootstrap";
 import { Outlet,useLocation } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,11 +15,12 @@ const App = () => {
    
     {isAdminSide ? <AdminHeader/> : <Header/>}
       <ToastContainer />
-      <Container className="my-2">
+      <div className="my-2">
         <Outlet />
-      </Container>
+      </div>
     </>
   );
 };
 
 export default App;
+

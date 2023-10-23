@@ -1,10 +1,8 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Button, Form, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../slices/userApiSlice";
 import { setCredentials } from "../slices/authSlice";
-import FormContainer from "../components/FormContainer";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 
@@ -25,7 +23,7 @@ const LoginScreen = () => {
     }
   }, [navigate, userInfo]);
 
-  const sumbmitHandler = async (e) => {
+  const submitHandler = async (e) => {
     e.preventDefault();
     try {
       const res = await login({ email, password }).unwrap();
@@ -41,38 +39,44 @@ const LoginScreen = () => {
   };
 
   return (
-    <FormContainer>
-      <h1>Sign In</h1>
-      <Form onSubmit={sumbmitHandler}>
-        <Form.Group className="my-2" controlId="email">
-          <Form.Label>Email Address</Form.Label>
-          <Form.Control
-            type="email"
-            placeholder="Enter Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        <Form.Group className="my-2" controlId="password">
-          <Form.Label>Password </Form.Label>
-          <Form.Control
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          ></Form.Control>
-        </Form.Group>
-        {isLoading && <Loader />}
-        <Button type="submit" variant="dark" className="mt-3">
+    <div className="flex flex-col items-center justify-center min-h-screen ">
+      <div className="mb-36">
+        <div className="text-black text-center mb-4 text-2xl font-semibold">
           Sign In
-        </Button>
-        <Row className="py-3">
-          <Col>
-            New here? <Link to="/register">Sign up</Link>
-          </Col>
-        </Row>
-      </Form>
-    </FormContainer>
+        </div>
+        <form className="p-6 w-96 bg-white rounded-md shadow-md" onSubmit={submitHandler}>
+          <div className="mb-4">
+            <label className="block text-blue-900 font-semibold">Email</label>
+            <input
+              type="email"
+              placeholder="Enter Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              className="w-full border border-gray-600 px-3 py-2"
+            />
+          </div>
+          <div className="mb-4">
+            <label className="block text-blue-900 font-semibold">Password</label>
+            <input
+              type="password"
+              placeholder="Enter password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              name="password"
+              className="w-full border border-gray-600 px-3 py-2"
+            />
+          </div>
+          {isLoading && <Loader />}
+          <button
+            type="submit"
+            className="bg-black text-white py-2 px-4 hover:bg-white hover:text-black hover:border-2 hover:border-black transition duration-300"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
   );
 };
 

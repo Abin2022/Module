@@ -1,221 +1,110 @@
-// import React, { useState } from "react";
+<NavDropdown title={adminInfo.name} id = 'username'>
+                            <Link to = '/admin/usersList'>
+                                <NavDropdown.Item>
+                                User List
+                                </NavDropdown.Item>
+                            </Link>
+                           
+                            <Link to = '/admin/logout'>
+                                <NavDropdown.Item onClick={logoutHandler}>
+                                    Logout
+                                </NavDropdown.Item>
+                            </Link>
+                        </NavDropdown>
+
+
+
+import React,{useState,useEffect}  from 'react';
 // import Table from "react-bootstrap/Table";
-// import Form from "react-bootstrap/Form";
-// import { Button, Modal, Form as BootstrapForm } from "react-bootstrap";
-// import {
-//   useUpdateUserByAdminMutation,
-//   useDeleteUserMutation,
-// } from "../slices/adminAdminApiSlice";
-// import { toast } from "react-toastify";
-
-// const TableComponent = ({ users }) => {
-//   const [searchQuery, setSearchQuery] = useState("");
-//   const [showConfirmation, setShowConfirmation] = useState(false); // State for the confirmation dialog
-//   const [userIdToDelete, setUserIdToDelete] = useState(null); // Track the user ID to delete
-
-//   const [userIdToUpdate, setUserIdToUpdate] = useState("");
-//   const [userNameToUpdate, setUserNameToUpdate] = useState("");
-//   const [userEmailToUpdate, setUserEmailToUpdate] = useState("");
-//   const [showUpdateModal, setShowUpdateModal] = useState(false); // State for the update modal
-
-//   const handleSearch = (event) => {
-//     setSearchQuery(event.target.value);
-//   };
-
-//   const filteredUsers = users.filter(
-//     (user) =>
-//       user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-//       user.email.toLowerCase().includes(searchQuery.toLowerCase())
-//   );
-
-//   const [deleteUser, { isLoading }] = useDeleteUserMutation();
-//   const [updateUserByAdmin, { isLoading: isUpdating }] =
-//     useUpdateUserByAdminMutation();
-
-//   const handleOpenUpdateModal = (user) => {
-//     setUserIdToUpdate(user._id);
-//     setUserNameToUpdate(user.name);
-//     setUserEmailToUpdate(user.email);
-//     setShowUpdateModal(true);
-//   };
-
-//   const handleUpdate = async () => {
-//     try {
-//       const responseFromApiCall = await updateUserByAdmin({
-//         userId: userIdToUpdate,
-//         name: userNameToUpdate,
-//         email: userEmailToUpdate,
-//       });
-//       toast.success("User Updated Successfully.");
-//       setUserIdToUpdate(null); // Clear the user ID to update
-//       setShowUpdateModal(false); // Close the update modal
-
-//       // Reload the page to reflect the updated data
-//       window.location.reload();
-//     } catch (err) {
-//       toast.error(err?.data?.message || err?.error);
-//     }
-//   };
-
-//   const handleDelete = async () => {
-//     try {
-//       const responseFromApiCall = await deleteUser({ userId: userIdToDelete });
-//       toast.success("User Deleted Successfully.");
-//       setUserIdToDelete(null); // Clear the user ID to delete
-//       setShowConfirmation(false); // Close the confirmation dialog
-
-//       // Reload the page to reflect the updated data
-//       window.location.reload();
-//     } catch (err) {
-//       toast.error(err?.data?.message || err?.error);
-//     }
-//   };
-
-//   return (
-//     <>
-//       <Form>
-//         <Form.Group className="mt-3" controlId="exampleForm.ControlInput1">
-//           <Form.Control
-//             style={{ width: "500px" }}
-//             value={searchQuery}
-//             type="text"
-//             placeholder="Search"
-//             onChange={handleSearch}
-//           />
-//         </Form.Group>
-//       </Form>
-//       <br />
-//       <Table striped bordered hover responsive>
-//         <thead>
-//           <tr>
-//             <th>SL NO</th>
-//             <th>NAME</th>
-//             <th>EMAIL</th>
-//             <th>ACTION</th>
-//             <th>ACTION</th>
-//           </tr>
-//         </thead>
-//         <tbody>
-//           {filteredUsers.map((user, index) => (
-//             <tr key={index}>
-//               <td>{index + 1}</td>
-//               <td>{user.name}</td>
-//               <td>{user.email}</td>
-//               <td>
-//                 {" "}
-//                 <Button
-//                   type="button"
-//                   variant="primary"
-//                   className="mt-3"
-//                   onClick={() => handleOpenUpdateModal(user)}
-//                 >
-//                   Update
-//                 </Button>
-//               </td>
-//               <td>
-//                 <Button
-//                   type="button"
-//                   variant="danger"
-//                   className="mt-3"
-//                   onClick={() => {
-//                     setUserIdToDelete(user._id); // Set the user ID to delete
-//                     setShowConfirmation(true); // Open the confirmation dialog
-//                   }}
-//                 >
-//                   Delete
-//                 </Button>
-//               </td>
-//             </tr>
-//           ))}
-//         </tbody>
-//       </Table>
-
-//       {/* Update User Modal */}
-//       <Modal show={showUpdateModal} onHide={() => setShowUpdateModal(false)}>
-//         <Modal.Header closeButton>
-//           <Modal.Title>Update User</Modal.Title>
-//         </Modal.Header>
-//         <Modal.Body>
-//           <BootstrapForm>
-//             <BootstrapForm.Group controlId="name">
-//               <BootstrapForm.Label>Name</BootstrapForm.Label>
-//               <BootstrapForm.Control
-//                 type="text"
-//                 value={userNameToUpdate}
-//                 onChange={(e) => setUserNameToUpdate(e.target.value)}
-//               />
-//             </BootstrapForm.Group>
-//             <BootstrapForm.Group controlId="email">
-//               <BootstrapForm.Label>Email</BootstrapForm.Label>
-//               <BootstrapForm.Control
-//                 type="email"
-//                 value={userEmailToUpdate}
-//                 onChange={(e) => setUserEmailToUpdate(e.target.value)}
-//               />
-//             </BootstrapForm.Group>
-//           </BootstrapForm>
-//         </Modal.Body>
-//         <Modal.Footer>
-//           <Button variant="secondary" onClick={() => setShowUpdateModal(false)}>
-//             Cancel
-//           </Button>
-//           <Button
-//             variant="primary"
-//             onClick={handleUpdate}
-//             disabled={isUpdating}
-//           >
-//             {isUpdating ? "Updating..." : "Update"}
-//           </Button>
-//         </Modal.Footer>
-//       </Modal>
-
-//       {/* Confirmation Dialog */}
-//       <Modal show={showConfirmation} onHide={() => setShowConfirmation(false)}>
-//         <Modal.Header closeButton>
-//           <Modal.Title>Confirm Deletion</Modal.Title>
-//         </Modal.Header>
-//         <Modal.Body>Are you sure you want to delete this user?</Modal.Body>
-//         <Modal.Footer>
-//           <Button
-//             variant="secondary"
-//             onClick={() => setShowConfirmation(false)}
-//           >
-//             Cancel
-//           </Button>
-//           <Button variant="danger" onClick={handleDelete} disabled={isLoading}>
-//             {isLoading ? "Deleting..." : "Delete"}
-//           </Button>
-//         </Modal.Footer>
-//       </Modal>
-//     </>
-//   );
-// };
-
-// export default TableComponent;
-
-
-
-
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+// import Form from 'react-bootstrap/Form';
+// import { Button, Modal,  Form as BootstrapForm } from "react-bootstrap";
+import { useDeleteUserMutation,useUpdateUserByAdminMutation,  useBlockUserMutation,
+  useUnblockUserMutation, } from "../slices/adminAdminApiSlice"
 import { toast } from "react-toastify";
-import {
-  useBlockUserMutation,
-  useUnblockUserMutation,
-} from "../../slices/adminApiSlice";
-import ConfirmationModal from "../ConfirmationModal";
 
-const UsersList = () => {
-  const [actualData, setActualData] = useState([]);
-  const [isConfirmationModalOpen, setConfirmationModalOpen] = useState(false);
 
+function TableComponent({ users }) {
+       //to handle search
+      const [searchQuery, setSearchQuery] = useState('');
+      const [actualData, setActualData] = useState([]);
+
+      //delete things
+      const [deleteConfirmation,setDeleteConfirmation ]=useState(false)
+      const [userIdToDelete, setUserIdToDelete] = useState(null); // Track the user ID to delete
+
+    
+
+      //to handle search
+      const handleSearch = (event) => {
+        setSearchQuery(event.target.value);
+      };
+      
+      //to handle search
+      const filteredUsers = users.filter((user) =>
+      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      user.email.toLowerCase().includes(searchQuery.toLowerCase()) 
+    );
+   
+
+    //delete things
+    const [deleteUser, { isLoading }] = useDeleteUserMutation();  
+    
+
+    const handleDelete = async () =>{
+        try{
+            const responseFromApiCall = await deleteUser( {userId : userIdToDelete});
+            toast.success("User Deleted Successfully");
+            setUserIdToDelete(null)
+            setDeleteConfirmation(false)
+            window.location.reload();
+        }catch(err){
+          toast.error(err?.data?.message || err?.error)
+        }
+    }
+   //update
+   const [updateUserByAdmin, { isLoading: isUpdating }] = useUpdateUserByAdminMutation();
+
+   const [userIdToUpdate, setUserIdToUpdate] = useState("");
+    const [updateUserName, setUpdateUserName]=useState("");
+    const [updateUserEmail, setUpdateUserEmail] = useState("");
+   const [ showUpdateModal, setShowUpdateModal ] = useState(false);
+
+   const handleOpenUpdateModal = (user) => {
+    setUserIdToUpdate(user._id)
+    setUpdateUserName(user.name);
+    setUpdateUserEmail(user.email);
+    setShowUpdateModal(true);
+  };
+
+  const handleUpdate = async () => {
+    try {
+      const responseFromApiCall = await updateUserByAdmin({
+        userId: userIdToUpdate,
+        name: updateUserName,
+        email: updateUserEmail
+      });
+      toast.success("User Updated Successfully.");
+      setUserIdToUpdate(null); // Clear the user ID to update
+      setShowUpdateModal(false); // Close the update modal
+
+      // Reload the page to reflect the updated data
+      window.location.reload();
+      
+    } catch (err) {
+      toast.error(err?.data?.message || err?.error);
+    }
+  };
+
+
+
+  //ss
   const [blockUser] = useBlockUserMutation();
   const [unblockUser] = useUnblockUserMutation();
   const [refresher, setRefresher] = useState("");
 
   const fetchUserData = async () => {
     try {
-      const response = await axios.get("/api/admin/users");
+      const response = await axios.get("http://localhost:5000/api/admin/users");
       setActualData(response.data);
     } catch (error) {
       console.error("Error fetching user data:", error);
@@ -223,10 +112,12 @@ const UsersList = () => {
     }
   };
 
+
   useEffect(() => {
     // Fetch user data from the backend
     fetchUserData();
   }, [refresher]);
+
 
   const handleBlockUser = async (userId) => {
     const confirmBlock = window.confirm(
@@ -247,6 +138,8 @@ const UsersList = () => {
     }
   };
 
+
+  
   const handleUnBlockUser = async (userId) => {
     const confirmUnblock = window.confirm(
       "Are you sure you want to unblock this user?"
@@ -265,20 +158,140 @@ const UsersList = () => {
     }
   };
 
+
+  // const [isBlock] = useBlockUserMutation();  
+
+
+  // const [blockUser,setBlockUser ]=useState(false)
+  //     const [userIdToBlock, setUserIdToBlock] = useState(null);  // Track the user ID to delete
+
+  // const handleBlockuser = async () =>{
+  //     try{
+  //         const responseFromApiCall = await isBlock( {userId : userIdToBlock});
+  //         toast.success("User Blocked Successfully");
+  //         setUserIdToBlock(null)
+  //         setBlockUser(false)
+  //         window.location.reload();
+  //     }catch(err){
+  //       toast.error(err?.data?.message || err?.error)
+  //       // toast.success("User Blocked Successfully");
+  //     }
+  // }
+  // //unblock user
+
+  // const [isUnblock] =useUnblockUserMutation();
+
+  // const [unBlockUser,setUnBlockUser]= useState(false);
+  // const [userIdToUnBlockUser,setUserIdToUnBlockUser] = useState(null);
+  
+  //  const handleUnBlockuser = async()=>{
+  //   try{
+  //     const responseFromApiCall = await isUnblock( {userId :userIdToUnBlockUser } );
+  //     toast.success("user Unblocked Sucessfully");
+  //     setUserIdToUnBlockUser(null);
+  //     setUnBlockUser(false)
+  //     window.location.reload();
+  //   }catch(err){
+  //     toast.error(err?.data?.message || err?.error)
+  //   }
+  //  }
+
+
   return (
-    <div className="container mx-auto p-6 bg-gray-100 rounded-lg shadow-lg">
-      <h2 className="text-3xl font-bold text-gray-800">Users List</h2>
-      <div className="overflow-x-auto mt-4">
-        <table className="min-w-full bg-white border border-gray-300 rounded shadow">
-          <thead className="bg-blue-500 text-white">
-            <tr>
-              <th className="py-2 px-4">ID</th>
-              <th className="py-2 px-4">Name</th>
-              <th className="py-2 px-4">Email</th>
-              <th className="py-2 px-4">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
+    <>
+    <div>
+    <div className="mt-3" controlId="examplediv.ControlInput1">
+   
+      <div style={{width:"500px"}} value={searchQuery} type="text" placeholder="Search" onChange={handleSearch} />
+    </div>
+  </div>
+  <br/>
+  <div striped bordered hover responsive>
+    <thead>
+      <tr>
+        <th>SL NO</th>
+        <th>NAME</th>
+        <th>EMAIL</th>
+        <th>ACTION</th>
+        <th>ACTION</th>
+        <th>ACTION</th>
+      </tr>
+    </thead>
+    <tbody>
+      {filteredUsers.map((user, index) => (
+        <tr key={index}>
+          <td>{index + 1}</td>
+          <td>{user.name}</td>
+          <td>{user.email}</td>
+          
+          <td><button
+                type="button"
+                variant="danger"
+                className="mt-3"
+                onClick={() => {
+                    setUserIdToDelete(user._id); // Set the user ID to delete
+                    setDeleteConfirmation(true); // Open the confirmation dialog
+                  }}
+               
+              >
+                Delete
+              </button></td>
+              <td>  <button
+                type="button"
+                variant="primary"
+                className="mt-3"
+                onClick={() => handleOpenUpdateModal(user)}
+               
+              >
+                Update
+              </button></td>
+
+              <td className="py-2 px-4 text-center">
+                  {user.isBlocked ? (
+                    <button
+                      
+                      type='button'  
+                      className="mt-3"
+                      variant='danger'
+                      onClick={() => handleUnBlockUser(user._id)}         >
+                      Unblock
+                    </button>
+                  ) : (
+                    <button
+                      onClick={() => handleBlockUser(user._id)}
+                      className="mt-3"
+                      variant='danger'
+                      type='button'
+                    >
+                      Block
+                    </button>
+                  )}
+                </td>
+
+
+              {/* <td className="border px-4 py-2">
+                {user.isBlocked ? (
+                  <Button className="mt-3" 
+                  type="button"
+                  variant="danger" 
+                  onClick={()=>{
+                    setUserIdToUnBlockUser(user_id);
+                    setUnBlockUser(true)
+                  }}
+                  >
+                    UnBlock
+                  </Button>
+                ) : (
+                  <Button className="mt-3" type="button"
+                  variant="danger"   onClick={()=>{
+                    setUserIdToBlock(user._id); // Set the user ID to block
+                    setBlockUser(true); // Open the confirmation dialog
+                  }}>
+                    Block
+                  </Button>
+                )}
+              </td> */}
+               {/* <tbody>
             {actualData.map((user, index) => (
               <tr
                 key={user._id}
@@ -291,14 +304,17 @@ const UsersList = () => {
                   {user.blocked ? (
                     <button
                       onClick={() => handleUnBlockUser(user._id)}
-                      className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg mr-2"
-                    >
+                      className="mt-3"
+                      variant='danger'
+                      type='button'                    >
                       Unblock
                     </button>
                   ) : (
                     <button
                       onClick={() => handleBlockUser(user._id)}
-                      className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg mr-2"
+                      className="mt-3"
+                      variant='danger'
+                      type='button'
                     >
                       Block
                     </button>
@@ -306,11 +322,107 @@ const UsersList = () => {
                 </td>
               </tr>
             ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-};
+          </tbody> */}
+        </tr>
+      ))}
+    </tbody>
+  </div>
+ 
 
-export default UsersList;
+   {/* update user model */}
+   <Modal show={showUpdateModal} onHide={()=>setShowUpdateModal(false)}>
+   <Modal.Header closeButton>
+          <Modal.Title>Update User</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <BootstrapForm>
+            <BootstrapForm.Group controlId="name">
+              <BootstrapForm.Label>Name</BootstrapForm.Label>
+              <BootstrapForm.Control
+                type="text"
+                value={updateUserName}
+                onChange={(e) =>
+                    setUpdateUserName(e.target.value)
+                }
+              />
+            </BootstrapForm.Group>
+            <BootstrapForm.Group controlId="email">
+              <BootstrapForm.Label>Email</BootstrapForm.Label>
+              <BootstrapForm.Control
+                type="email"
+                value={updateUserEmail}
+                onChange={(e) =>
+                    setUpdateUserEmail(e.target.value)
+                }
+              />
+            </BootstrapForm.Group>
+          </BootstrapForm>
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowUpdateModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="primary" onClick={handleUpdate} disabled={isUpdating}>
+            {isUpdating ? "Updating..." : "Update"}
+          </Button>
+        </Modal.Footer>
+
+   </Modal>
+      
+   
+
+    {/* Confirmation Dialog */}
+    <Modal show={deleteConfirmation} onHide={() => setDeleteConfirmation(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Deletion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this user?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setDeleteConfirmation(false)}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleDelete} disabled={isLoading}>
+            {isLoading ? "Deleting..." : "Delete"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+       {/* block confirmation*/}
+      <Modal show={blockUser} onHide={() => setBlockUser(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Block</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to Block this user?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setBlockUser(false)}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleBlockuser} disabled={isLoading}>
+            {isLoading ? "Blocking..." : "Block"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
+         {/* Unblock confirmation*/}
+         <Modal show={unBlockUser} onHide={() => setUnBlockUser(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirm Un-Block</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to UnBlock this user?</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setUnBlockUser(false)}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleUnBlockuser} disabled={isLoading}>
+            {isLoading ? "UnBlocking..." : "UnBlock"}
+          </Button>
+        </Modal.Footer>
+      </Modal>
+
+
+  </>
+  );
+}
+
+export default TableComponent;

@@ -20,7 +20,7 @@ const TutorSignupPage = () => {
   const { tutorInfo } = useSelector((state) => state.tutorAuth);
   useEffect(() => {
     if (tutorInfo) {
-      navigate("/tutor/signup");
+      navigate("/tutor/home");
     }
   }, [navigate, tutorInfo]);
   

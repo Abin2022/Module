@@ -7,6 +7,7 @@ import { Link, useNavigate } from "react-router-dom";
 const tutorHome=()=> {
 
   return (
+    <>
     <div class="flex justify-center mt-10 mb-10">
 
 
@@ -18,7 +19,8 @@ const tutorHome=()=> {
    
 
   </div>
-  
+  <h2 class="flex justify-center mt-10 mb-10"> Video Available for Users.... </h2>
+  </>
   
   )
 }

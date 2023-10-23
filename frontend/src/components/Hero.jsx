@@ -1,5 +1,5 @@
 import React from 'react'
-import { Container, Card, Button } from 'react-bootstrap';
+// import { Container, Card, Button } from 'react-bootstrap';
 // import { LinkContainer } from 'react-router-bootstrap';
 import { useSelector } from 'react-redux';
 
@@ -8,8 +8,8 @@ const Hero = () => {
   const PROFILE_URL = "http://localhost:5000/images/";
     return (
     <div className=' py-5'>
-    <Container className='d-flex justify-content-center'>
-      <Card className='p-5 d-flex flex-column align-items-center hero-card bg-light w-75'>
+    <div className='d-flex justify-content-center'>
+      <div className='p-5 d-flex flex-column align-items-center hero-card bg-light w-75'>
         {userInfo ? (
         <>
           {userInfo.image && (
@@ -48,8 +48,8 @@ const Hero = () => {
             )}
           
         </div>
-      </Card>
-    </Container>
+      </div>
+    </div>
   </div>
   )
 }
