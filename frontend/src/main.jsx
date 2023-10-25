@@ -17,6 +17,10 @@ import LoginScreen from "./screens/LoginScreen.jsx";
 import RegisterScreen from "./screens/RegisterScreen.jsx";
 import ProfileScreen from "./screens/ProfileScreen.jsx";
 // import HomeScreenAdmin from "./screens/HomeScreenAdmin.jsx";
+ import CourseList from "./components/userComponent/courseList.jsx"
+
+
+
 
 //admin
 import AdminHomeScreen from "./screens/AdminHomeScreen.jsx"
@@ -41,20 +45,21 @@ const router = createBrowserRouter(
       <Route path="/register" element={<RegisterScreen />} />
       <Route path="" element={<PrivateRoute />}>
         <Route path="/profile" element={<ProfileScreen />} />
+        <Route path="/courseList " element={<CourseList/>}/>
        
         <Route  path="/tutor" element={<TutorPage/>}/>
         <Route path = '/tutor/login' element={<TutorLoginPage/>}/>
         <Route  path="/tutor/signup" element={<TutorSignPage/>}/>
         <Route path = '/tutor/home' element={<TutorHomePage/>}/>
-
-    
+        
+      
 
     {/* <Route  index={true} path="/tutor/login" element={<TutorHomePage/>}/> */}
-
+{/* 
     <Route index={true} path = '/tutor/home' element={<TutorHomePage/>}/>
           <Route  path="/tutor" element={<TutorPage/>}/>
           <Route path = '/tutor/login' element={<TutorLoginPage/>}/>
-        <Route  path="/tutor/signup" element={<TutorSignPage/>}/>
+        <Route  path="/tutor/signup" element={<TutorSignPage/>}/> */}
         {/* <Route path = '/tutor/home' element={<TutorHomePage/>}/> */}
 
           </Route> 

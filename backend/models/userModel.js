@@ -23,6 +23,10 @@ const userSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    course:{
+      type:String,
+     
+    }
   },
   {
     timestamps: true,

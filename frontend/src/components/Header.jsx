@@ -7,6 +7,7 @@ import { useTutorLoginMutation } from "../slices/tutorApiSlice";
 import { tutorLogout } from "../slices/tutorAuthSlice";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { FaRedhat } from "react-icons/fa";
 
 const Header = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -33,39 +34,72 @@ const Header = () => {
     <header className="bg-gray-800 text-white">
       <nav className="container mx-auto py-4">
         <div className="flex items-center justify-between">
-          <Link to="/" className="text-xl font-bold">
-            MODULE
-          </Link>
+        <Link to="/" className="flex items-center text-xl font-bold">
+      <FaRedhat className="mr-2" /> MODULE
+    </Link>
 
           <div className="space-x-4">
-            {/* <Link to="/courseList" className="text-white">
-              Course
-            </Link> */}
+          <div className="flex space-x-4">
+  {/* <Link to="/courseList" className="text-white hover:text-gray-300 transition duration-300">
+    Course
+  </Link> */}
+  < Link to="/courseList" class= " bg-gray-800   hover:bg-gray-400 text-white font-bold py-2 px-2 rounded">
+    <i class="fas fa-play"></i> Course
+</Link>
 
-            <Link to="/tutor" className="text-white">
-              Tutor
-            </Link>
+  <Link to="/tutor" class="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
+    Tutors
+  </Link>
 
-            <Link to="/profile" className="text-white">
-              Profile
-            </Link>
-             
-             {userInfo ? (
-              <Link onClick={logoutHandler} className="text-white">
-              Logout
-            </Link>
-             ):(
-              <div className="space-x-2">
-    <Link to="/login" className="flex items-center">
-      <FaSignInAlt className="mr-1" />
-      Sign In
+  <Link to="/video" class="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
+    Videos
+  </Link>
+
+  <Link to="/profile" class="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
+    Profile
+  </Link>
+
+  {userInfo ? (
+    <Link onClick={logoutHandler}  class="hover:bg-red-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
+      Logout
     </Link>
-    <Link to="/register" className="flex items-center">
-      <FaSignOutAlt className="mr-1" />
-      Sign Up
-    </Link>
-  </div>
-             )}
+  ) : (
+    <div className="space-x-2">
+      <Link to="/login" className="flex items-center text-white hover:text-gray-300 transition duration-300">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5 mr-1"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fillRule="evenodd"
+            d="M12.293 2.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 9H5a1 1 0 010-2h9.586l-1.293-1.293a1 1 0 010-1.414z"
+            clipRule="evenodd"
+          />
+        </svg>
+        Sign In
+      </Link>
+
+      <Link to="/register" className="flex items-center text-white hover:text-gray-300 transition duration-300">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          className="h-5 w-5 mr-1"
+          viewBox="0 0 20 20"
+          fill="currentColor"
+        >
+          <path
+            fillRule="evenodd"
+            d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 11V9h2V7h-2V5H7v2H5v2h2v2h2z"
+            clipRule="evenodd"
+          />
+        </svg>
+        Sign Up
+      </Link>
+    </div>
+  )}
+</div>
+
             
            
             {/* {userInfo ? (

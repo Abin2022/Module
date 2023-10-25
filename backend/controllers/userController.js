@@ -95,6 +95,16 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   
 });
 
+const getCourseList = asyncHandler(async (req,res)=>{
+  const course = {
+    _id :req.user.id,
+    name:req.user.name,
+    email:req.user.email,
+    course:req.user.course
+  }
+  res.status(200).json(course)
+})
+
 
 
 
@@ -117,4 +127,5 @@ export {
   getUserProfile,
   updateUserProfile,
   getTutorList,
+  getCourseList,
 };

@@ -6,6 +6,7 @@ import { useAdminLogoutMutation } from "../slices/adminAdminApiSlice";
 import { adminLogout } from "../slices/adminAuthSlice";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
+import { FaRedhat } from "react-icons/fa";
 
 const AdminHeader = () => {
   const adminInfo = useSelector((state) => state.adminAuth.adminInfo);
@@ -24,37 +25,42 @@ const AdminHeader = () => {
 
   return (
     <header className="flex justify-between items-center bg-gray-800 p-4">
-      <Link to="/admin" className="text-white">
-        MODULE
-      </Link>
+
+   
+      <Link to="/admin" className="flex items-center text-xl font-bold  text-white">
+      <FaRedhat className="mr-2" /> MODULE
+    </Link>
 
       <div className="flex justify-between items-center">
         {adminInfo ? (
           <>
-            <Link to="/admin/usersList" className="text-white" ml-4>
-              User List
-            </Link>
+           
+            <Link to="/admin/usersList" class="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
+    User List
+  </Link>
 
-            <Link to="/admin/tutorList" className="text-white" ml-4>
-              Tutor List
-            </Link>
+  <Link to="/admin/tutorList" class="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
+  Tutor List
+  </Link>
 
+           
             <div className="flex items-center">
               {/* <p className="text-white mr-2">User List</p> */}
               <button
                 type="button"
                 onClick={logoutHandler}
-                className="text-white bg-red-500 hover:bg-red-700 rounded p-2"
+                className="text-white bg-red-700 hover:bg-red-700 rounded p-2"
               >
                 Logout
               </button>
             </div>
           </>
         ) : (
-          <Link to="/adminlogin" className="text-white">
-            <FaSignInAlt />
-            Sign In
+          <Link to="/adminlogin" class="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
+            
+            Sign In <FaSignInAlt />
           </Link>
+        
         )}
       </div>
     </header>

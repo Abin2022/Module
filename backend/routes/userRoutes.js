@@ -12,6 +12,7 @@ import {
   getUserProfile,
   updateUserProfile,
   getTutorList,
+  getCourseList
 } from "../controllers/userController.js";
 
 
@@ -26,6 +27,6 @@ router
   .put(protect,mullterUserImage.single("userImage"), updateUserProfile);
   router.get("/tutor",getTutorList)
   // router.route('/profile').get( protect, getUserProfile ).put( protect, multerUploadUserProfile.single('profileImage'), updateUserProfile );
-
+ router.get("/courseList",getCourseList);
 
 export default router;

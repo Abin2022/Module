@@ -31,6 +31,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    course: builder.mutation({
+      query: () => ({
+        url: `${USERS_URL}/courseList`,
+        method: "GET",
+      }),
+    }),
+
   }),
 });
 
@@ -39,4 +46,5 @@ export const {
   useLogoutMutation,
   useRegisterMutation,
   useUpdateUserMutation,
+  useCourseMutation
 } = userApiSlice;

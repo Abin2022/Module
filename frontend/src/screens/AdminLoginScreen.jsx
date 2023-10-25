@@ -36,42 +36,45 @@ const AdminLoginScreen = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen">
-      <h1>Sign In</h1>
+<div className="flex flex-col items-center justify-center min-h-screen">
+  <div className="bg-white p-6 rounded-lg shadow-md">
+    <h1 className="text-2xl font-semibold mb-4">Sign In</h1>
 
-      <form onSubmit={submitHandler} className="w-96">
-        <div className="my-2">
-          <label className="mb-2">Email Address</label>
-          <input
-            type="email"
-            placeholder="Enter email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full border border-gray-600 px-3 py-2"
-          />
-        </div>
+    <form onSubmit={submitHandler} className="w-96">
+      <div className="my-2">
+        <label className="mb-2 block">Email Address</label>
+        <input
+          type="email"
+          placeholder="Enter email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          className="w-full border border-gray-600 px-3 py-2"
+        />
+      </div>
 
-        <div className="my-2">
-          <label className="mb-2">Password</label>
-          <input
-            type="password"
-            placeholder="Enter password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full border border-gray-600 px-3 py-2"
-          />
-        </div>
+      <div className="my-2">
+        <label className="mb-2 block">Password</label>
+        <input
+          type="password"
+          placeholder="Enter password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          className="w-full border border-gray-600 px-3 py-2"
+        />
+      </div>
 
-        {isLoading && <Loader />}
+      {isLoading && <Loader />}
 
-        <button
-          type="submit"
-          className="bg-black text-white mt-3 px-4 py-2 rounded-md cursor-pointer hover:bg-white hover:text-black hover:border-2 hover:border-black transition duration-300"
-        >
-          Sign In
-        </button>
-      </form>
-    </div>
+      <button
+        type="submit"
+        className="bg-black text-white mt-3 px-4 py-2 rounded-md cursor-pointer hover:bg-white hover:text-black hover:border-2 hover:border-black transition duration-300"
+      >
+        Sign In
+      </button>
+    </form>
+  </div>
+</div>
+
   );
 };
 

@@ -102,7 +102,7 @@ const ProfileScreen = () => {
         {isLoading && <Loader />}
         <button
           type="submit"
-          className="mt-3 bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 border border-blue-700 rounded-full transition duration-300"
+          className="mt-3 bg-gray-700 hover:bg-green-500 text-white font-semibold py-2 px-4 border border-gray-900 rounded-full transition duration-300"
         >
           Update
         </button>
