@@ -20,7 +20,7 @@ const TutorSignupPage = () => {
   const { tutorInfo } = useSelector((state) => state.tutorAuth);
   useEffect(() => {
     if (tutorInfo) {
-      navigate("/tutor/home");
+      navigate("/tutor/signup");
     }
   }, [navigate, tutorInfo]);
   
@@ -38,7 +38,6 @@ const TutorSignupPage = () => {
           qualifications,
           experience,
         }).unwrap();
-        console.log(res, "respnnnnnn");
         dispatch(
           setTutorCredentials({
             ...res,
@@ -54,7 +53,7 @@ const TutorSignupPage = () => {
     <div className="flex flex-col items-center justify-center min-h-screen ">
       <div className="">
         <div className="text-black text-center mb-4 pt-10 text-2xl font-semibold">
-          Sign Up!
+        Tutor Sign Up Form!
         </div>
 
         <form

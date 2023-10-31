@@ -36,7 +36,7 @@ const TutorLoginPage = () => {
           ...res,
         })
       );
-      navigate("/tutor/home");
+      navigate("/tutor");
     } catch (err) {
       toast.error(err?.data?.message || err.error);
       
@@ -84,7 +84,6 @@ const TutorLoginPage = () => {
                   placeholder="Enter your password"
                 />
               </div>
-    
     
               {isLoading && <Loader/> }
               <button

@@ -17,6 +17,7 @@ import cors from "cors"
 
 const app = express();
 app.use(express.json());
+app.use(cors({ origin: "http://localhost:3000", credentials: true }));
 
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
@@ -27,7 +28,8 @@ app.use("/api/tutor",tutorRoutes )
 
 app.use(express.static("backend/public"));
 
-
+//admin
+app.use('/api/admin',adminRoutes)
 
 
 // Things done to give acess to the cors for resource sharing
@@ -40,9 +42,7 @@ app.use((req, res, next) => {
     next();
   });
 
-//admin
-app.use('/api/admin',adminRoutes)
-// app.use(cors({ origin: "http://localhost:3000", credentials: true }));
+
 
 app.get("/", (req, res) => res.send("server is ready"));
 

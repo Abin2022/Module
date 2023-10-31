@@ -26,6 +26,9 @@ const userSchema = mongoose.Schema(
     course:{
       type:String,
      
+    },
+    viedo:{
+      type:String
     }
   },
   {

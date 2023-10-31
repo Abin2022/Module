@@ -1,15 +1,29 @@
 import User from "../models/userModel.js";
-
+import Tutor from "../models/tutorModel.js"
 
 const fetchAllUsers = async () => {
   try {
-    const users = await User.find({}, { name: 1, email: 1, _id: 1 });
+    const users = await User.find({}, { name: 1, email: 1, _id: 1, isBlocked:1 });
+
+    // console.log(users);
     return users;
   } catch (error) {
     console.error("Error fetching users:", error);
     throw error;
   }
 };
+
+
+const fetchAllTutors = async () => {
+  try {
+      const tutor = await Tutor.find({} ,{name:1, email:1, qualification:1, experience:1, rating:1, isBlocked:1, tutorImage:1});
+      return tutor;
+
+  }catch (error){
+      console.error("Error fetching tutor:",error)
+      throw error;
+  }
+}
 
 const updateUser = async (userData) => {
 
@@ -71,4 +85,4 @@ const deleteUser = async (userId) => {
 
 };
 
-export { fetchAllUsers ,updateUser, deleteUser};
+export { fetchAllUsers ,updateUser, deleteUser, fetchAllTutors};

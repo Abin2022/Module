@@ -18,7 +18,7 @@ import RegisterScreen from "./screens/RegisterScreen.jsx";
 import ProfileScreen from "./screens/ProfileScreen.jsx";
 // import HomeScreenAdmin from "./screens/HomeScreenAdmin.jsx";
  import CourseList from "./components/userComponent/courseList.jsx"
-
+import Viedo from "./components/userComponent/viedos.jsx"
 
 
 
@@ -40,43 +40,36 @@ import TutorHomePage from "./components/tutorComponent/HomePage.jsx"
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
+      {/* User side routes */}
       <Route index={true} path="/" element={<HomeScreen />} />
       <Route path="/login" element={<LoginScreen />} />
       <Route path="/register" element={<RegisterScreen />} />
       <Route path="" element={<PrivateRoute />}>
         <Route path="/profile" element={<ProfileScreen />} />
-        <Route path="/courseList " element={<CourseList/>}/>
+        <Route path="/courseList" element={<CourseList />} />
+        <Route path="/viedo" element={<Viedo/>}/>
        
-        <Route  path="/tutor" element={<TutorPage/>}/>
-        <Route path = '/tutor/login' element={<TutorLoginPage/>}/>
-        <Route  path="/tutor/signup" element={<TutorSignPage/>}/>
-        <Route path = '/tutor/home' element={<TutorHomePage/>}/>
+        <Route path="/tutor" element={<TutorPage />} />
+
+       
+       </Route>
+
+       <Route>
+        <Route   index={true} path="/tutor/login" element={<TutorLoginPage />} />
+        <Route path="/tutor/signup" element={<TutorSignPage />} />
+        <Route path="/tutor/home" element={<TutorHomePage />} />
         
-      
-
-    {/* <Route  index={true} path="/tutor/login" element={<TutorHomePage/>}/> */}
-{/* 
-    <Route index={true} path = '/tutor/home' element={<TutorHomePage/>}/>
-          <Route  path="/tutor" element={<TutorPage/>}/>
-          <Route path = '/tutor/login' element={<TutorLoginPage/>}/>
-        <Route  path="/tutor/signup" element={<TutorSignPage/>}/> */}
-        {/* <Route path = '/tutor/home' element={<TutorHomePage/>}/> */}
-
-          </Route> 
-
-      <Route index={true} path='/admin' element={<AdminHomeScreen/>}/>
-      <Route path = '/adminlogin' element={<AdminLoginScreen/>}/>
-      <Route path = '/adminregister' element={<AdminRegisterScreen/>}/>
+      </Route>
+  
+      {/* Admin side routes */}
+      <Route path="/admin" element={<AdminHomeScreen />} />
+      <Route path="/adminlogin" element={<AdminLoginScreen />} />
+      <Route path="/adminregister" element={<AdminRegisterScreen />} />
       <Route path="/admin/usersList" element={<UsersList />} />
-      <Route path= "/admin/tutorList" element= {<TutorList/>}/>
-
+      <Route path="/admin/tutorList" element={<TutorList />} />
     </Route>
-  
-
-  
-    
-   
   )
+  
 );
 ReactDOM.createRoot(document.getElementById("root")).render(
   <Provider store={store}>

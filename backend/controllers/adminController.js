@@ -4,8 +4,8 @@ import asyncHandler from 'express-async-handler'
  import generateToken from '../utils/generateTokenAdmin.js'
 import Admin from '../models/adminModel.js'
 import User from '../models/userModel.js'
-import { fetchAllUsers , updateUser, deleteUser} from "../helpers/adminHelpers.js";
-
+import Tutor from '../models/tutorModel.js'
+import { fetchAllUsers , updateUser, deleteUser, fetchAllTutors} from "../helpers/adminHelpers.js";
 
 //new admin auth
 const authAdmin =asyncHandler (async (req,res)=>{
@@ -84,6 +84,19 @@ const getAllUsers = asyncHandler(async (req,res) => {
 })
 console.log(getAllUsers,"getAllUsers");
 
+
+const getAllTutors = asyncHandler(async (req,res)=>{
+  fetchAllTutors()
+  .then((tutor)=>{
+    res.status(200).json({tutor})
+  })
+  .catch((error)=>{
+    console.log(error);
+  })
+})
+console.log(getAllTutors,"getall tutors");
+
+
 const updateUserData = asyncHandler( async (req, res) => {
 
   const userId = req.body.userId;
@@ -141,14 +154,22 @@ const deleteUserData = asyncHandler( async (req, res) => {
   }
 
 });
+const listUserProfile = asyncHandler(async (req, res) => {
+  const userList = await User.find();
 
+  res.status(200).json(userList);
+});
+
+const listTutorList = asyncHandler(async(req,res)=>{
+  const tutorList = await Tutor.find();
+  res.status(200).json(tutorList)
+})
 
 const blockUser = asyncHandler(async (req, res) => {
   const userId = req.body.userId;
   const blockTrue = {
     isBlocked: true,
   };
-
   const blockUser = await User.findByIdAndUpdate(userId, blockTrue);
   if (blockUser) {
     res.status(200).json({ message: "user blocked sucessfully" });
@@ -159,6 +180,7 @@ const blockUser = asyncHandler(async (req, res) => {
 
 const unblockUser = asyncHandler(async (req, res) => {
   const userId = req.body.userId;
+  console.log(req.body.userId, "req.body.userId");
   const unblockFalse = {
     isBlocked: false,
   };
@@ -180,7 +202,10 @@ export  {authAdmin ,
     updateUserData,
     deleteUserData,
     blockUser,
-    unblockUser
+    unblockUser,
+    listUserProfile,
+    listTutorList,
+    getAllTutors
 
 }
 

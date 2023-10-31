@@ -35,11 +35,11 @@ const AdminHeader = () => {
         {adminInfo ? (
           <>
            
-            <Link to="/admin/usersList" class="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
+            <Link to="/admin/usersList" className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
     User List
   </Link>
 
-  <Link to="/admin/tutorList" class="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
+  <Link to="/admin/tutorList" className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
   Tutor List
   </Link>
 
@@ -56,7 +56,7 @@ const AdminHeader = () => {
             </div>
           </>
         ) : (
-          <Link to="/adminlogin" class="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
+          <Link to="/adminlogin" className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
             
             Sign In <FaSignInAlt />
           </Link>

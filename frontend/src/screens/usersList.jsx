@@ -17,6 +17,9 @@ const UsersList = () => {
         const response = await axios.get("http://localhost:5000/api/admin/usersList ");
         
         setUser(response.data.users);
+
+        console.log(user,'klj');
+
         
         setLoading(false); 
       } catch (error) {

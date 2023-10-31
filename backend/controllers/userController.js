@@ -2,22 +2,38 @@ import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import genToken from "../utils/genToken.js";
 
+
+
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
-  if (user && (await user.matchPassword(password))) {
-    genToken(res, user._id);
-    res.status(201).json({
-      _id: user._id,
-      name: user.name,
-      email: user.email,
-      isBlocked: user.isBlocked
-    });
+
+  if (user) {
+    // Check if the user is blocked
+    if (user.isBlocked) {
+      res.status(401); // Unauthorized status code for blocked users
+      throw new Error("This account is blocked. Please contact support.");
+    }
+
+    // Check if the provided password matches the user's password
+    if (await user.matchPassword(password)) {
+      genToken(res, user._id);
+      res.status(201).json({
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        isBlocked: user.isBlocked
+      });
+    } else {
+      res.status(401); // Unauthorized status code for invalid passwords
+      throw new Error("Invalid password");
+    }
   } else {
-    res.status(400);
-    throw new Error("invalid email or password");
+    res.status(401); // Unauthorized status code for invalid emails
+    throw new Error("Invalid email");
   }
 });
+
 
 const registerUser = asyncHandler(async (req, res) => {
   const { name, email, password } = req.body;
@@ -105,6 +121,15 @@ const getCourseList = asyncHandler(async (req,res)=>{
   res.status(200).json(course)
 })
 
+const getAllViedo = asyncHandler (async (req,res)=>{
+  const viedo = {
+    _id:req.user.id,
+    name:req.user.name,
+    email:req.user.email,
+    viedo:req.user.viedo
+  }
+  res.status(200).json(viedo)
+})
 
 
 
@@ -128,4 +153,5 @@ export {
   updateUserProfile,
   getTutorList,
   getCourseList,
+  getAllViedo
 };

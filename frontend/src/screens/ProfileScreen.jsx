@@ -12,7 +12,7 @@ const ProfileScreen = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [image, setImage] = useState("");
-
+  const PROFILE_URL = "http://localhost:5000/images/";
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -50,6 +50,20 @@ const ProfileScreen = () => {
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow-lg">
       <h1 className="text-2xl font-semibold mb-6">Profile</h1>
+      <img 
+              src={PROFILE_URL + userInfo.image} 
+              alt={userInfo.name}
+              style={{
+                width: '150px',
+                height: '150px',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                objectPosition: 'center center', // Center the image both horizontally and vertically
+        display: 'block', // Ensures the image is displayed as a block element
+        margin: '0 auto' // Centers the image horizontally within its parent container
+  
+              }} 
+              />
       <form onSubmit={submitHandler}>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">Name</label>

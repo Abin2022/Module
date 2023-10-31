@@ -37,6 +37,12 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    viedo: builder.mutation({
+      query: () => ({
+        url: `${USERS_URL}/viedo`,
+        method: "GET",
+      }),
+    }),
 
   }),
 });
@@ -46,5 +52,6 @@ export const {
   useLogoutMutation,
   useRegisterMutation,
   useUpdateUserMutation,
-  useCourseMutation
+  useCourseMutation,
+  useViedoMutation
 } = userApiSlice;
