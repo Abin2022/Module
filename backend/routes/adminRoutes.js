@@ -11,7 +11,11 @@ import { authAdmin,
     deleteUserData,
     blockUser,
     unblockUser,
-    getAllTutors
+    getAllTutors,
+
+    deleteTutorData,
+    blockTutor,
+    unblockTutor
  } from '../controllers/adminController.js'
 
  import {protect } from '../middleware/authAdminMiddleware.js'
@@ -25,9 +29,12 @@ router.post('/authAdmin' ,authAdmin);
  router.post('/delete-user',  deleteUserData);
 //   router.route() put('/adminUpdateUserDetails' ,updateUserDetails);
 router.put('/update-user', updateUserData);
-
 router.post("/block-user", blockUser);
 router.post("/unblock-user", unblockUser);
+
+router.post('/delete-tutor' ,deleteTutorData);
+router.post('/block-tutor',blockTutor);
+router.post('/unblock-tutor' ,unblockTutor)
 
 
 

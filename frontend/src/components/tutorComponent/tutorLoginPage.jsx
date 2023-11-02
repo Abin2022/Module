@@ -19,13 +19,13 @@ const TutorLoginPage = () => {
 
   const [   tutorLogin, { isLoading }] = useTutorLoginMutation();
 
-  const { userInfo } = useSelector((state) => state.auth);
+  const { tutorInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
-    if (userInfo) {
+    if (tutorInfo) {
       navigate("/tutor/login");
     }
-  }, [navigate, userInfo]);
+  }, [navigate, tutorInfo]);
 
   const submitHandler = async (e) => {
     e.preventDefault();
@@ -36,7 +36,7 @@ const TutorLoginPage = () => {
           ...res,
         })
       );
-      navigate("/tutor");
+      navigate("/tutor/home");
     } catch (err) {
       toast.error(err?.data?.message || err.error);
       

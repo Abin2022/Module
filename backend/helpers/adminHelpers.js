@@ -85,4 +85,37 @@ const deleteUser = async (userId) => {
 
 };
 
-export { fetchAllUsers ,updateUser, deleteUser, fetchAllTutors};
+
+
+//tutor edit in admin side 
+
+
+const deleteTutor = async (tutorId) => {
+
+  try {
+
+    // Attempt to delete the user by their _id
+    const deletedTutor = await Tutor.findByIdAndDelete(tutorId);
+
+    if (!deletedTutor) {
+      return { success: false, message: "Tutor not found." };
+    }
+    return { success: true, message: "Tutor deleted successfully." };
+
+  } catch (error) {
+
+    console.error("Error deleting Tutor:", error);
+
+    throw error;
+
+  }
+
+};
+
+
+
+
+
+
+
+export { fetchAllUsers ,updateUser, deleteUser, fetchAllTutors  ,deleteTutor};

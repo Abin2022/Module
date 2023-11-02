@@ -13,12 +13,9 @@ const App = () => {
    const isTutorSide = location.pathname.startsWith("/tutor/login")
   return (
     <>
-   
-   {isAdminSide ? <AdminHeader /> : <Header />}
-{isTutorSide && <TutorDropdown />}
- {/* {!isAdminSide &&
-        (isAdminSide ? "" : <Header isTutorSide={isTutorSide} />)} */}
-
+       {isAdminSide && <AdminHeader />}
+      {!isAdminSide && !isTutorSide && <Header />}
+      {isTutorSide && <TutorDropdown />}
       <ToastContainer />
       <div className="my-2">
         <Outlet />

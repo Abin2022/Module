@@ -33,10 +33,11 @@ import TutorList from "./components/tutorComponent/tutorList.jsx";
  import TutorLoginPage from "./components/tutorComponent/tutorLoginPage.jsx";
  import TutorPage from "./components/tutorComponent/tutorHome.jsx";
 import TutorSignPage from "./components/tutorComponent/TutorSignupPage.jsx"
-
+import TutorProfilePage from "./components/tutorComponent/tutorProfile.jsx"
 
 import TutorHomePage from "./components/tutorComponent/HomePage.jsx"
-
+import AddCourse from "./components/tutorComponent/AddCourse.jsx";
+import AddVideo from "./components/tutorComponent/AddViedo.jsx"
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -58,6 +59,9 @@ const router = createBrowserRouter(
         <Route   index={true} path="/tutor/login" element={<TutorLoginPage />} />
         <Route path="/tutor/signup" element={<TutorSignPage />} />
         <Route path="/tutor/home" element={<TutorHomePage />} />
+        <Route path="/tutor/profile" element= {<TutorProfilePage/>}/>
+        <Route path="/tutor/add-course" element= {<AddCourse/>}/>
+        <Route path="/tutor/add-viedo" element={<AddVideo/>}/>
         
       </Route>
   
@@ -67,6 +71,7 @@ const router = createBrowserRouter(
       <Route path="/adminregister" element={<AdminRegisterScreen />} />
       <Route path="/admin/usersList" element={<UsersList />} />
       <Route path="/admin/tutorList" element={<TutorList />} />
+      
     </Route>
   )
   

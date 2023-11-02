@@ -5,7 +5,9 @@ import asyncHandler from 'express-async-handler'
 import Admin from '../models/adminModel.js'
 import User from '../models/userModel.js'
 import Tutor from '../models/tutorModel.js'
-import { fetchAllUsers , updateUser, deleteUser, fetchAllTutors} from "../helpers/adminHelpers.js";
+import { fetchAllUsers , updateUser, deleteUser, fetchAllTutors ,
+  deleteTutor,
+} from "../helpers/adminHelpers.js";
 
 //new admin auth
 const authAdmin =asyncHandler (async (req,res)=>{
@@ -194,6 +196,64 @@ const unblockUser = asyncHandler(async (req, res) => {
 });
 
 
+//tutor listing and edit in admin side 
+
+
+const deleteTutorData = asyncHandler( async (req, res) => {
+
+  const tutorId = req.body.tutorId;
+
+  const tutorDeleteStatus = await deleteTutor(tutorId);
+
+  if(tutorDeleteStatus.success){
+
+      const response = tutorDeleteStatus.message;
+
+      res.status(200).json({ message:response });
+
+  }else{
+
+      res.status(404);
+
+      const response = tutorDeleteStatus.message;
+
+      throw new Error(response);
+
+  }
+
+});
+
+
+const blockTutor = asyncHandler(async (req, res) => {
+  const tutorId = req.body.tutorId;
+  const blockTrue = {
+    isBlocked: true,
+  };
+  const blockTutor = await Tutor.findByIdAndUpdate(tutorId, blockTrue);
+  if (blockTutor) {
+    res.status(200).json({ message: "Tutor blocked sucessfully" });
+  } else {
+    res.status(404).json({ message: "Tutor not found" });
+  }
+});
+
+const unblockTutor = asyncHandler(async (req, res) => {
+  const tutorId = req.body.tutorId;
+  console.log(req.body.tutorId, "req.body.tutorId");
+  const unblockFalse = {
+    isBlocked: false,
+  };
+  const blockTutor = await Tutor.findByIdAndUpdate(tutorId, unblockFalse);
+
+  if (blockTutor) {
+    res.status(200).json({ message: "user unblocked sucessfully" });
+  } else {
+    res.status(404).json({ message: "user not found" });
+  }
+});
+
+
+
 
 export  {authAdmin ,
     registerAdmin,
@@ -205,7 +265,12 @@ export  {authAdmin ,
     unblockUser,
     listUserProfile,
     listTutorList,
-    getAllTutors
+    getAllTutors,
+
+
+    deleteTutorData,
+    unblockTutor,
+    blockTutor
 
 }
 

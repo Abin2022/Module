@@ -53,6 +53,34 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       body: data,
     }),
   }),
+   
+
+
+  //tutor in adim side
+  deleteTutor:builder.mutation({
+    query:(data)=>({
+      url:`${ADMIN_URL}/delete-tutor`,
+      method:'POST',
+      body: data,
+    })
+  }),
+  
+
+  blockTutor: builder.mutation({
+    query: (data) => ({
+      url: `${ADMIN_URL}/block-tutor`,
+      method: "POST",
+      body: data,
+    }),
+  }),
+
+  unblockTutor: builder.mutation({
+    query: (data) => ({
+      url: `${ADMIN_URL}/unblock-tutor`,
+      method: "POST",
+      body: data,
+    }),
+  }),
   
   }),
 });
@@ -63,7 +91,11 @@ export const {
   useDeleteUserMutation,
   useUpdateUserByAdminMutation,
   useBlockUserMutation,
-  useUnblockUserMutation
+  useUnblockUserMutation,
+
+  useBlockTutorMutation,
+  useDeleteTutorMutation,
+  useUnblockTutorMutation
  
 
   

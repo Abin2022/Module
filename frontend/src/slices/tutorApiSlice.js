@@ -23,6 +23,28 @@ export const tutorApiSlice = apiSlice.injectEndpoints({
         method: "post",
       }),
     }),
+
+    updateTutor: builder.mutation({
+      query: (data) => ({
+        url: `${TUTOR_URL}/profile`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
+
+    addCourse: builder.mutation({
+      query: (data) => ({
+        url: `${TUTOR_URL}/add-course`,
+        method: "post",
+        body: data,
+      }),
+    }),
+ 
+
+    
+    
+    
+
   
 
   }),
@@ -34,6 +56,9 @@ export const {
   useTutorLoginMutation,
   useTutorRegisterMutation,
   useTutorlogoutMutation,
+  useUpdateTutorMutation,
+  useAddCourseMutation,
+  
   
 
 } = tutorApiSlice;

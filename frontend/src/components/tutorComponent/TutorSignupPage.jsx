@@ -142,17 +142,19 @@ const TutorSignupPage = () => {
               >
                 Highest Qualifications
               </label>
-              <select
+              <input
+                type="text"
                 id="qualifications"
                 name="qualifications"
                 value={qualifications}
                 onChange={(e) => setQualifications(e.target.value)}
                 className="w-full border border-gray-600 px-3 py-2"
+                placeholder="Please state your highest Qualification"
               >
-                <option value="">Select Qualifications</option>
+                {/* <option value="">Select Qualifications</option>
                 <option value="Bachelors">Bachelor's degree</option>
-                <option value="Masters">Masters</option>
-              </select>
+                <option value="Masters">Masters</option> */}
+              </input>
             </div>
 
            
@@ -170,7 +172,7 @@ const TutorSignupPage = () => {
                 value={experience}
                 onChange={(e) => setExperience(e.target.value)}
                 className="w-full border border-gray-600  px-3 py-2"
-                placeholder="Explain about our Experience"
+                placeholder="Explain about your Experience "
               />
             </div>
           </div>

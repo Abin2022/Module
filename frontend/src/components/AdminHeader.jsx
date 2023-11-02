@@ -25,25 +25,30 @@ const AdminHeader = () => {
 
   return (
     <header className="flex justify-between items-center bg-gray-800 p-4">
-
-   
-      <Link to="/admin" className="flex items-center text-xl font-bold  text-white">
-      <FaRedhat className="mr-2" /> MODULE
-    </Link>
+      <Link
+        to="/admin"
+        className="flex items-center text-xl font-bold  text-white"
+      >
+        <FaRedhat className="mr-2" /> MODULE
+      </Link>
 
       <div className="flex justify-between items-center">
         {adminInfo ? (
           <>
-           
-            <Link to="/admin/usersList" className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
-    User List
-  </Link>
+            <Link
+              to="/admin/usersList"
+              className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+            >
+              User List
+            </Link>
 
-  <Link to="/admin/tutorList" className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
-  Tutor List
-  </Link>
+            <Link
+              to="/admin/tutorList"
+              className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+            >
+              Tutor List
+            </Link>
 
-           
             <div className="flex items-center">
               {/* <p className="text-white mr-2">User List</p> */}
               <button
@@ -56,11 +61,12 @@ const AdminHeader = () => {
             </div>
           </>
         ) : (
-          <Link to="/adminlogin" className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
-            
+          <Link
+            to="/adminlogin"
+            className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+          >
             Sign In <FaSignInAlt />
           </Link>
-        
         )}
       </div>
     </header>
