@@ -11,7 +11,7 @@ const TutorProfile = () => {
   const [image, setImage] = useState(null);
   const [qualifications, setQualifications] = useState("");
   const [experience, setExperience] = useState("");
-  const [about, setAbout] = useState("");
+  // const [about, setAbout] = useState("");
 
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
@@ -38,6 +38,8 @@ const TutorProfile = () => {
     const selectedImage = e.target.files[0];
     setImage(selectedImage);
   };
+
+ 
 
   const sumbmitHandler = async (e) => {
     e.preventDefault();
@@ -211,11 +213,11 @@ const TutorProfile = () => {
               {error === "email already exists" && error}
             </span>
           </div>
-          <div className="mb-4">
-            <button className="text-sm border-gray-600 text-black hover:text-blue-700">
+          {/* <div className="mb-4">
+            <button className="text-sm border-gray-600 text-black hover:text-blue-700" onSubmit={changePassword}>
               Change password ?
             </button>
-          </div>
+          </div> */}
 
           {success ? (
             <button

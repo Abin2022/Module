@@ -50,7 +50,7 @@ const router = createBrowserRouter(
         <Route path="/courseList" element={<CourseList />} />
         <Route path="/viedo" element={<Viedo/>}/>
        
-        <Route path="/tutor" element={<TutorPage />} />
+        <Route path="/instructor" element={<TutorPage />} />
 
        
        </Route>
@@ -61,7 +61,7 @@ const router = createBrowserRouter(
         <Route path="/tutor/home" element={<TutorHomePage />} />
         <Route path="/tutor/profile" element= {<TutorProfilePage/>}/>
         <Route path="/tutor/add-course" element= {<AddCourse/>}/>
-        <Route path="/tutor/add-viedo" element={<AddVideo/>}/>
+        <Route path="/tutor/add-viedos" element={<AddVideo/>}/>
         
       </Route>
   

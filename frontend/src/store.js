@@ -4,6 +4,8 @@ import { apiSlice } from "./slices/apiSlice";
 
 import adminReducer from "./slices/adminAuthSlice"
 import tutorAuthSlice from "./slices/tutorAuthSlice";
+import courseDetailsSlice from "./slices/courseDetailsSlice";
+// import courseDetailsSlice from "./slices/courseDetailsSlice";
 
 const store = configureStore({
   reducer: {
@@ -11,8 +13,7 @@ const store = configureStore({
     auth: authReducer,
     adminAuth:adminReducer,
     tutorAuth: tutorAuthSlice,
-    
-    
+    courseAuth: courseDetailsSlice 
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(apiSlice.middleware,apiSlice.middleware),

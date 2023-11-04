@@ -8,7 +8,6 @@ import { tutorLogout } from "../../slices/tutorAuthSlice";
 
 const TutorDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
-
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
@@ -26,40 +25,55 @@ const TutorDropdown = () => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative group">
       <button
-        onClick={toggleDropdown}
-        className="text-black hover:text-blue-600 cursor-pointer"
+       onClick={toggleDropdown}
+        className="flex items-center justify-center p-2 space-x-2 text-black hover:text-blue-600 cursor-pointer rounded-full bg-white shadow-md"
       >
-        <FaUserCircle className="h-9 w-6 pb-2" />
+        <FaUserCircle className="h-10 w-10" />
+        <span className="flex items-center justify-center text-lg font-semibold">
+          Instructor
+        </span>
       </button>
-      {isOpen && (
-        <div className="absolute right-0 mt-2 w-32 rounded-md hover:shadow-lg bg-white ring-1 ring-black ring-opacity-5">
-          <div
-            className="py-1"
-            role="menu"
-            aria-orientation="vertical"
-            aria-labelledby="options-menu"
-          >
-            <Link to="/tutor/profile">
-              <button
-                className="block px-2 py-2 text-base text-black hover:text-blue-600"
-                role="menuitem"
-              >
-                Profile
-              </button>
+
+      {isOpen &&(
+      // <div className=" fixed inset-2 flex items-center justify-center z-50">
+        <div className="absolute left-0 mt-22 w-38  flex items-center justify-center z-50  rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 " >
+          <div className="py-2">
+            <Link
+              to="/tutor/home"
+              className="block px-4 py-2 text-base font-semibold text-black hover:text-blue-600"
+            >
+              Home
             </Link>
 
+            <Link
+              to="/tutor/profile"
+              className="block px-4 py-2 text-base font-semibold text-black hover:text-blue-600"
+            >
+              Profile
+            </Link>
+            <Link
+              to="/tutor/add-course"
+              className="block px-4 py-2 text-base font-semibold text-black hover:text-blue-600"
+            >
+              Add Course
+            </Link>
+            <Link
+              to="/tutor/add-videos"
+              className="block px-4 py-2 text-base font-semibold text-black hover:text-blue-600"
+            >
+              Add Video
+            </Link>
             <button
               onClick={handleLogout}
-              className=" px-2 py-2 flex items-center text-base text-black hover:text-red-600"
-              role="menuitem"
+              className="block px-4 py-2 text-base font-semibold text-red-600 hover:text-red-800"
             >
-              Logout
-              <BiLogOut className="ml-2" />
+              Logout <BiLogOut className="inline-block ml-2" />
             </button>
           </div>
         </div>
+        // </div>
       )}
     </div>
   );

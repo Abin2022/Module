@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 // import { setDomains } from "../../slices/domainSlice";
 import axios from "axios";
 
-import { setCourses } from "../../slices/courseDetailsSlice";
+import { setCourses,addCourse } from "../../slices/courseDetailsSlice";
 import { useAddCourseMutation } from "../../slices/tutorApiSlice";
 import { useNavigate } from "react-router-dom";
 
@@ -52,6 +52,7 @@ const AddCourse = () => {
         setCourses({
           ...res,
         })
+
       );
       navigate("/tutor/add-videos");
     } catch (err) {}

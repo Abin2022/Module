@@ -9,7 +9,9 @@ const TutorSignupPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfrimPassword] = useState("");
-  const [qualifications, setQualifications] = useState("");
+  const [qualification, setQualifications] = useState("");
+  const [qualificationsPdf, setQualificationsPdf] = useState();
+  const [passwordError, setPasswordError] = useState("");
 
   const [experience, setExperience] = useState("");
   const [error, setError] = useState("");
@@ -20,40 +22,58 @@ const TutorSignupPage = () => {
   const { tutorInfo } = useSelector((state) => state.tutorAuth);
   useEffect(() => {
     if (tutorInfo) {
-      navigate("/tutor/signup");
+      navigate("/tutor/home");
     }
   }, [navigate, tutorInfo]);
-  
+  // const handleFileChange = (e) => {
+  //   const file = e.target.files[0];
+  //   if (file) {
+  //     // console.log(file, "kkkkkkkkkkkkkkkk");
+  //     setQualificationsPdf(file);
+  //   }
+  // };
+  console.log(qualificationsPdf, "qualificationsPdF");
   const sumbmitHandler = async (e) => {
     e.preventDefault();
     if (password !== confirmPassword) {
       setError("Password not matching");
     } else {
+      // if (
+      //   !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
+      //     password
+      //   )
+      // ) {
+      //   setPasswordError(
+      //     "Password must contain at least 8 characters,  one number, and one special character"
+      //   );
+      // } else {
       try {
         const res = await tutorRegister({
           name,
           email,
           password,
-          // qualificationsPdf,
-          qualifications,
+          //  qualificationsPdf,
+          qualification,
           experience,
         }).unwrap();
+        console.log(res, "respnnnnnn");
         dispatch(
           setTutorCredentials({
             ...res,
           })
         );
-        navigate("/tutor/home");
+        // navigate("/tutor/home");
       } catch (error) {
-        setError(err?.data?.message || err.error);
+        setError(error?.data?.message || error);
       }
+      // }
     }
   };
   return (
     <div className="flex flex-col items-center justify-center min-h-screen ">
       <div className="">
         <div className="text-black text-center mb-4 pt-10 text-2xl font-semibold">
-        Tutor Sign Up Form!
+          Welcome, Let's teach with us, Sign Up!
         </div>
 
         <form
@@ -106,16 +126,21 @@ const TutorSignupPage = () => {
               type="password"
               id="password"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                setPasswordError("");
+              }}
               name="password"
               className="w-full border border-gray-600  px-3 py-2"
               placeholder="Enter your password"
             />
-          </div>
+          </div>{" "}
+          {passwordError && (
+            <div className="text-red-500 text-right mb-4">{passwordError}</div>
+          )}
           {error === "Password not matching" && (
             <div className="text-red-500 text-right mb-4">{error}</div>
           )}
-
           <div className="mb-4">
             <label
               htmlFor="confirmPassword"
@@ -133,7 +158,6 @@ const TutorSignupPage = () => {
               placeholder="Confrim your password"
             />
           </div>
-
           <div>
             <div className="mb-4">
               <label
@@ -142,22 +166,35 @@ const TutorSignupPage = () => {
               >
                 Highest Qualifications
               </label>
-              <input
-                type="text"
+              <select
                 id="qualifications"
                 name="qualifications"
-                value={qualifications}
+                value={qualification}
                 onChange={(e) => setQualifications(e.target.value)}
                 className="w-full border border-gray-600 px-3 py-2"
-                placeholder="Please state your highest Qualification"
               >
-                {/* <option value="">Select Qualifications</option>
+                <option value="">Select Qualifications</option>
                 <option value="Bachelors">Bachelor's degree</option>
-                <option value="Masters">Masters</option> */}
-              </input>
+                <option value="Masters">Masters</option>
+              </select>
             </div>
 
-           
+            {/* <div className="mb-4">
+              <label
+                htmlFor="uploadqualifications"
+                className="block text-blue-900- font-semibold"
+              >
+                Upload Qualifications (PDF only)
+              </label>
+              <input
+                type="file"
+                id="qualificationsPdf"
+                name="qualificationsPdf"
+                accept=".pdf"
+                onChange={handleFileChange}
+                className="w-full border border-gray-600 px-3 py-2"
+              />
+            </div> */}
             <div className="mb-4">
               <label
                 htmlFor="workExp"
@@ -172,7 +209,7 @@ const TutorSignupPage = () => {
                 value={experience}
                 onChange={(e) => setExperience(e.target.value)}
                 className="w-full border border-gray-600  px-3 py-2"
-                placeholder="Explain about your Experience "
+                placeholder="Explain about our Experience"
               />
             </div>
           </div>

@@ -100,7 +100,7 @@ const TutorTable = ({ tutor }) => {
               <td className="border px-4 py-2 ">{tutor.name}</td>
               <td className="border px-4 py-2 ">{tutor.email}</td>
               <td className="border px-4 py-2 ">{tutor.experience}</td>
-              <td className="border px-4 py-2 ">{tutor.qualifications}</td>
+              <td className="border px-4 py-2 ">{tutor.qualification}</td>
 
 
               {/* <td className="border px-4 py-2"></td> */}

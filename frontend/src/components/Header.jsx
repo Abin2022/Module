@@ -51,7 +51,7 @@ const Header = () => {
               </Link>
 
               <Link
-                to="/tutor"
+                to="/instructor"
                 class="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
               >
                 Tutors

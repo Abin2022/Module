@@ -29,7 +29,7 @@ router
 
 
 
-router.get("/tutor", getTutorList);
+router.get("/instructor", getTutorList);
 // router.route('/profile').get( protect, getUserProfile ).put( protect, multerUploadUserProfile.single('profileImage'), updateUserProfile );
 router.get("/courseList", getCourseList);
 router.get("/viedos", getAllViedo);

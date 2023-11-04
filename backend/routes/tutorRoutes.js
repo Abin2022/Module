@@ -12,7 +12,8 @@ import {
   registerTutor,
   getTutorProfile,
   updateTutorProfile,
-  addCourse
+  addCourse,
+  addVideo
   
 } from "../controllers/tutorController.js";
 
@@ -26,5 +27,6 @@ router.put("/tutor/profile",updateTutorProfile)
 // .route("/tutor/profile")
 // .get(protect,getTutorProfile )
 // .put(protect,mullterTutorImage.single("tutorImage"),updateTutorProfile)
- router.post("/add-course",addCourse)
+ router.post("/tutor/add-course",addCourse)
+ router.get("/tutor/add-viedos" ,addVideo)
 export default router;
