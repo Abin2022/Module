@@ -18,7 +18,7 @@ const UsersList = () => {
         
         setUser(response.data.users);
 
-        console.log(user,'klj');
+        
 
         
         setLoading(false); 

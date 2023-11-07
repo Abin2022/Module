@@ -27,6 +27,6 @@ router.put("/tutor/profile",updateTutorProfile)
 // .route("/tutor/profile")
 // .get(protect,getTutorProfile )
 // .put(protect,mullterTutorImage.single("tutorImage"),updateTutorProfile)
- router.post("/tutor/add-course",addCourse)
- router.get("/tutor/add-viedos" ,addVideo)
+ router.post("/add-course",addCourse)
+ router.post("/add-viedos" ,addVideo)
 export default router;

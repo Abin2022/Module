@@ -32,7 +32,7 @@ const TutorDropdown = () => {
       >
         <FaUserCircle className="h-10 w-10" />
         <span className="flex items-center justify-center text-lg font-semibold">
-          Instructor
+          Instructor 
         </span>
       </button>
 

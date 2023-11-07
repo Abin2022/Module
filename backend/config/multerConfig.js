@@ -16,3 +16,4 @@ const storage = multer.diskStorage({
 export const mullterUserImage = multer({
   storage: storage,
 });
+

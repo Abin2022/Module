@@ -14,6 +14,7 @@ import {
   getTutorList,       
   getCourseList,
   getAllViedo,
+ 
 } from "../controllers/userController.js";
 
 router.post("/", registerUser);

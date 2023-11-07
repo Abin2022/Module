@@ -1,7 +1,8 @@
 import asyncHandler from "express-async-handler";
 import Tutor from "../models/tutorModel.js";
 import generateToken from "../utils/genJwtToken.js";
-
+import Domain from "../models/domainModel.js";
+import Courses from "../models/courseModel.js";
 const authTutor = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -27,7 +28,7 @@ const authTutor = asyncHandler(async (req, res) => {
 const registerTutor = asyncHandler(async (req, res) => {
   const { name, email, password, qualification, experience } = req.body;
 
-  console.log(name, email, password, qualification, experience, "req body");
+  // console.log(name, email, password, qualification, experience, "req body");
   const tutorExists = await Tutor.findOne({ email: email });
 
   if (tutorExists) {
@@ -66,57 +67,16 @@ const logoutTutor = asyncHandler(async (req, res) => {
   res.status(200).json({ message: " tutor logout" });
 });
 
-// const getTutorProfile = asyncHandler(async (req,res) =>{
-//   const tutor = {
-//     _id: req.tutor._id,
-//     name:req.tutor.name,
-//     email:req.tutor.email,
-//     qualification:req.tutor.qualification,
-//     experience:req.tutor.experience,
-
-//   }
-//   res.status(200).json(tutor)
-// })
-
-
-// const updateTutorProfile = asyncHandler(async (req, res) => {
-//   const tutor = await Tutor.findById(req.tutor._id);
-//   if (tutor) {
-//     (tutor.email = req.body.email || tutor.email),
-//       (tutor.name = req.body.name || tutor.name);
-//        (tutor.experience =req.body.experience || tutor.experience)
-
-//      if(req.file){
-//             tutor.tutorImage = req.file.filename || tutor.tutorImage;
-//         }
-
-//         if (req.body.password) {
-//           tutor.password = req.body.password;
-//         }
-
-//     const updatedTutor = await tutor.save();
-//     res.status(200).json({
-//       _id: updatedTutor._id,
-//       name: updatedTutor.name,
-//       email: updatedTutor.email,
-//       image: updatedTutor.tutorImage,
-//       experience: updatedTutor.experience
-//     });
-//   } else {
-//     res.status(404);
-//     throw new Error("user not find");
-//   }
-  
-// });
 
 
 const getTutorProfile = asyncHandler(async (req, res) => {
   const tutor = await Tutor.findById(req.tutor._id);
+  console.log(tutor,'here at.. on tutorcontoller 115');
   const tutorData = {
     _id: req.tutor._id,
     name: req.tutor.name,
     email: req.tutor.email,
-    qualifications: tutor.qualifications,
+    qualification: tutor.qualification,
     experience: tutor.experience,
     about: tutor.about,
   };
@@ -139,7 +99,7 @@ const updateTutorProfile = asyncHandler(async (req, res) => {
   if (tutor) {
     (tutor.email = req.body.email || tutor.email),
       (tutor.name = req.body.name || tutor.name),
-      (tutor.qualifications = req.body.qualifications || tutor.qualifications),
+      (tutor.qualification = req.body.qualification || tutor.qualification),
       (tutor.experience = req.body.experience || tutor.experience),
       (tutor.about = req.body.about || tutor.about);
     // if (req.file) {
@@ -176,7 +136,7 @@ const updateTutorProfile = asyncHandler(async (req, res) => {
       _id: updatedtutor._id,
       name: updatedtutor.name,
       email: updatedtutor.email,
-      qualifications: updatedtutor.qualifications,
+      qualification: updatedtutor.qualification,
       about: updatedtutor.about,
       experience: updatedtutor.experience,
       image: updatedtutor.tutorImageUrl,
@@ -189,10 +149,14 @@ const updateTutorProfile = asyncHandler(async (req, res) => {
  
 
 const addCourse = asyncHandler(async (req, res) => {
+  console.log('guguhijlpo[po........................................');
   const tutorId = req.tutor._id;
+  console.log(tutorId,"tutorid form tutorcontroller");
   const domainName = req.body.domainName;
    const domain = await Domain.findOne({ domainName });
+   console.log(domain,"domain");
   const { courseName, description, price, requiredSkill } = req.body;
+  console.log(req.body);
   const createdCourse = await Courses.create({
    domain: domain._id,
     tutorId: tutorId,
@@ -201,6 +165,7 @@ const addCourse = asyncHandler(async (req, res) => {
     requiredSkill,
     price,
   });
+  console.log(createdCourse);
   res.status(201).json(createdCourse);
 });
 

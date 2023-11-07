@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-// import { setDomains } from "../../slices/domainSlice";
+import { setDomains } from "../../slices/domainSlice";
 import axios from "axios";
 
 import { setCourses,addCourse } from "../../slices/courseDetailsSlice";
@@ -8,7 +8,7 @@ import { useAddCourseMutation } from "../../slices/tutorApiSlice";
 import { useNavigate } from "react-router-dom";
 
 const AddCourse = () => {
-//   const [domainName, setDomainName] = useState("");
+  const [domainName, setDomainName] = useState("");
   const [courseName, setCourseName] = useState("");
   const [description, setDescription] = useState("");
   const [requiredSkill, setRequiredSkill] = useState("");
@@ -17,32 +17,45 @@ const AddCourse = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [addCourse] = useAddCourseMutation();
-//   const getDomain = async () => {
-//     try {
-//       const res = await axios.get("http://localhost:5000/api/admin/domains", {
-//         withCredentials: true,
-//       });
+  const getDomain = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/admin/domains", {
+        withCredentials: true,
+      });
 
-//       const domains = res.data;
-//       const domainNames = domains.map((domain) => domain.domainName);
 
-//       dispatch(setDomains(domainNames));
-//     } catch (err) {
-//       console.error("Error fetching user data:", err);
-//     }
-//   };
+      // const fetchUsers = async () => {
+      //   try {
+      //     const response = await axios.get("http://localhost:5000/api/admin/usersList ");
+          
+      //     setUser(response.data.users);
+  
+          
+  
+          
+      //     setLoading(false); 
+      //   }
 
-//   useEffect(() => {
-//     getDomain();
-//   }, []);
-//   const domains = useSelector((state) => state.domains.domains);
+      const domains = res.data;
+      const domainNames = domains.map((domain) => domain.domainName);
+
+      dispatch(setDomains(domainNames));
+    } catch (err) {
+      console.error("Error fetching user data:", err);
+    }
+  };
+
+  useEffect(() => {
+    getDomain();
+  }, []);
+  const domains = useSelector((state) => state.domains.domains);
 
 
   const submitHandler = async (e) => {
     e.preventDefault();
     try {
       const res = await addCourse({
-        // domainName,
+        domainName,
         courseName,
         description,
         price,
@@ -71,7 +84,7 @@ const AddCourse = () => {
             <div className="text-2xl mb-3 flex justify-center font-serif">
               Create your Course
             </div>
-            {/* <div className="mb-4">
+            <div className="mb-4">
               <label
                 htmlFor="domain"
                 className="block text-blue-900 font-semibold mb-2"
@@ -92,7 +105,7 @@ const AddCourse = () => {
                   </option>
                 ))}
               </select>
-            </div> */}
+            </div>
             <div className="mb-4">
               <label
                 htmlFor="courseName"
