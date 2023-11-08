@@ -9,6 +9,8 @@ import { fetchAllUsers , updateUser, deleteUser, fetchAllTutors ,
   deleteTutor,
 } from "../helpers/adminHelpers.js";
 
+import Domain from '../models/domainModel.js'
+
 //new admin auth
 const authAdmin =asyncHandler (async (req,res)=>{
     const {email,password} =req.body;
@@ -253,6 +255,35 @@ const unblockTutor = asyncHandler(async (req, res) => {
 });
 
 
+const getDomains = asyncHandler(async(req,res)=>{
+  const domains = await Domain.find();
+  res.status(200).json(domains)
+})
+
+const addDomain = asyncHandler(async(req,res)=>{
+  const domainName = req.body.domainName;
+  if(Domain.domainName !== domainName){
+    const domain = await Domain.create({
+      domainName
+    })
+    res.status(200).json({domain : domain.domainName})
+  }else{
+    res.status(400).json({ message : "Domain already exist "})
+  }
+
+})
+
+const deleteDomain = asyncHandler(async (req, res) => {
+  const domainName = req.params.domainName;
+  const deleteDomain = await Domain.findOneAndDelete({ domainName });
+  if (deleteDomain) {
+    res.status(200).json({ message: "Domain deleted Successfully" });
+  } else {
+    res.status(404).json({ message: "Domain not found" });
+  }
+});
+
+
 
 
 export  {authAdmin ,
@@ -270,7 +301,11 @@ export  {authAdmin ,
 
     deleteTutorData,
     unblockTutor,
-    blockTutor
+    blockTutor,
+
+    getDomains,
+    addDomain,
+    deleteDomain
 
 }
 

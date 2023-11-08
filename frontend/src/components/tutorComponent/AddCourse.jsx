@@ -19,22 +19,9 @@ const AddCourse = () => {
   const [addCourse] = useAddCourseMutation();
   const getDomain = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/admin/domains", {
+      const res = await axios.get("http://localhost:5000/api/admin/domain", {
         withCredentials: true,
       });
-
-
-      // const fetchUsers = async () => {
-      //   try {
-      //     const response = await axios.get("http://localhost:5000/api/admin/usersList ");
-          
-      //     setUser(response.data.users);
-  
-          
-  
-          
-      //     setLoading(false); 
-      //   }
 
       const domains = res.data;
       const domainNames = domains.map((domain) => domain.domainName);
@@ -67,17 +54,17 @@ const AddCourse = () => {
         })
 
       );
-      navigate("/tutor/add-videos");
+      navigate("/tutor/home");
     } catch (err) {}
   };
   return (
     <div className="w-screen mt-7 h-screen flex justify-center items-center">
       <div className="flex w-screen justify-center items-center gap-4">
         <div className="w-60 h-60">
-          {/* <img
+          <img
             src="https://s.udemycdn.com/teaching/plan-your-curriculum-v3.jpg"
             alt="Left Image"
-          /> */}
+          />
         </div>
         <form onSubmit={submitHandler}>
           <div className="w-96 p-4">
@@ -186,10 +173,10 @@ const AddCourse = () => {
         </form>
 
         <div className="w-60 h-60">
-          {/* <img
+          <img
             src="https://s.udemycdn.com/teaching/support-1-v3.jpg"
             alt="Right Image"
-          /> */}
+          />
         </div>
       </div>
     </div>

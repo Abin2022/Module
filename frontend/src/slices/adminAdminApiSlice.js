@@ -81,6 +81,33 @@ export const adminApiSlice = apiSlice.injectEndpoints({
       body: data,
     }),
   }),
+
+  getDomain: builder.mutation({
+    query: (data) => ({
+      url: `${ADMIN_URL}/domain`,
+      method: "GET",
+      body: data,
+    }),
+  }),
+
+
+  addDomain: builder.mutation({
+    query: (data) => ({
+      url: `${ADMIN_URL}/add-domain`,
+      method: "POST",
+      body: data,
+    }),
+  }),
+
+  
+
+  deleteDomain: builder.mutation({
+    query: (domainName) => ({
+      url: `${ADMIN_URL}/domains/${domainName}`,
+      method: "delete",
+    }),
+  }),
+
   
   }),
 });
@@ -95,7 +122,11 @@ export const {
 
   useBlockTutorMutation,
   useDeleteTutorMutation,
-  useUnblockTutorMutation
+  useUnblockTutorMutation,
+
+  useAddDomainMutation,
+  useDeleteDomainMutation,
+  useGetDomainMutation
  
 
   

@@ -69,9 +69,31 @@ const logoutTutor = asyncHandler(async (req, res) => {
 
 
 
+// const getTutorProfile = asyncHandler(async (req, res) => {
+//   const tutor = await Tutor.findById(req.tutor._id);
+//   console.log(tutor,'here at.. on tutorcontoller 115');
+//   const tutorData = {
+//     _id: req.tutor._id,
+//     name: req.tutor.name,
+//     email: req.tutor.email,
+//     qualification: tutor.qualification,
+//     experience: tutor.experience,
+//     about: tutor.about,
+//   };
+//   res.status(200).json(tutorData);
+// });
 const getTutorProfile = asyncHandler(async (req, res) => {
+  if (!req.tutor) {
+    return res.status(404).json({ message: 'Tutor not found' });
+  }
+
   const tutor = await Tutor.findById(req.tutor._id);
-  console.log(tutor,'here at.. on tutorcontoller 115');
+  console.log(tutor, 'here at.. on tutorcontroller 115');
+  
+  if (!tutor) {
+    return res.status(404).json({ message: 'Tutor not found' });
+  }
+
   const tutorData = {
     _id: req.tutor._id,
     name: req.tutor.name,
@@ -80,9 +102,9 @@ const getTutorProfile = asyncHandler(async (req, res) => {
     experience: tutor.experience,
     about: tutor.about,
   };
+
   res.status(200).json(tutorData);
 });
-
 
 const updateTutorProfile = asyncHandler(async (req, res) => {
   const tutor = await Tutor.findById(req.tutor._id);
@@ -146,26 +168,31 @@ const updateTutorProfile = asyncHandler(async (req, res) => {
     throw new Error("tutor not find");
   }
 });
+
+
+
  
 
 const addCourse = asyncHandler(async (req, res) => {
-  console.log('guguhijlpo[po........................................');
-  const tutorId = req.tutor._id;
-  console.log(tutorId,"tutorid form tutorcontroller");
+  // console.log('guguhijlpo[po........................................');
+  // const tutorId = req.tutor._id;
+  // console.log(tutorId,"tutorid form tutorcontroller");
   const domainName = req.body.domainName;
    const domain = await Domain.findOne({ domainName });
-   console.log(domain,"domain");
-  const { courseName, description, price, requiredSkill } = req.body;
-  console.log(req.body);
+  //  console.log(domain,"domain");
+  const { courseName, description, price, requiredSkill,videos } = req.body;
+  // console.log(req.body);
   const createdCourse = await Courses.create({
    domain: domain._id,
-    tutorId: tutorId,
+    // tutorId: tutorId,
     courseName,
     description,
     requiredSkill,
     price,
+    videos
+
   });
-  console.log(createdCourse);
+  // console.log(createdCourse);
   res.status(201).json(createdCourse);
 });
 

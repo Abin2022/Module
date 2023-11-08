@@ -68,3 +68,16 @@ function AddViedo() {
 }
 
 export default AddViedo;
+
+
+// import React from 'react'
+
+// const AddVideos = () => {
+//   return (
+//     <>
+//    <div>videozz</div>
+//     </>
+//   )
+// }
+
+// export default AddVideos

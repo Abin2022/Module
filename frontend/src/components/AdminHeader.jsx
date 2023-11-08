@@ -39,15 +39,22 @@ const AdminHeader = () => {
               to="/admin/usersList"
               className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
             >
-              User List
+              User 
             </Link>
 
             <Link
               to="/admin/tutorList"
               className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
             >
-              Tutor List
+              Tutor 
             </Link>
+
+              <Link to="/admin/domain"
+               className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+                 
+              >
+                Domain
+              </Link>
 
             <div className="flex items-center">
               {/* <p className="text-white mr-2">User List</p> */}

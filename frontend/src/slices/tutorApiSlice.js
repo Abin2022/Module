@@ -43,7 +43,7 @@ export const tutorApiSlice = apiSlice.injectEndpoints({
      addViedo: builder.mutation({
       query: (data) => ({
         url: `${TUTOR_URL}/add-videos`,
-        method: "get",
+        method: "post",
         body: data,
       }),
     }),

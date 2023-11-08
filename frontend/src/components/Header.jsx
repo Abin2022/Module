@@ -45,25 +45,25 @@ const Header = () => {
   </Link> */}
               <Link
                 to="/courseList"
-                class=" bg-gray-800   hover:bg-gray-400 text-white font-bold py-2 px-2 rounded"
+                className=" bg-gray-800   hover:bg-gray-400 text-white font-bold py-2 px-2 rounded"
               >
-                <i class="fas fa-play"></i> Course
+                <i className="fas fa-play"></i> Course
               </Link>
 
               <Link
                 to="/instructor"
-                class="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+                className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
               >
                 Tutors
               </Link>
 
-              {/* <Link to="/video" class="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
+              {/* <Link to="/video" className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
     Videos
   </Link> */}
 
               <Link
                 to="/profile"
-                class="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+                className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
               >
                 Profile
               </Link>
@@ -71,7 +71,7 @@ const Header = () => {
               {userInfo ? (
                 <Link
                   onClick={logoutHandler}
-                  class="hover:bg-red-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+                  className="hover:bg-red-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
                 >
                   Logout
                 </Link>

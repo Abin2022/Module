@@ -15,7 +15,10 @@ import { authAdmin,
 
     deleteTutorData,
     blockTutor,
-    unblockTutor
+    unblockTutor,
+    getDomains,
+    addDomain,
+    deleteDomain
  } from '../controllers/adminController.js'
 
  import {protect } from '../middleware/authAdminMiddleware.js'
@@ -36,7 +39,9 @@ router.post('/delete-tutor' ,deleteTutorData);
 router.post('/block-tutor',blockTutor);
 router.post('/unblock-tutor' ,unblockTutor)
 
-
+router.get("/domain",getDomains)
+router.post("/add-domain", addDomain);
+router.delete("/domains/:domainName",  deleteDomain);
 
 
 export default router;
