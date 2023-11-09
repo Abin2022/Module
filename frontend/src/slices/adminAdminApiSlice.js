@@ -108,6 +108,16 @@ export const adminApiSlice = apiSlice.injectEndpoints({
     }),
   }),
 
+ 
+  
+  deleteCourse:builder.mutation({
+    query:(data)=>({
+      url:`${ADMIN_URL}/delete-course`,
+      method:'POST',
+      body: data,
+    })
+  }),
+
   
   }),
 });
@@ -126,7 +136,9 @@ export const {
 
   useAddDomainMutation,
   useDeleteDomainMutation,
-  useGetDomainMutation
+  useGetDomainMutation,
+  
+  useDeleteCourseMutation,
  
 
   

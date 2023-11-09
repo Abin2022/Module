@@ -3,6 +3,9 @@ import Tutor from "../models/tutorModel.js";
 import generateToken from "../utils/genJwtToken.js";
 import Domain from "../models/domainModel.js";
 import Courses from "../models/courseModel.js";
+
+import { fetchAllCoursesList, deleteCourse } from "../helpers/tutorHelpers.js";
+
 const authTutor = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
 
@@ -174,22 +177,22 @@ const updateTutorProfile = asyncHandler(async (req, res) => {
  
 
 const addCourse = asyncHandler(async (req, res) => {
-  // console.log('guguhijlpo[po........................................');
   // const tutorId = req.tutor._id;
   // console.log(tutorId,"tutorid form tutorcontroller");
   const domainName = req.body.domainName;
    const domain = await Domain.findOne({ domainName });
-  //  console.log(domain,"domain");
-  const { courseName, description, price, requiredSkill,videos } = req.body;
+ 
+  const { courseName, description, price, requiredSkills,videos } = req.body;
   // console.log(req.body);
   const createdCourse = await Courses.create({
    domain: domain._id,
     // tutorId: tutorId,
     courseName,
     description,
-    requiredSkill,
+    requiredSkills,
     price,
-    videos
+    videos,
+
 
   });
   // console.log(createdCourse);
@@ -200,8 +203,50 @@ const addVideo = asyncHandler(async (req, res) => {});
 
 
 
+const deleteCourseData = asyncHandler( async (req, res) => {
+
+  const tutorId = req.body.tutorId;
+  const courseDeleteStatus = await deleteCourse(tutorId);
+  if(courseDeleteStatus.success){
+
+      const response = courseDeleteStatus.message;
+
+      res.status(200).json({ message:response });
+
+  }else{
+
+      res.status(404);
+
+      const response = courseDeleteStatus.message;
+
+      throw new Error(response);
+
+  }
+
+});
+
+
+
+const courseListing =asyncHandler(async (req,res ) => {
+  fetchAllCoursesList()
+  .then((course)=>{
+    res.status(200).json({course})
+  })
+  .catch((error)=>{
+    console.log(error)
+    toast.error(err?.data?.message || err?.error)
+  })
+})
+
+const courseListingUpdate = asyncHandler(async(req,res) =>{
+
+})
+
 
 export { registerTutor, authTutor, logoutTutor ,getTutorProfile ,updateTutorProfile,
   addCourse,
   addVideo,
+  courseListing,
+  courseListingUpdate,
+  deleteCourseData
 };

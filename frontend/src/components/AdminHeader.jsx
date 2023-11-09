@@ -56,6 +56,14 @@ const AdminHeader = () => {
                 Domain
               </Link>
 
+              
+              <Link to="/admin/courseList"
+               className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+                 
+              >
+                Course list
+              </Link>
+
             <div className="flex items-center">
               {/* <p className="text-white mr-2">User List</p> */}
               <button

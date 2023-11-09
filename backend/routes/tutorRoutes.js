@@ -15,7 +15,9 @@ import {
   updateTutorProfile,
   addCourse,
    addVideo,
- 
+   courseListing,
+   courseListingUpdate,
+   deleteCourseData,
   
 } from "../controllers/tutorController.js";
 
@@ -28,8 +30,13 @@ router.post("/logout", logoutTutor);
 router
 .route("/profile")
 .get(getTutorProfile )
+
 .put(multerImage.single("tutorImage"),updateTutorProfile)
 
  router.post("/add-course",addCourse)
   router.post("/add-viedos" ,addVideo)
+
+  router.post('/delete-course',  deleteCourseData);
+  router.get('/courselisting',courseListing)
+  router.post('/courseUpdate',courseListingUpdate)
 export default router;

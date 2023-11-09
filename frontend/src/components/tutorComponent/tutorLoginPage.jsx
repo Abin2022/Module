@@ -4,9 +4,9 @@ import { Link, useNavigate } from "react-router-dom";
 import { useTutorLoginMutation } from "../../slices/tutorApiSlice";
 import { setTutorCredentials } from "../../slices/tutorAuthSlice";
 
-import { toast } from 'react-toastify'
+ import { toast } from 'react-toastify'
  import Loader from '../../components/Loader';
-
+ 
 
 const TutorLoginPage = () => {
   const [email, setEmail] = useState("");

@@ -35,8 +35,7 @@ import TutorList from "./components/tutorComponent/tutorList.jsx";
 import TutorSignPage from "./components/tutorComponent/TutorSignupPage.jsx"
 import TutorProfilePage from "./components/tutorComponent/tutorProfile.jsx"
 import DomainList from "./components/adminComponent/DomainList.jsx";
-
-
+import CourseListing from "./components/tutorComponent/CourseListing.jsx"
 import TutorHomePage from "./components/tutorComponent/HomePage.jsx"
 import AddCourse from "./components/tutorComponent/AddCourse.jsx";
 import AddVideo from "./components/tutorComponent/AddViedo.jsx"
@@ -64,7 +63,7 @@ const router = createBrowserRouter(
         <Route path="/tutor/profile" element= {<TutorProfilePage/>}/>
         <Route path="/tutor/add-course" element= {<AddCourse/>}/>
         <Route path="/tutor/add-videos" element={<AddVideo/>}/>
-         
+         <Route path="/tutor/courselisting" element={<CourseListing/>}/>
       </Route>
   
       {/* Admin side routes */}
@@ -74,6 +73,7 @@ const router = createBrowserRouter(
       <Route path="/admin/usersList" element={<UsersList />} />
       <Route path="/admin/tutorList" element={<TutorList />} />
       <Route path ="/admin/domain" element={<DomainList/>}/>
+      <Route path="/admin/courseList" element={<CourseListing/>}/>
 
       
     </Route>

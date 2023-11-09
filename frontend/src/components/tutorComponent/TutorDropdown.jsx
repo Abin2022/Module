@@ -65,6 +65,15 @@ const TutorDropdown = () => {
             >
               Add Video
             </Link>
+            
+            <Link
+              to="/tutor/courselisting"
+              className="block px-4 py-2 text-base font-semibold text-black hover:text-blue-600"
+            >
+             Course List
+            </Link>
+
+            
             <button
               onClick={handleLogout}
               className="block px-4 py-2 text-base font-semibold text-red-600 hover:text-red-800"

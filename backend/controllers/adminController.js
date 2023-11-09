@@ -285,6 +285,43 @@ const deleteDomain = asyncHandler(async (req, res) => {
 
 
 
+const deleteCourseData = asyncHandler( async (req, res) => {
+
+  const tutorId = req.body.tutorId;
+  const courseDeleteStatus = await deleteCourse(tutorId);
+  if(courseDeleteStatus.success){
+
+      const response = courseDeleteStatus.message;
+
+      res.status(200).json({ message:response });
+
+  }else{
+
+      res.status(404);
+
+      const response = courseDeleteStatus.message;
+
+      throw new Error(response);
+
+  }
+
+});
+
+
+
+const courseListing =asyncHandler(async (req,res ) => {
+  fetchAllCoursesList()
+  .then((course)=>{
+    res.status(200).json({course})
+  })
+  .catch((error)=>{
+    console.log(error)
+    toast.error(err?.data?.message || err?.error)
+  })
+})
+
+
+
 
 export  {authAdmin ,
     registerAdmin,
@@ -305,7 +342,10 @@ export  {authAdmin ,
 
     getDomains,
     addDomain,
-    deleteDomain
+    deleteDomain,
+
+    courseListing,
+    deleteCourseData,
 
 }
 
