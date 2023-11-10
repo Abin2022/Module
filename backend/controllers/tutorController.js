@@ -3,6 +3,14 @@ import Tutor from "../models/tutorModel.js";
 import generateToken from "../utils/genJwtToken.js";
 import Domain from "../models/domainModel.js";
 import Courses from "../models/courseModel.js";
+import { s3 } from "../config/s3BucketConfig.js";
+import {
+  PutObjectCommand,
+  GetObjectCommand,
+  DeleteObjectCommand,
+} from "@aws-sdk/client-s3";
+
+
 
 import { fetchAllCoursesList, deleteCourse } from "../helpers/tutorHelpers.js";
 
@@ -18,9 +26,17 @@ const authTutor = asyncHandler(async (req, res) => {
       _id: tutor._id,
       name: tutor.name,
       email: tutor.email,
+      // qualification: tutor.qualification,
+      // experience: tutor.experience,
+      // image: tutor.tutorImageUrl,
     });
+    console.log("tutor._id",tutor._id)
   } 
   //here
+  // else if (tutor.isBlocked) {
+  //   res.status(400);
+  //   throw new Error("You have been blocked");
+  // }
   else {
     console.log("invalid email or password");
     res.status(400);
@@ -70,32 +86,12 @@ const logoutTutor = asyncHandler(async (req, res) => {
   res.status(200).json({ message: " tutor logout" });
 });
 
-
-
-// const getTutorProfile = asyncHandler(async (req, res) => {
-//   const tutor = await Tutor.findById(req.tutor._id);
-//   console.log(tutor,'here at.. on tutorcontoller 115');
-//   const tutorData = {
-//     _id: req.tutor._id,
-//     name: req.tutor.name,
-//     email: req.tutor.email,
-//     qualification: tutor.qualification,
-//     experience: tutor.experience,
-//     about: tutor.about,
-//   };
-//   res.status(200).json(tutorData);
-// });
 const getTutorProfile = asyncHandler(async (req, res) => {
-  if (!req.tutor) {
-    return res.status(404).json({ message: 'Tutor not found' });
-  }
-
   const tutor = await Tutor.findById(req.tutor._id);
-  console.log(tutor, 'here at.. on tutorcontroller 115');
-  
-  if (!tutor) {
-    return res.status(404).json({ message: 'Tutor not found' });
-  }
+
+
+  // const tutor = await Tutor.findOne({ email });
+
 
   const tutorData = {
     _id: req.tutor._id,
@@ -103,74 +99,88 @@ const getTutorProfile = asyncHandler(async (req, res) => {
     email: req.tutor.email,
     qualification: tutor.qualification,
     experience: tutor.experience,
-    about: tutor.about,
+    
   };
+  console.log("tutor._id",tutor._id)
 
   res.status(200).json(tutorData);
 });
 
+
+
 const updateTutorProfile = asyncHandler(async (req, res) => {
-  const tutor = await Tutor.findById(req.tutor._id);
+  const tutorId = req.body._id;
+  const tutor = await Tutor.findById(tutorId);
+
+  if (!tutor) {
+    res.status(404);
+    throw new Error("Tutor not found");
+  }
+
   const email = req.body.email;
+
   if (email !== tutor.email) {
     const tutorExists = await Tutor.findOne({ email: email });
 
     if (tutorExists) {
       res.status(400);
-      throw new Error("email already exists");
+      throw new Error("Email already exists");
     }
   }
 
-  if (tutor) {
-    (tutor.email = req.body.email || tutor.email),
-      (tutor.name = req.body.name || tutor.name),
-      (tutor.qualification = req.body.qualification || tutor.qualification),
-      (tutor.experience = req.body.experience || tutor.experience),
-      (tutor.about = req.body.about || tutor.about);
-    // if (req.file) {
-    //   if (tutor.tutorImageName) {
-    //     const params = {
-    //       Bucket: process.env.BUCKET_NAME,
-    //       Key: tutor.tutorImageName,
-    //     };
-    //     const command = new DeleteObjectCommand(params);
-    //     await s3.send(command);
-    //   }
-    //   const tutorImg = randomImgName();
-    //   const params = {
-    //     Bucket: process.env.BUCKET_NAME,
-    //     Key: tutorImg,
-    //     Body: req.file.buffer,
-    //     ContentType: req.file.mimetype,
-    //   };
-    //   const command = new PutObjectCommand(params);
+  tutor.email = req.body.email || tutor.email;
+  tutor.name = req.body.name || tutor.name;
+  tutor.qualification = req.body.qualification || tutor.qualification;
+  tutor.experience = req.body.experience || tutor.experience;
 
-    //   await s3.send(command);
-    //   const getObjectParams = {
-    //     Bucket: process.env.BUCKET_NAME,
-    //     Key: tutorImg,
-    //   };
-    //   const getCommand = new GetObjectCommand(getObjectParams);
-    //   const url = await getSignedUrl(s3, getCommand, { expiresIn: 3600 });
-    //   tutor.tutorImageName = tutorImg;
-    //   tutor.tutorImageUrl = url;
-    // }
+  if (req.file) {
+    if (tutor.tutorImageName) {
+      const params = {
+        Bucket: process.env.BUCKET_NAME,
+        Key: tutor.tutorImageName,
+      };
+      const command = new DeleteObjectCommand(params);
+      await s3.send(command);
+    }
 
-    const updatedtutor = await tutor.save();
-    res.status(200).json({
-      _id: updatedtutor._id,
-      name: updatedtutor.name,
-      email: updatedtutor.email,
-      qualification: updatedtutor.qualification,
-      about: updatedtutor.about,
-      experience: updatedtutor.experience,
-      image: updatedtutor.tutorImageUrl,
-    });
-  } else {
-    res.status(404);
-    throw new Error("tutor not find");
+    const tutorImg = randomImgName();
+    const params = {
+      Bucket: process.env.BUCKET_NAME,
+      Key: tutorImg,
+      Body: req.file.buffer,
+      ContentType: req.file.mimetype,
+    };
+    const command = new PutObjectCommand(params);
+
+    await s3.send(command);
+    const getObjectParams = {
+      Bucket: process.env.BUCKET_NAME,
+      Key: tutorImg,
+    };
+    const getCommand = new GetObjectCommand(getObjectParams);
+    const url = await getSignedUrl(s3, getCommand, { expiresIn: 3600 });
+    tutor.tutorImageName = tutorImg;
+    tutor.tutorImageUrl = url;
   }
+
+  const updatedTutor = await tutor.save();
+
+  if (!updatedTutor) {
+    res.status(500);
+    throw new Error("Tutor update failed");
+  }
+
+  res.status(200).json({
+    _id: updatedTutor._id,
+    name: updatedTutor.name,
+    email: updatedTutor.email,
+    qualification: updatedTutor.qualification,
+    about: updatedTutor.about,
+    experience: updatedTutor.experience,
+    image: updatedTutor.tutorImageUrl,
+  });
 });
+
 
 
 
@@ -199,7 +209,6 @@ const addCourse = asyncHandler(async (req, res) => {
   res.status(201).json(createdCourse);
 });
 
-const addVideo = asyncHandler(async (req, res) => {});
 
 
 
@@ -243,10 +252,91 @@ const courseListingUpdate = asyncHandler(async(req,res) =>{
 })
 
 
+const addVideo = asyncHandler(async (req, res) => {
+  const { videoName, courseId } = req.body;
+  const course = await Courses.findById(courseId);
+  // const randomVideo = randomImgName();
+  // const params = {
+  //   Bucket: process.env.BUCKET_NAME,
+  //   Key: randomVideo,
+  //   Body: req.file.buffer,
+  //   ContentType: req.file.mimetype,
+  // };
+  // const command = new PutObjectCommand(params);
+
+  // await s3.send(command);
+  // const getObjectParams = {
+  //   Bucket: process.env.BUCKET_NAME,
+  //   Key: randomVideo,
+  // };
+  // const getCommand = new GetObjectCommand(getObjectParams);
+  // const url = await getSignedUrl(s3, getCommand, { expiresIn: 604800 });
+
+  const newVideo = {
+    videoName: videoName,
+    videoUrl: url,
+    videoUniqueId: randomVideo,
+  };
+  course.videos.push(newVideo);
+  await course.save();
+  res.status(201).json({ url, videoName, courseId });
+});
+
+
+
+const videoDelete = asyncHandler(async (req, res) => {
+  const { videoId, courseId } = req.body;
+
+  try {
+    // Find the course by its ID
+    const course = await Courses.findById(courseId);
+    if (course) {
+      if (course.videos.length === 1) {
+        res.status(400).json({ message: "Course must have atleast one Video" });
+      } else {
+        const specificVideo = course.videos.find(
+          (video) => video.videoUniqueId === videoId
+        );
+
+        if (specificVideo) {
+          const params = {
+            Bucket: process.env.BUCKET_NAME,
+            Key: videoId,
+          };
+
+          // Delete the video from the S3 bucket
+          const command = new DeleteObjectCommand(params);
+          await s3.send(command);
+
+          // Remove the video from the videos array
+          course.videos = course.videos.filter(
+            (video) => video.videoUniqueId !== videoId
+          );
+
+          // Save the updated course document
+          await course.save();
+
+          res.status(200).json({ message: "Video deleted successfully" });
+        } else {
+          res.status(404).json({ error: "Video not found in course" });
+        }
+      }
+    } else {
+      res.status(404).json({ error: "Course not found" });
+    }
+  } catch (error) {
+    console.error("Error deleting video from S3:", error);
+    res.status(500).json({ error: "Video deletion failed" });
+  }
+});
+
+
 export { registerTutor, authTutor, logoutTutor ,getTutorProfile ,updateTutorProfile,
   addCourse,
   addVideo,
   courseListing,
   courseListingUpdate,
-  deleteCourseData
+  deleteCourseData,
+  videoDelete,
+  
 };

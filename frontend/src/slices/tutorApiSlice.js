@@ -32,6 +32,16 @@ export const tutorApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    getTutor: builder.mutation({
+      query: (data) => ({
+        url: `${TUTOR_URL}/profile`,
+        method: "get",
+        body: data,
+      }),
+    }),
+
+
+
     addCourse: builder.mutation({
       query: (data) => ({
         url: `${TUTOR_URL}/add-course`,
@@ -40,13 +50,22 @@ export const tutorApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
-     addViedo: builder.mutation({
+    addVideo: builder.mutation({
       query: (data) => ({
-        url: `${TUTOR_URL}/add-videos`,
+        url: `${TUTOR_URL}/add-video`,
         method: "post",
         body: data,
       }),
     }),
+    
+    deleteCourseVideo: builder.mutation({
+      query: (data) => ({
+        url: `${TUTOR_URL}/delete-video`,
+        method: "delete",
+        body: data,
+      }),
+    }),
+
     
 
     deleteCourse:builder.mutation({
@@ -73,10 +92,15 @@ export const {
   useTutorRegisterMutation,
   useTutorlogoutMutation,
   useUpdateTutorMutation,
+  useGetTutorMutation,
+
+
   useAddCourseMutation,
-  useAddViedoMutation,
-  useDeleteCourseMutation
   
+  useDeleteCourseMutation,
+  useAddVideoMutation,
+  useDeleteCourseVideoMutation,
   
 
 } = tutorApiSlice;
+
