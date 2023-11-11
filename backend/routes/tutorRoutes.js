@@ -34,7 +34,7 @@ router.post("/logout", logoutTutor);
 
 
  router.get("/profile",getTutorProfile)
- router.put("/profile", multerImage.single("tutorImage"),updateTutorProfile)
+ router.put("/profile", multerImage.single("image"),updateTutorProfile)
 
  router.post("/add-course",addCourse)
   // router.post("/add-viedos" ,addVideo)

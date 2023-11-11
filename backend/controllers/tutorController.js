@@ -10,9 +10,15 @@ import {
   DeleteObjectCommand,
 } from "@aws-sdk/client-s3";
 
-
+import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
+ 
+import crypto from "crypto";
 
 import { fetchAllCoursesList, deleteCourse } from "../helpers/tutorHelpers.js";
+const randomImgName = (bytes =32) =>crypto.randomBytes(bytes).toString('hex')
+
+
+
 
 const authTutor = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -88,11 +94,7 @@ const logoutTutor = asyncHandler(async (req, res) => {
 
 const getTutorProfile = asyncHandler(async (req, res) => {
   const tutor = await Tutor.findById(req.tutor._id);
-
-
   // const tutor = await Tutor.findOne({ email });
-
-
   const tutorData = {
     _id: req.tutor._id,
     name: req.tutor.name,
@@ -133,10 +135,12 @@ const updateTutorProfile = asyncHandler(async (req, res) => {
   tutor.qualification = req.body.qualification || tutor.qualification;
   tutor.experience = req.body.experience || tutor.experience;
 
+  s3.destroy();
+
   if (req.file) {
     if (tutor.tutorImageName) {
       const params = {
-        Bucket: process.env.BUCKET_NAME,
+        Bucket: "module-mernapp",
         Key: tutor.tutorImageName,
       };
       const command = new DeleteObjectCommand(params);
@@ -145,7 +149,7 @@ const updateTutorProfile = asyncHandler(async (req, res) => {
 
     const tutorImg = randomImgName();
     const params = {
-      Bucket: process.env.BUCKET_NAME,
+      Bucket: "module-mernapp",
       Key: tutorImg,
       Body: req.file.buffer,
       ContentType: req.file.mimetype,
@@ -154,11 +158,11 @@ const updateTutorProfile = asyncHandler(async (req, res) => {
 
     await s3.send(command);
     const getObjectParams = {
-      Bucket: process.env.BUCKET_NAME,
+      Bucket:'module-mernapp',
       Key: tutorImg,
     };
     const getCommand = new GetObjectCommand(getObjectParams);
-    const url = await getSignedUrl(s3, getCommand, { expiresIn: 3600 });
+    const url = await getSignedUrl(s3, getCommand, { expiresIn: 604800 });
     tutor.tutorImageName = tutorImg;
     tutor.tutorImageUrl = url;
   }

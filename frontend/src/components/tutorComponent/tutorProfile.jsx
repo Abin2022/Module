@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setTutorCredentials } from "../../slices/tutorAuthSlice";
 import { BiSolidEdit } from "react-icons/bi";
 import { FaUserCircle } from "react-icons/fa";
+import { toast,ToastContainer } from 'react-toastify'
 
 const TutorProfile = () => {
   const [name, setName] = useState("");
@@ -42,6 +43,9 @@ const TutorProfile = () => {
     setImage(selectedImage);
   };
 
+
+
+
   const sumbmitHandler = async (e) => {
     e.preventDefault();
     try {
@@ -62,9 +66,13 @@ const TutorProfile = () => {
 
       dispatch(setTutorCredentials({ ...res }));
 
-      setSuccess("Profile Updated");
+      setSuccess(" Updated");
+      toast.success('Profile Updated');
+
     } catch (error) {
       setError(error?.data?.message || error.error);
+
+      toast.error(error?.data?.message || error.error)
     }
   };
 
@@ -226,15 +234,18 @@ const TutorProfile = () => {
               className="bg-green-500 text-white py-2 px-4 hover:bg-blue-200 hover:text-black hover:border-2 hover:border-black transition duration-300"
             >
               {success}{" "}
+             
             </button>
           ) : (
             <button
               type="submit"
               className="bg-black text-white py-2 px-4 hover:bg-white hover:text-black hover:border-2 hover:border-black transition duration-300"
             >
-              Save{" "}
+              Update{" "}
             </button>
           )}
+          <ToastContainer/>
+         
         </form>
       </div>
     </div>
