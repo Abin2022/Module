@@ -59,18 +59,18 @@ const TutorDropdown = () => {
             >
               Add Course
             </Link>
-            <Link
+            {/* <Link
               to="/tutor/add-videos"
               className="block px-4 py-2 text-base font-semibold text-black hover:text-blue-600"
             >
               Add Video
-            </Link>
+            </Link> */}
             
             <Link
-              to="/tutor/courselisting"
+              to="/tutor/courses"
               className="block px-4 py-2 text-base font-semibold text-black hover:text-blue-600"
             >
-             Course List
+             Courses
             </Link>
 
             

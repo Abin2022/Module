@@ -70,8 +70,8 @@ export const tutorApiSlice = apiSlice.injectEndpoints({
 
     deleteCourse:builder.mutation({
       query:(data)=>({
-        url:`${ADMIN_URL}/delete-course`,
-        method:'POST',
+        url: `${TUTOR_URL}/delete-course`,
+        method:'delete',
         body: data,
       })
     }),
@@ -97,9 +97,13 @@ export const {
 
   useAddCourseMutation,
   
+  
   useDeleteCourseMutation,
   useAddVideoMutation,
   useDeleteCourseVideoMutation,
+
+  // useDeleteCourseMutation,
+  // useDeleteCourseVideoMutation,
   
 
 } = tutorApiSlice;

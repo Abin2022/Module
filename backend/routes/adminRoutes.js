@@ -19,8 +19,11 @@ import { authAdmin,
     getDomains,
     addDomain,
     deleteDomain,
-    deleteCourseData,
-    courseListing,
+    // deleteCourseData,
+    // courseListing,
+    allCourses,
+    approveCourse,
+    rejectCourse,
  } from '../controllers/adminController.js'
 
  import {protect } from '../middleware/authAdminMiddleware.js'
@@ -45,7 +48,15 @@ router.get("/domain",getDomains)
 router.post("/add-domain", addDomain);
 router.delete("/domains/:domainName",  deleteDomain);
 
-router.post('/delete-course',  deleteCourseData);
-router.get('/courseList',courseListing)
+
+router.get("/get-courses",  allCourses);
+
+router.post("/approve-course",  approveCourse);
+router.post("/reject-course",  rejectCourse);
+
+
+
+// router.post('/delete-course',  deleteCourseData);
+// router.get('/courseList',courseListing)
 
 export default router;

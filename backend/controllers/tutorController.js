@@ -190,28 +190,75 @@ const updateTutorProfile = asyncHandler(async (req, res) => {
 
  
 
-const addCourse = asyncHandler(async (req, res) => {
-  // const tutorId = req.tutor._id;
-  // console.log(tutorId,"tutorid form tutorcontroller");
-  const domainName = req.body.domainName;
-   const domain = await Domain.findOne({ domainName });
+// const addCourse = asyncHandler(async (req, res) => {
+//   // const tutorId = req.tutor._id;
+//   // console.log(tutorId,"tutorid form tutorcontroller");
+//   const domainName = req.body.domainName;
+//    const domain = await Domain.findOne({ domainName });
  
-  const { courseName, description, price, requiredSkills,videos } = req.body;
-  // console.log(req.body);
+//   const { courseName, description, price, requiredSkills,videos } = req.body;
+//   // console.log(req.body);
+//   const createdCourse = await Courses.create({
+//    domain: domain._id,
+//     // tutorId: tutorId,
+//     courseName,
+//     description,
+//     requiredSkills,
+//     price,
+//     videos,
+
+
+//   });
+//   // console.log(createdCourse);
+//   res.status(201).json(createdCourse);
+// });
+
+
+//add course new 
+
+const addCourse = asyncHandler(async (req, res) => {
+  // const tutorId = req.body._id;
+  // const tutor = await Tutor.findById(tutorId);
+
+  const tutorId = req.body._id;
+  const domainName = req.body.domain;
+
+  const domain = await Domain.findOne({ domainName });
+
+  const { courseName, description, price, requiredSkill, caption } = req.body;
+  // s3.destroy();
+  const thumbnail = randomImgName();
+  const params = {
+    Bucket: "module-mernapp",
+    Key: thumbnail,
+    Body: req.file.buffer,
+    ContentType: req.file.mimetype,
+  };
+
+  const command = new PutObjectCommand(params);
+ 
+
+  await s3.send(command);
+  const getObjectParams = {
+    Bucket: "module-mernapp",
+    Key: thumbnail,
+  };
+  const getCommand = new GetObjectCommand(getObjectParams);
+  const url = await getSignedUrl(s3, getCommand, { expiresIn: 604800 });
   const createdCourse = await Courses.create({
-   domain: domain._id,
-    // tutorId: tutorId,
+    domain: domain._id,
+    tutorId: tutorId,
     courseName,
     description,
-    requiredSkills,
+    requiredSkills: requiredSkill,
+    caption,
     price,
-    videos,
-
-
+    thumbnail: url,
   });
-  // console.log(createdCourse);
   res.status(201).json(createdCourse);
 });
+
+
 
 
 
@@ -251,30 +298,59 @@ const courseListing =asyncHandler(async (req,res ) => {
   })
 })
 
-const courseListingUpdate = asyncHandler(async(req,res) =>{
 
-})
+
+
+// const addVideo = asyncHandler(async (req, res) => {
+//   const { videoName, courseId } = req.body;
+//   const course = await Courses.findById(courseId);
+//   // const randomVideo = randomImgName();
+//   // const params = {
+//   //   Bucket: "module-mernapp",
+//   //   Key: randomVideo,
+//   //   Body: req.file.buffer,
+//   //   ContentType: req.file.mimetype,
+//   // };
+//   // const command = new PutObjectCommand(params);
+
+//   // await s3.send(command);
+//   // const getObjectParams = {
+//   //   Bucket: "module-mernapp",
+//   //   Key: randomVideo,
+//   // };
+//   // const getCommand = new GetObjectCommand(getObjectParams);
+//   // const url = await getSignedUrl(s3, getCommand, { expiresIn: 604800 });
+
+//   const newVideo = {
+//     videoName: videoName,
+//     videoUrl: url,
+//     videoUniqueId: randomVideo,
+//   };
+//   course.videos.push(newVideo);
+//   await course.save();
+//   res.status(201).json({ url, videoName, courseId });
+// });
 
 
 const addVideo = asyncHandler(async (req, res) => {
   const { videoName, courseId } = req.body;
   const course = await Courses.findById(courseId);
-  // const randomVideo = randomImgName();
-  // const params = {
-  //   Bucket: process.env.BUCKET_NAME,
-  //   Key: randomVideo,
-  //   Body: req.file.buffer,
-  //   ContentType: req.file.mimetype,
-  // };
-  // const command = new PutObjectCommand(params);
+  const randomVideo = randomImgName();
+  const params = {
+     Bucket: "module-mernapp",
+    Key: randomVideo,
+    Body: req.file.buffer,
+    ContentType: req.file.mimetype,
+  };
+  const command = new PutObjectCommand(params);
 
-  // await s3.send(command);
-  // const getObjectParams = {
-  //   Bucket: process.env.BUCKET_NAME,
-  //   Key: randomVideo,
-  // };
-  // const getCommand = new GetObjectCommand(getObjectParams);
-  // const url = await getSignedUrl(s3, getCommand, { expiresIn: 604800 });
+  await s3.send(command);
+  const getObjectParams = {
+     Bucket: "module-mernapp",
+    Key: randomVideo,
+  };
+  const getCommand = new GetObjectCommand(getObjectParams);
+  const url = await getSignedUrl(s3, getCommand, { expiresIn: 604800 });
 
   const newVideo = {
     videoName: videoName,
@@ -284,6 +360,23 @@ const addVideo = asyncHandler(async (req, res) => {
   course.videos.push(newVideo);
   await course.save();
   res.status(201).json({ url, videoName, courseId });
+});
+
+
+
+const getAllCourses = asyncHandler(async (req, res) => {
+  const tutorId = req.tutor._id;
+  try {
+    const courses = await Courses.find({ tutorId: tutorId });
+
+    if (courses) {
+      res.status(200).json(courses);
+    } else {
+      res.status(404).json({ message: "No courses found for this tutor." });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
 });
 
 
@@ -304,7 +397,7 @@ const videoDelete = asyncHandler(async (req, res) => {
 
         if (specificVideo) {
           const params = {
-            Bucket: process.env.BUCKET_NAME,
+            Bucket: "module-mernapp",
             Key: videoId,
           };
 
@@ -335,12 +428,50 @@ const videoDelete = asyncHandler(async (req, res) => {
 });
 
 
+const courseDelete = asyncHandler(async (req, res) => {
+  const { courseId } = req.body;
+  console.log(courseId,"courseId in tutor controleer 433");
+
+  const course = await Courses.findById(courseId);
+
+  if (course) {
+    try {
+      for (const video of course.videos) {
+        const params = {
+          Bucket: "module-mernapp",
+          Key: video.videoUniqueId,
+        };
+        const command = new DeleteObjectCommand(params);
+        const buk = await s3.send(command);
+      }
+
+      const result = await Courses.deleteOne({ _id: courseId });
+
+      res
+        .status(200)
+        .json({ message: "Course and associated videos deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting course and associated videos:", error);
+      res.status(500).json({ error: "Course and video deletion failed" });
+    }
+  } else {
+    res.status(404).json({ error: "Course not found" });
+  }
+});
+
+
 export { registerTutor, authTutor, logoutTutor ,getTutorProfile ,updateTutorProfile,
   addCourse,
+
+
   addVideo,
   courseListing,
-  courseListingUpdate,
-  deleteCourseData,
+  // courseListingUpdate,
+  // deleteCourseData,
+   getAllCourses,
+
   videoDelete,
+  courseDelete
+ 
   
 };

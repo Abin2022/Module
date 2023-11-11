@@ -10,6 +10,7 @@ import { fetchAllUsers , updateUser, deleteUser, fetchAllTutors ,
 } from "../helpers/adminHelpers.js";
 
 import Domain from '../models/domainModel.js'
+import Courses from "../models/courseModel.js";
 
 //new admin auth
 const authAdmin =asyncHandler (async (req,res)=>{
@@ -285,42 +286,68 @@ const deleteDomain = asyncHandler(async (req, res) => {
 
 
 
-const deleteCourseData = asyncHandler( async (req, res) => {
+// const deleteCourseData = asyncHandler( async (req, res) => {
 
-  const tutorId = req.body.tutorId;
-  const courseDeleteStatus = await deleteCourse(tutorId);
-  if(courseDeleteStatus.success){
+//   const tutorId = req.body.tutorId;
+//   const courseDeleteStatus = await deleteCourse(tutorId);
+//   if(courseDeleteStatus.success){
 
-      const response = courseDeleteStatus.message;
+//       const response = courseDeleteStatus.message;
 
-      res.status(200).json({ message:response });
+//       res.status(200).json({ message:response });
 
-  }else{
+//   }else{
 
-      res.status(404);
+//       res.status(404);
 
-      const response = courseDeleteStatus.message;
+//       const response = courseDeleteStatus.message;
 
-      throw new Error(response);
+//       throw new Error(response);
 
-  }
+//   }
 
+// });
+
+
+
+// const courseListing =asyncHandler(async (req,res ) => {
+//   fetchAllCoursesList()
+//   .then((course)=>{
+//     res.status(200).json({course})
+//   })
+//   .catch((error)=>{
+//     console.log(error)
+//     toast.error(err?.data?.message || err?.error)
+//   })
+// })
+
+const allCourses = asyncHandler(async (req, res) => {
+  const courses = await Courses.find()
+    .populate("tutorId", "name")
+    .populate("domain", "domainName");
+  res.status(200).json(courses);
 });
 
-
-
-const courseListing =asyncHandler(async (req,res ) => {
-  fetchAllCoursesList()
-  .then((course)=>{
-    res.status(200).json({course})
-  })
-  .catch((error)=>{
-    console.log(error)
-    toast.error(err?.data?.message || err?.error)
-  })
-})
-
-
+const approveCourse = asyncHandler(async (req, res) => {
+  const { courseId } = req.body;
+  const approve = { approved: true, rejected: false };
+  const course = await Courses.findByIdAndUpdate(courseId, approve);
+  if (course) {
+    res.status(200).json({ message: "successfully updated the course" });
+  } else {
+    res.status(404).json({ Error: "Course not found" });
+  }
+});
+const rejectCourse = asyncHandler(async (req, res) => {
+  const { courseId } = req.body;
+  const reject = { approved: false, rejected: true };
+  const course = await Courses.findByIdAndUpdate(courseId, reject);
+  if (course) {
+    res.status(200).json({ message: "successfully updated the course" });
+  } else {
+    res.status(404).json({ Error: "Course not found" });
+  }
+});
 
 
 export  {authAdmin ,
@@ -344,8 +371,13 @@ export  {authAdmin ,
     addDomain,
     deleteDomain,
 
-    courseListing,
-    deleteCourseData,
+    // courseListing,
+    // deleteCourseData,
+
+    allCourses,
+    approveCourse,
+    rejectCourse,
+
 
 }
 

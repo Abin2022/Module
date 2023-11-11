@@ -118,6 +118,28 @@ export const adminApiSlice = apiSlice.injectEndpoints({
     })
   }),
 
+
+  approveCourse: builder.mutation({
+    query: (data) => ({
+      url: `${ADMIN_URL}/approve-course`,
+      method: "POST",
+      body: data,
+    }),
+  }),
+  rejectCourse: builder.mutation({
+    query: (data) => ({
+      url: `${ADMIN_URL}/reject-course`,
+      method: "POST",
+      body: data,
+    }),
+  }),
+  deleteDomain: builder.mutation({
+    query: (domainName) => ({
+      url: `${ADMIN_URL}/domains/${domainName}`,
+      method: "delete",
+    }),
+  }),
+
   
   }),
 });
@@ -139,7 +161,9 @@ export const {
   useGetDomainMutation,
   
   useDeleteCourseMutation,
- 
+
+  useApproveCourseMutation,
+  useRejectCourseMutation,
 
   
  

@@ -28,17 +28,20 @@ import AdminLoginScreen from "./screens/AdminLoginScreen.jsx"
 import AdminRegisterScreen from "./screens/AdminRegisterScreen.jsx"
  import UsersList from "./screens/usersList.jsx"
 import TutorList from "./components/tutorComponent/tutorList.jsx";
-
+import CourseLists from "./components/adminComponent/CourseList.jsx";
  //tutor 
  import TutorLoginPage from "./components/tutorComponent/tutorLoginPage.jsx";
  import TutorPage from "./components/tutorComponent/tutorHome.jsx";
 import TutorSignPage from "./components/tutorComponent/TutorSignupPage.jsx"
 import TutorProfilePage from "./components/tutorComponent/tutorProfile.jsx"
 import DomainList from "./components/adminComponent/DomainList.jsx";
-import CourseListing from "./components/tutorComponent/CourseListing.jsx"
+// import CourseListing from "./components/tutorComponent/CourseListing.jsx"
 import TutorHomePage from "./components/tutorComponent/HomePage.jsx"
 import AddCourse from "./components/tutorComponent/AddCourse.jsx";
-import AddVideo from "./components/tutorComponent/AddViedo.jsx"
+// import AddVideo from "./components/tutorComponent/AddViedo.jsx";
+import AllCoursesPage from "./components/tutorComponent/AllCoursesPage.jsx";
+
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<App />}>
@@ -62,8 +65,9 @@ const router = createBrowserRouter(
         <Route path="/tutor/home" element={<TutorHomePage />} />
         <Route path="/tutor/profile" element= {<TutorProfilePage/>}/>
         <Route path="/tutor/add-course" element= {<AddCourse/>}/>
-        <Route path="/tutor/add-videos" element={<AddVideo/>}/>
-         <Route path="/tutor/courselisting" element={<CourseListing/>}/>
+        {/* <Route path="/tutor/add-videos" element={<AddVideo/>}/> */}
+         {/* <Route path="/tutor/courselisting" element={<CourseListing/>}/> */}
+         <Route path="/tutor/courses" element={<AllCoursesPage />} />
       </Route>
   
       {/* Admin side routes */}
@@ -73,7 +77,7 @@ const router = createBrowserRouter(
       <Route path="/admin/usersList" element={<UsersList />} />
       <Route path="/admin/tutorList" element={<TutorList />} />
       <Route path ="/admin/domain" element={<DomainList/>}/>
-      <Route path="/admin/courseList" element={<CourseListing/>}/>
+      <Route path="/admin/courseList" element={<CourseLists/>}/>
 
       
     </Route>

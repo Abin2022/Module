@@ -15,10 +15,14 @@ import {
   updateTutorProfile,
   addCourse,
    addVideo,
+  
+
+   getAllCourses,
    videoDelete,
-   courseListing,
-   courseListingUpdate,
-   deleteCourseData,
+   courseDelete
+
+ 
+
   
 } from "../controllers/tutorController.js";
 
@@ -26,30 +30,35 @@ router.post("/login", authTutor);
 router.post("/register", registerTutor);
 router.post("/logout", logoutTutor);
 
-// router
-// .route("/profile")
-// .get(protect(""),getTutorProfile )
-
-// .put(protect(""),multerImage.single("tutorImage"),updateTutorProfile)
 
 
  router.get("/profile",getTutorProfile)
  router.put("/profile", multerImage.single("image"),updateTutorProfile)
 
- router.post("/add-course",addCourse)
-  // router.post("/add-viedos" ,addVideo)
+//  router.post("/add-course",addCourse);
+ router.post(
+  "/add-course",
+  multerImage.single("image"),
+  addCourse
+);
+
+router.post(
+  "/add-video",
+  multerImage.single("video"),
+  addVideo
+);
   
-  router.post('/delete-course',  deleteCourseData);
-  router.get('/courselisting',courseListing)
-  router.post('/courseUpdate',courseListingUpdate)
+router.get("/get-courses", getAllCourses);
+
+router.delete("/delete-video",  videoDelete);
+router.delete("/delete-course",  courseDelete);
   
-  router.post(
-    "/add-video",
-    
-    multerImage.single("video"),
-    addVideo
-  );
-  router.delete("/delete-video",  videoDelete);
+  // router.post('/delete-course',  deleteCourseData);
+  // router.get('/courselisting',courseListing)
+  
+  
+ 
+  // router.delete("/delete-video",  videoDelete);
 
 
     
