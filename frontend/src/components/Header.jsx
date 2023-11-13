@@ -6,9 +6,12 @@ import { useNavigate } from "react-router-dom";
 import { useTutorLoginMutation } from "../slices/tutorApiSlice";
 import { tutorLogout } from "../slices/tutorAuthSlice";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaRedhat } from "react-icons/fa";
+// import React ,{useEffect} from "react"
 
+
+//
 const Header = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();

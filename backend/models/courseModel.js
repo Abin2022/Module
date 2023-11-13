@@ -39,6 +39,13 @@ const courseSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    rejected: {
+      type: Boolean,
+      default: false,
+    },
+    caption: {
+      type: String,
+    },
     thumbnail: {
       type: String,
     },

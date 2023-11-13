@@ -11,9 +11,9 @@ const courseList = () => {
           {" "}
          
               <Link to="/">
-    <button class="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded" >  
+    {/* <button class="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded" >  
       Live Viedo
-    </button>
+    </button> */}
     <br></br>
     </Link>
          

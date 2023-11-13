@@ -72,9 +72,11 @@ const CourseList = () => {
     (course) =>
       course.courseName.toUpperCase().includes(search.toUpperCase()) ||
       course.domain.domainName.toUpperCase().includes(search.toUpperCase()) ||
-      course.courseName.toUpperCase().includes(search.toUpperCase()) ||
-      course.tutorId.name.toUpperCase().includes(search.toUpperCase())
+      course.courseName.toUpperCase().includes(search.toUpperCase()) 
+    //  course.tutorId.name.toUpperCase().includes(search.toUpperCase())
   );
+
+  console.log(courseFilter,"courseFilter in admincontro 79..");
   return (
     <div>
       {courses ? (
@@ -153,12 +155,20 @@ const CourseList = () => {
                     <p>{course.description}</p>
                   </div>
                 </div>
-                {/* <div>
+
+
+
+
+
+                <div>
                   <div className="font-bold mb-2">Course Details</div>
                   <div className="text-base font-medium">
                     {" "}
                     <p className="font-bold text-blue-700">
-                      Instrutor:{course.tutorId.name.toUpperCase()}
+
+                      
+                      {/* Instrutor:{course.tutorId.name.toUpperCase()} */}
+                     
                     </p>
                     <p className="text-green-600">
                       Domain:{course.domain.domainName}
@@ -168,8 +178,8 @@ const CourseList = () => {
                       Created On: {new Date(course.createdAt).toDateString()}
                     </p>
                   </div>
-                </div> */}
-
+                </div>
+                  {/* <button>Approve</button> */}
                 {course.approved === false && course.rejected === false && (
                   <div className="bg-slate-100 text-lg font-semibold p-2 flex items-center justify-around">
                     <button
@@ -223,7 +233,7 @@ const CourseList = () => {
                         <div className="bg-white mt-1 p-4 rounded shadow-lg hover:translate-y-1 hover:translate-x-2 hover:bg-white flex justify-between items-center">
                           {video.videoName}
                           <div className="">
-                            <ImBin2
+                            {/* <ImBin2
                               onClick={(e) => {
                                 e.preventDefault();
                                 handleVideoDelete(
@@ -231,7 +241,7 @@ const CourseList = () => {
                                   course._id
                                 );
                               }}
-                            />
+                            /> */}
                           </div>
                         </div>
                       </a>

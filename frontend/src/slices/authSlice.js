@@ -4,6 +4,7 @@ const initialState = {
   userInfo: localStorage.getItem("userInfo")
     ? JSON.parse(localStorage.getItem("userInfo"))
     : null,
+    isBlocked:false,
 };
 
 const authSlice = createSlice({
@@ -17,8 +18,12 @@ const authSlice = createSlice({
     },
     logout: (state, action) => {
       state.userInfo = null;
+      state.isBlocked = false;
       localStorage.removeItem("userInfo");
     },
+    blockUser: (state) =>{
+      state.isBlocked = true;
+    }
   },
 });
 

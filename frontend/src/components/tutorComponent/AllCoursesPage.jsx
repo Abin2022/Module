@@ -123,7 +123,7 @@ const AllCoursesPage = () => {
                         <div className="bg-white mt-1 p-4 rounded shadow-lg hover:translate-y-1 hover:translate-x-2 hover:bg-white flex justify-between items-center">
                           {video.videoName}
                           <div className="">
-                            <ImBin2
+                            {/* <ImBin2
                               onClick={(e) => {
                                 e.preventDefault();
                                 handleVideoDelete(
@@ -131,7 +131,7 @@ const AllCoursesPage = () => {
                                   course._id
                                 );
                               }}
-                            />
+                            /> */}
                           </div>
                         </div>
                       </a>
@@ -152,14 +152,14 @@ const AllCoursesPage = () => {
                     />
                   </div>
                 </div>
-                <div className="flex justify-center mt-6">
+                {/* <div className="flex justify-center mt-6">
                   <button
                     className="bg-red-600  text-white hover:bg-gray-900 hover:text-red-500 hover:font-bold px-4 py-2  border-black"
                     onClick={(e) => handleDeleteCourse(course._id)}
                   >
                     Delete Course
                   </button>
-                </div>
+                </div> */}
               </div>
             ))}
           </div>

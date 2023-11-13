@@ -25,24 +25,24 @@ const authTutor = asyncHandler(async (req, res) => {
 
   const tutor = await Tutor.findOne({ email });
   
-  if (tutor  && (await tutor.matchPassword(password))) {   //here
+  if (tutor&& !tutor.isBlocked  && (await tutor.matchPassword(password))) {   //here
     generateToken(res, tutor._id, "tutor");
-    console.log(tutor._id, tutor.name, tutor.email);
+    // console.log(tutor._id, tutor.name, tutor.email);
     res.status(201).json({
       _id: tutor._id,
       name: tutor.name,
       email: tutor.email,
-      // qualification: tutor.qualification,
-      // experience: tutor.experience,
-      // image: tutor.tutorImageUrl,
+      qualification: tutor.qualification,
+      experience: tutor.experience,
+      image: tutor.tutorImageUrl,
     });
     console.log("tutor._id",tutor._id)
   } 
   //here
-  // else if (tutor.isBlocked) {
-  //   res.status(400);
-  //   throw new Error("You have been blocked");
-  // }
+  else if (tutor.isBlocked) {
+    res.status(400);
+    throw new Error("You have been blocked");
+  }
   else {
     console.log("invalid email or password");
     res.status(400);
@@ -110,108 +110,185 @@ const getTutorProfile = asyncHandler(async (req, res) => {
 
 
 
+// const updateTutorProfile = asyncHandler(async (req, res) => {
+//   const tutorId = req.body._id;
+//   const tutor = await Tutor.findById(tutorId);
+
+//   if (!tutor) {
+//     res.status(404);
+//     throw new Error("Tutor not found");
+//   }
+
+//   const email = req.body.email;
+
+//   if (email !== tutor.email) {
+//     const tutorExists = await Tutor.findOne({ email: email });
+
+//     if (tutorExists) {
+//       res.status(400);
+//       throw new Error("Email already exists");
+//     }
+//   }
+
+//   tutor.email = req.body.email || tutor.email;
+//   tutor.name = req.body.name || tutor.name;
+//   tutor.qualification = req.body.qualification || tutor.qualification;
+//   tutor.experience = req.body.experience || tutor.experience;
+
+//   s3.destroy();
+
+//   if (req.file) {
+//     if (tutor.tutorImageName) {
+//       const params = {
+//         Bucket: "module-mernapp",
+//         Key: tutor.tutorImageName,
+//       };
+//       const command = new DeleteObjectCommand(params);
+//       await s3.send(command);
+//     }
+
+//     const tutorImg = randomImgName();
+//     const params = {
+//       Bucket: "module-mernapp",
+//       Key: tutorImg,
+//       Body: req.file.buffer,
+//       ContentType: req.file.mimetype,
+//     };
+//     const command = new PutObjectCommand(params);
+
+//     await s3.send(command);
+//     const getObjectParams = {
+//       Bucket:'module-mernapp',
+//       Key: tutorImg,
+//     };
+//     const getCommand = new GetObjectCommand(getObjectParams);
+//     const url = await getSignedUrl(s3, getCommand, { expiresIn: 604800 });
+//     tutor.tutorImageName = tutorImg;
+//     tutor.tutorImageUrl = url;
+//   }
+
+//   const updatedTutor = await tutor.save();
+
+//   if (!updatedTutor) {
+//     res.status(500);
+//     throw new Error("Tutor update failed");
+//   }
+
+//   res.status(200).json({
+//     _id: updatedTutor._id,
+//     name: updatedTutor.name,
+//     email: updatedTutor.email,
+//     qualification: updatedTutor.qualification,
+//     about: updatedTutor.about,
+//     experience: updatedTutor.experience,
+//     image: updatedTutor.tutorImageUrl,
+//   });
+// });
+
+
 const updateTutorProfile = asyncHandler(async (req, res) => {
-  const tutorId = req.body._id;
-  const tutor = await Tutor.findById(tutorId);
+  try {
+    const tutorId = req.body._id;
+    const tutor = await Tutor.findById(tutorId);
 
-  if (!tutor) {
-    res.status(404);
-    throw new Error("Tutor not found");
-  }
-
-  const email = req.body.email;
-
-  if (email !== tutor.email) {
-    const tutorExists = await Tutor.findOne({ email: email });
-
-    if (tutorExists) {
-      res.status(400);
-      throw new Error("Email already exists");
+    if (!tutor) {
+      res.status(404);
+      throw new Error("Tutor not found");
     }
-  }
 
-  tutor.email = req.body.email || tutor.email;
-  tutor.name = req.body.name || tutor.name;
-  tutor.qualification = req.body.qualification || tutor.qualification;
-  tutor.experience = req.body.experience || tutor.experience;
+    const email = req.body.email;
 
-  s3.destroy();
+    if (email !== tutor.email) {
+      const tutorExists = await Tutor.findOne({ email: email });
 
-  if (req.file) {
-    if (tutor.tutorImageName) {
+      if (tutorExists) {
+        res.status(400);
+        throw new Error("Email already exists");
+      }
+    }
+
+    tutor.email = req.body.email || tutor.email;
+    tutor.name = req.body.name || tutor.name;
+    tutor.qualification = req.body.qualification || tutor.qualification;
+    tutor.experience = req.body.experience || tutor.experience;
+
+    s3.destroy();
+
+    if (req.file) {
+      if (tutor.tutorImageName) {
+        const deleteParams = {
+          Bucket: "module-mernapp",
+          Key: tutor.tutorImageName,
+        };
+
+        try {
+          const deleteCommand = new DeleteObjectCommand(deleteParams);
+          await s3.send(deleteCommand);
+        } catch (deleteError) {
+          if (deleteError.name === 'AccessDeniedException') {
+            console.error('Access Denied:', deleteError.message);
+            // Handle access denied error appropriately
+          } else {
+            console.error('DeleteObjectCommand Error:', deleteError);
+            // Handle other DeleteObjectCommand errors
+          }
+        }
+      }
+
+      const tutorImg = randomImgName();
       const params = {
         Bucket: "module-mernapp",
-        Key: tutor.tutorImageName,
+        Key: tutorImg,
+        Body: req.file.buffer,
+        ContentType: req.file.mimetype,
       };
-      const command = new DeleteObjectCommand(params);
-      await s3.send(command);
+
+      try {
+        const putCommand = new PutObjectCommand(params);
+        await s3.send(putCommand);
+
+        const getObjectParams = {
+          Bucket: 'module-mernapp',
+          Key: tutorImg,
+        };
+        const getCommand = new GetObjectCommand(getObjectParams);
+        const url = await getSignedUrl(s3, getCommand, { expiresIn: 604800 });
+        tutor.tutorImageName = tutorImg;
+        tutor.tutorImageUrl = url;
+      } catch (putError) {
+        if (putError.name === 'AccessDeniedException') {
+          console.error('Access Denied:', putError.message);
+          // Handle access denied error appropriately
+        } else {
+          console.error('PutObjectCommand Error:', putError);
+          // Handle other PutObjectCommand errors
+        }
+      }
     }
 
-    const tutorImg = randomImgName();
-    const params = {
-      Bucket: "module-mernapp",
-      Key: tutorImg,
-      Body: req.file.buffer,
-      ContentType: req.file.mimetype,
-    };
-    const command = new PutObjectCommand(params);
+    const updatedTutor = await tutor.save();
 
-    await s3.send(command);
-    const getObjectParams = {
-      Bucket:'module-mernapp',
-      Key: tutorImg,
-    };
-    const getCommand = new GetObjectCommand(getObjectParams);
-    const url = await getSignedUrl(s3, getCommand, { expiresIn: 604800 });
-    tutor.tutorImageName = tutorImg;
-    tutor.tutorImageUrl = url;
+    if (!updatedTutor) {
+      res.status(500);
+      throw new Error("Tutor update failed");
+    }
+
+    res.status(200).json({
+      _id: updatedTutor._id,
+      name: updatedTutor.name,
+      email: updatedTutor.email,
+      qualification: updatedTutor.qualification,
+      about: updatedTutor.about,
+      experience: updatedTutor.experience,
+      image: updatedTutor.tutorImageUrl,
+    });
+  } catch (error) {
+    console.error('Unhandled Error:', error);
+    // Handle other unhandled errors
+    res.status(500).json({ error: 'Internal Server Error' });
   }
-
-  const updatedTutor = await tutor.save();
-
-  if (!updatedTutor) {
-    res.status(500);
-    throw new Error("Tutor update failed");
-  }
-
-  res.status(200).json({
-    _id: updatedTutor._id,
-    name: updatedTutor.name,
-    email: updatedTutor.email,
-    qualification: updatedTutor.qualification,
-    about: updatedTutor.about,
-    experience: updatedTutor.experience,
-    image: updatedTutor.tutorImageUrl,
-  });
 });
 
-
-
-
- 
-
-// const addCourse = asyncHandler(async (req, res) => {
-//   // const tutorId = req.tutor._id;
-//   // console.log(tutorId,"tutorid form tutorcontroller");
-//   const domainName = req.body.domainName;
-//    const domain = await Domain.findOne({ domainName });
- 
-//   const { courseName, description, price, requiredSkills,videos } = req.body;
-//   // console.log(req.body);
-//   const createdCourse = await Courses.create({
-//    domain: domain._id,
-//     // tutorId: tutorId,
-//     courseName,
-//     description,
-//     requiredSkills,
-//     price,
-//     videos,
-
-
-//   });
-//   // console.log(createdCourse);
-//   res.status(201).json(createdCourse);
-// });
 
 
 //add course new 
@@ -299,37 +376,6 @@ const courseListing =asyncHandler(async (req,res ) => {
 })
 
 
-
-
-// const addVideo = asyncHandler(async (req, res) => {
-//   const { videoName, courseId } = req.body;
-//   const course = await Courses.findById(courseId);
-//   // const randomVideo = randomImgName();
-//   // const params = {
-//   //   Bucket: "module-mernapp",
-//   //   Key: randomVideo,
-//   //   Body: req.file.buffer,
-//   //   ContentType: req.file.mimetype,
-//   // };
-//   // const command = new PutObjectCommand(params);
-
-//   // await s3.send(command);
-//   // const getObjectParams = {
-//   //   Bucket: "module-mernapp",
-//   //   Key: randomVideo,
-//   // };
-//   // const getCommand = new GetObjectCommand(getObjectParams);
-//   // const url = await getSignedUrl(s3, getCommand, { expiresIn: 604800 });
-
-//   const newVideo = {
-//     videoName: videoName,
-//     videoUrl: url,
-//     videoUniqueId: randomVideo,
-//   };
-//   course.videos.push(newVideo);
-//   await course.save();
-//   res.status(201).json({ url, videoName, courseId });
-// });
 
 
 const addVideo = asyncHandler(async (req, res) => {
