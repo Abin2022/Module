@@ -1,7 +1,8 @@
 import asyncHandler from "express-async-handler";
 import User from "../models/userModel.js";
 import genToken from "../utils/genToken.js";
-
+import Courses from "../models/courseModel.js";
+import { isBlocked } from "../middleware/authMiddleware.js";
 
 
 const authUser = asyncHandler(async (req, res) => {
@@ -46,6 +47,7 @@ const registerUser = asyncHandler(async (req, res) => {
     name,
     email,
     password,
+   
   });
   if (user) {
     genToken(res, user._id);
@@ -70,18 +72,47 @@ const logOutUser = asyncHandler(async (req, res) => {
   res.status(200).json({ message: " user logout" });
 });
 
+
+
 const getUserProfile = asyncHandler(async (req, res) => {
   const user = {
     _id: req.user._id,
     name: req.user.name,
     email: req.user.email,
-    // profileImage: req.user.profileImage,
   };
+  
   res.status(200).json(user);
 });
 
+
+// const getUserProfile = asyncHandler(async (req, res) => {
+//   try {
+    
+//     if (req.user.isBlocked) {
+//       res.status(401); // Unauthorized status code for blocked users
+//       throw new Error("This account is blocked. Please contact support.");
+//     }
+
+//     const user = {
+//       _id: req.user._id,
+//       name: req.user.name,
+//       email: req.user.email,
+//       // profileImage: req.user.profileImage,
+     
+//     };
+
+//     res.status(200).json(user);
+//   } catch (error) {
+//     // Handle any errors that may occur during the blocking check
+//     res.status(500).json({ error: 'Internal Server Error' });
+//   }
+// });
+
+
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const user = await User.findById(req.user._id);
+ const userId = req.body._id
+  const user = await User.findById(userId);
+  console.log(userId,"ssss");
   if (user) {
     (user.email = req.body.email || user.email),
       (user.name = req.body.name || user.name);
@@ -108,17 +139,103 @@ const updateUserProfile = asyncHandler(async (req, res) => {
   
 });
 
-const getCourseList = asyncHandler(async (req,res)=>{
-  const course = {
-    _id :req.user.id,
-    name:req.user.name,
-    email:req.user.email,
-    course:req.user.course
-  }
-  res.status(200).json(course)
-})
 
-const getAllViedo = asyncHandler (async (req,res)=>{
+// const updateUserProfile = asyncHandler(async (req, res) => {
+//   const userId = req.body._id
+//   const user = await User.findById(userId);
+  
+//   const email = req.body.email;
+
+//   if (email !== user.email) {
+//     const userExists = await User.findOne({ email: email });
+
+//     if (userExists) {
+//       res.status(400);
+//       throw new Error("email already exists");
+//     }
+//   }
+
+//   if (user) {
+//     (user.email = req.body.email || user.email),
+//       (user.name = req.body.name || user.name);
+//     if (req.file) {
+//       if (user.userImageName) {
+//         const params = {
+//           Bucket: process.env.BUCKET_NAME,
+//           Key: user.userImageName,
+//         };
+//         const command = new DeleteObjectCommand(params);
+//         const buk = await s3.send(command);
+//       }
+//       const userImg = randomImgName();
+//       const params = {
+//         Bucket: process.env.BUCKET_NAME,
+//         Key: userImg,
+//         Body: req.file.buffer,
+//         ContentType: req.file.mimetype,
+//       };
+//       const command = new PutObjectCommand(params);
+
+//       await s3.send(command);
+
+//       //////////////////get the image url///////
+//       const getObjectParams = {
+//         Bucket: process.env.BUCKET_NAME,
+//         Key: userImg,
+//       };
+//       const getCommand = new GetObjectCommand(getObjectParams);
+//       const url = await getSignedUrl(s3, getCommand, { expiresIn: 604800 });
+//       user.userImageName = userImg;
+//       user.userImageUrl = url;
+//     }
+
+//     const updatedUser = await user.save();
+//     res.status(200).json({
+//       _id: updatedUser._id,
+//       name: updatedUser.name,
+//       email: updatedUser.email,
+//       image: updatedUser.userImageUrl,
+//     });
+//   } else {
+//     res.status(404);
+//     throw new Error("user not find");
+//   }
+// });
+
+const getSingleCourse = asyncHandler(async (req, res) => {
+  const { courseId } = req.params;
+  console.log(courseId);
+  // const userId = req.user._id;
+  let purchased = false;
+  // const order = await Orders.findOne({
+  //   userId: userId,
+  //   "purchasedCourses.courseId": courseId,
+  // });
+
+  // if (order) {
+  //   purchased = true;
+  // }
+  const course = await Courses.findById(courseId)
+    .populate("tutorId", "name")
+    .populate("domain", "domainName");
+  if (course) {
+    res.status(200).json({ course, purchased });
+  } else {
+    res.status(400).json({ message: "course not found" });
+  }
+});
+
+
+
+
+const getAllVideo = asyncHandler (async (req,res)=>{
+
+
+  // if (user.isBlocked) {
+  //   res.status(401); // Unauthorized status code for blocked users
+  //   throw new Error("This account is blocked. Please contact support.");
+  // }
+
   const viedo = {
     _id:req.user.id,
     name:req.user.name,
@@ -130,6 +247,17 @@ const getAllViedo = asyncHandler (async (req,res)=>{
 
 
 
+
+const getApprovedCourses = asyncHandler(async (req, res) => {
+  const course = await Courses.find({ approved: true })
+    .populate("tutorId", "name")
+    .populate("domain", "domainName");
+  if (course) {
+    res.status(200).json(course);
+  } else {
+    res.status(200).json({ message: "There is no approved course" });
+  }
+});
 
 const getTutorList = asyncHandler(async (req, res) => {
   const user = {
@@ -149,6 +277,7 @@ export {
   getUserProfile,
   updateUserProfile,
   getTutorList,
-  getCourseList,
-  getAllViedo
+  getSingleCourse,
+  getAllVideo,
+  getApprovedCourses
 };

@@ -13,7 +13,7 @@ const storage = multer.diskStorage({
   },
 });
 
-export const mullterUserImage = multer({
+export const multerImage = multer({
   storage: storage,
 });
 

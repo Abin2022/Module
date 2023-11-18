@@ -33,7 +33,7 @@ router.post('/authAdmin' ,authAdmin);
  router.post('/admin' ,registerAdmin);
  router.post('/adminLogout' ,logoutAdmin);
  router.get('/usersList' ,getAllUsers);
- router.get('/tutorList',getAllTutors)
+ router.get('/tutorList',getAllTutors);
  router.post('/delete-user',  deleteUserData);
 //   router.route() put('/adminUpdateUserDetails' ,updateUserDetails);
 router.put('/update-user', updateUserData);
@@ -42,9 +42,9 @@ router.post("/unblock-user", unblockUser);
 
 router.post('/delete-tutor' ,deleteTutorData);
 router.post('/block-tutor',blockTutor);
-router.post('/unblock-tutor' ,unblockTutor)
+router.post('/unblock-tutor' ,unblockTutor);
 
-router.get("/domain",getDomains)
+router.get("/domain",getDomains);
 router.post("/add-domain", addDomain);
 router.delete("/domains/:domainName",  deleteDomain);
 
@@ -56,7 +56,5 @@ router.post("/reject-course",  rejectCourse);
 
 
 
-// router.post('/delete-course',  deleteCourseData);
-// router.get('/courseList',courseListing)
 
 export default router;

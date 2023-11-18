@@ -46,11 +46,25 @@ const courseSchema = mongoose.Schema(
     caption: {
       type: String,
     },
+    isEdited:{
+      type: Boolean,
+      default: false,
+    },
     thumbnail: {
+      type: String,
+    },
+    previewVideo: {
+      type: String,
+    },
+    previewVideoName: {
+      type: String,
+    },
+    caption: {
       type: String,
     },
     videos: [videoSchema],
   },
+ 
   {
     timestamps: true,
   }

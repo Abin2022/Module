@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import { useUpdateUserMutation } from "../slices/userApiSlice";
+import { useUpdateProfileMutation } from "../slices/userApiSlice";
 import { setCredentials } from "../slices/authSlice";
 
 const ProfileScreen = () => {
@@ -17,8 +17,8 @@ const ProfileScreen = () => {
   const dispatch = useDispatch();
 
   const { userInfo } = useSelector((state) => state.auth);
-  console.log(userInfo,"hehehhe");
-  const [updateProfile, { isLoading }] = useUpdateUserMutation();
+  // console.log(userInfo,"hehehhe");
+  const [updateProfile, { isLoading }] = useUpdateProfileMutation();
 
   useEffect(() => {
     setName(userInfo.name);
@@ -85,7 +85,7 @@ const ProfileScreen = () => {
             onChange={(e) => setEmail(e.target.value)}
           />
         </div>
-        <div className="mb-4">
+        {/* <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">Password</label>
           <input
             type="password"
@@ -104,7 +104,7 @@ const ProfileScreen = () => {
             value={confirmPassword}
             onChange={(e) => setConfirmPassword(e.target.value)}
           />
-        </div>
+        </div> */}
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">Profile Picture</label>
           <input
@@ -126,3 +126,5 @@ const ProfileScreen = () => {
 };
 
 export default ProfileScreen;
+
+

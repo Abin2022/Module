@@ -19,9 +19,12 @@ const TableComponent = ({ users }) => {
   });
 
   
+  const [deleteConfirmation,setDeleteConfirmation ]=useState(false)
+  const [userIdToDelete, setUserIdToDelete] = useState(null); // Track the user ID to delete
 
-  const [UpdateUser, { isLoading }] = useUpdateUserByAdminMutation();
-  const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
+
+  // const [UpdateUser, { isLoading }] = useUpdateUserByAdminMutation();
+  // const [deleteUser, { isLoading: isDeleting }] = useDeleteUserMutation();
   const [blockUser, { isBlocking }] = useBlockUserMutation();
   const [unblockUser, { isUnBlocking }] = useUnblockUserMutation();
 
@@ -46,11 +49,11 @@ const TableComponent = ({ users }) => {
     setShowModal(true);
   };
 
-  const handleUserDelete = async (userId) => {
-    await deleteUser({ userId });
-    toast.success("user deleted successfully");
-    window.location.reload();
-  };
+  // const handleUserDelete = async (userId) => {
+  //   await deleteUser({ userId });
+  //   toast.success("user deleted successfully");
+  //   window.location.reload();
+  // };
 
   const handleBlockuser = async (userId) => {
     await blockUser({ userId });
@@ -73,6 +76,22 @@ const TableComponent = ({ users }) => {
       user.name.toLowerCase().includes(search.toLowerCase()) ||
       user.email.toLowerCase().includes(search.toLowerCase())
   );
+
+
+  const [deleteUser, { isLoading }] = useDeleteUserMutation();  
+    
+
+  const handleDelete = async () =>{
+      try{
+          const responseFromApiCall = await deleteUser( {userId : userIdToDelete});
+          toast.success("User Deleted Successfully");
+          setUserIdToDelete(null)
+          setDeleteConfirmation(false)
+          window.location.reload();
+      }catch(err){
+        toast.error(err?.data?.message || err?.error)
+      }
+  }
 
   return (
     <>
@@ -102,14 +121,7 @@ const TableComponent = ({ users }) => {
               <td className="border p-2  ">{index + 1}</td>
               <td className="border p-2 ">{user.name}</td>
               <td className="border p-2">{user.email}</td>
-              {/* <td className="border p-2">
-                <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                  onClick={() => handleUpdate(user)}
-                >
-                  Update
-                </button>
-              </td> */}
+             
               <td className="border p-2">
                 {user.isBlocked ? (
                   <button
@@ -127,18 +139,60 @@ const TableComponent = ({ users }) => {
                   </button>
                 )}
               </td>
-              <td className="border p-2">
-                <button
-                  className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded"
-                  onClick={() => handleUserDelete(user._id)}
-                >
-                  Delete
-                </button>
-              </td>
+             
+               <td><button
+                type="button"
+                variant="danger"
+                className="bg-gray-800 hover:bg-gray-900 text-white font-bold py-2 px-4 rounded"
+                onClick={() => {
+                    setUserIdToDelete(user._id); // Set the user ID to delete
+                    setDeleteConfirmation(true); // Open the confirmation dialog
+                  }}
+               
+              >
+                Delete
+              </button></td>
             </tr>
           ))}
         </tbody>
       </table>
+
+
+      {deleteConfirmation && (
+        <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50">
+          <div className="bg-white p-6 rounded shadow-lg">
+            <div className="text-lg font-bold mb-4">Confirm Deletion</div>
+            <div className="text-gray-700 mb-4">
+              Are you sure you want to delete this user?
+            </div>
+            <div className="flex justify-end">
+              <button
+                onClick={() => setDeleteConfirmation(false)}
+                className="mr-2 bg-gray-500 hover:bg-gray-600 text-white py-2 px-4 rounded"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleDelete}
+                disabled={isLoading}
+                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+
+              >
+                {isLoading ? "Deleting..." : "Delete"}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+
+
+
+
+   
+
+
 
       {/* Modal */}
       {showModal && (

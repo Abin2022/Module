@@ -67,6 +67,7 @@ const AddVideoModal = ({ isOpen, onClose, courseId }) => {
                 >
                   Upload
                 </button>
+               
               </div>
             </form>
           </div>

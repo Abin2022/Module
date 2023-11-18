@@ -99,7 +99,6 @@ const getAllTutors = asyncHandler(async (req,res)=>{
     console.log(error);
   })
 })
-console.log(getAllTutors,"getall tutors");
 
 
 const updateUserData = asyncHandler( async (req, res) => {

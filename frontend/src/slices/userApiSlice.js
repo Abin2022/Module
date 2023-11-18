@@ -24,7 +24,16 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: "POST",
       }),
     }),
-    updateUser: builder.mutation({
+    // updateUser: builder.mutation({
+    //   query: (data) => ({
+    //     url: `${USERS_URL}/profile`,
+    //     method: "PUT",
+    //     body: data,
+    //   }),
+    // }),
+
+
+    updateProfile: builder.mutation({
       query: (data) => ({
         url: `${USERS_URL}/profile`,
         method: "PUT",
@@ -50,6 +59,13 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    getCourse: builder.mutation({
+      query: (courseId) => ({
+        url: `${USERS_URL}/single-course/${courseId}`,
+        method: "get",
+      }),
+    }),
+
   }),
 });
 
@@ -57,8 +73,9 @@ export const {
   useLoginMutation,
   useLogoutMutation,
   useRegisterMutation,
-  useUpdateUserMutation,
+  useUpdateProfileMutation,
   useCourseMutation,
   useViedoMutation,
   useTutorHomeMutation,
+  useGetCourseMutation,
 } = userApiSlice;

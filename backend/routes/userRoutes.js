@@ -1,9 +1,10 @@
 import express from "express";
 const router = express.Router();
-import { mullterUserImage } from "../config/multerConfig.js";
+import { multerImage } from "../config/multerConfig.js";
 
-import { protect } from "../middleware/authMiddleware.js";
+import { protect } from "../middleware/protect.js";
 // import authenticateUser from '../middlewares/userAuthMiddleware.js';
+import { isBlocked } from "../middleware/authMiddleware.js";
 
 import {
   authUser,
@@ -11,28 +12,34 @@ import {
   logOutUser,
   getUserProfile,
   updateUserProfile,
-  getTutorList,       
-  getCourseList,
-  getAllViedo,
- 
+  getTutorList,
+  getSingleCourse,
+  getAllVideo,
+  getApprovedCourses,
 } from "../controllers/userController.js";
 
 router.post("/", registerUser);
 router.post("/auth", authUser);
 router.post("/logout", logOutUser);
-router
+// router
+//   .route("/profile")
+//   .get( isBlocked , getUserProfile)
+//   .put( multerImage.single("userImage"), updateUserProfile);
+
+  router
   .route("/profile")
   .get(protect, getUserProfile)
-  .put(protect, mullterUserImage.single("userImage"), updateUserProfile);
+   .put( multerImage.single("image"), updateUserProfile);
 
- 
-
-
-
+  // router.put ("/profile",updateUserProfile)
 
 router.get("/instructor", getTutorList);
-// router.route('/profile').get( protect, getUserProfile ).put( protect, multerUploadUserProfile.single('profileImage'), updateUserProfile );
-router.get("/courseList", getCourseList);
-router.get("/viedos", getAllViedo);
+router.get("/viedos",isBlocked, getAllVideo);
+
+
+
+router.get("/get-approvedCourses", getApprovedCourses);
+router.get("/single-course/:courseId", protect("user"), getSingleCourse);
+
 
 export default router;

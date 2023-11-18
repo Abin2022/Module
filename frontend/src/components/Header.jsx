@@ -10,7 +10,6 @@ import { useEffect, useState } from "react";
 import { FaRedhat } from "react-icons/fa";
 // import React ,{useEffect} from "react"
 
-
 //
 const Header = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -43,15 +42,13 @@ const Header = () => {
 
           <div className="space-x-4">
             <div className="flex space-x-4">
-              {/* <Link to="/courseList" className="text-white hover:text-gray-300 transition duration-300">
-    Course
-  </Link> */}
-              <Link
-                to="/courseList"
+            
+              {/* <Link
+                to="/course/:courseId"
                 className=" bg-gray-800   hover:bg-gray-400 text-white font-bold py-2 px-2 rounded"
               >
                 <i className="fas fa-play"></i> Course
-              </Link>
+              </Link> */}
 
               <Link
                 to="/instructor"
@@ -60,9 +57,12 @@ const Header = () => {
                 Tutors
               </Link>
 
-              {/* <Link to="/video" className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
-    Videos
-  </Link> */}
+              <Link
+                to="/videos"
+                className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+              >
+                Videos
+              </Link>
 
               <Link
                 to="/profile"
@@ -121,33 +121,7 @@ const Header = () => {
               )}
             </div>
 
-            {/* {userInfo ? (
-  <div className="relative inline-block text-left cursor-pointer">
-    
    
-      <div className="absolute right-0 mt-2 w-48 bg-black border border-gray-200 rounded shadow-lg hidden">
-    
-        <div
-          className="block px-4 py-2 text-gray-800 cursor-pointer"
-          onClick={logoutHandler}
-        >
-          Logout
-        </div>
-      </div>
-   
-  </div>
-) : (
-  <div className="space-x-2">
-    <Link to="/login" className="flex items-center">
-      <FaSignInAlt className="mr-1" />
-      Sign In
-    </Link>
-    <Link to="/register" className="flex items-center">
-      <FaSignOutAlt className="mr-1" />
-      Sign Up
-    </Link>
-  </div>
-)} */}
           </div>
         </div>
       </nav>

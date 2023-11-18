@@ -110,81 +110,6 @@ const getTutorProfile = asyncHandler(async (req, res) => {
 
 
 
-// const updateTutorProfile = asyncHandler(async (req, res) => {
-//   const tutorId = req.body._id;
-//   const tutor = await Tutor.findById(tutorId);
-
-//   if (!tutor) {
-//     res.status(404);
-//     throw new Error("Tutor not found");
-//   }
-
-//   const email = req.body.email;
-
-//   if (email !== tutor.email) {
-//     const tutorExists = await Tutor.findOne({ email: email });
-
-//     if (tutorExists) {
-//       res.status(400);
-//       throw new Error("Email already exists");
-//     }
-//   }
-
-//   tutor.email = req.body.email || tutor.email;
-//   tutor.name = req.body.name || tutor.name;
-//   tutor.qualification = req.body.qualification || tutor.qualification;
-//   tutor.experience = req.body.experience || tutor.experience;
-
-//   s3.destroy();
-
-//   if (req.file) {
-//     if (tutor.tutorImageName) {
-//       const params = {
-//         Bucket: "module-mernapp",
-//         Key: tutor.tutorImageName,
-//       };
-//       const command = new DeleteObjectCommand(params);
-//       await s3.send(command);
-//     }
-
-//     const tutorImg = randomImgName();
-//     const params = {
-//       Bucket: "module-mernapp",
-//       Key: tutorImg,
-//       Body: req.file.buffer,
-//       ContentType: req.file.mimetype,
-//     };
-//     const command = new PutObjectCommand(params);
-
-//     await s3.send(command);
-//     const getObjectParams = {
-//       Bucket:'module-mernapp',
-//       Key: tutorImg,
-//     };
-//     const getCommand = new GetObjectCommand(getObjectParams);
-//     const url = await getSignedUrl(s3, getCommand, { expiresIn: 604800 });
-//     tutor.tutorImageName = tutorImg;
-//     tutor.tutorImageUrl = url;
-//   }
-
-//   const updatedTutor = await tutor.save();
-
-//   if (!updatedTutor) {
-//     res.status(500);
-//     throw new Error("Tutor update failed");
-//   }
-
-//   res.status(200).json({
-//     _id: updatedTutor._id,
-//     name: updatedTutor.name,
-//     email: updatedTutor.email,
-//     qualification: updatedTutor.qualification,
-//     about: updatedTutor.about,
-//     experience: updatedTutor.experience,
-//     image: updatedTutor.tutorImageUrl,
-//   });
-// });
-
 
 const updateTutorProfile = asyncHandler(async (req, res) => {
   try {
@@ -212,7 +137,7 @@ const updateTutorProfile = asyncHandler(async (req, res) => {
     tutor.qualification = req.body.qualification || tutor.qualification;
     tutor.experience = req.body.experience || tutor.experience;
 
-    s3.destroy();
+     s3.destroy();
 
     if (req.file) {
       if (tutor.tutorImageName) {
@@ -294,8 +219,6 @@ const updateTutorProfile = asyncHandler(async (req, res) => {
 //add course new 
 
 const addCourse = asyncHandler(async (req, res) => {
-  // const tutorId = req.body._id;
-  // const tutor = await Tutor.findById(tutorId);
 
   const tutorId = req.body._id;
   const domainName = req.body.domain;
@@ -340,27 +263,6 @@ const addCourse = asyncHandler(async (req, res) => {
 
 
 
-const deleteCourseData = asyncHandler( async (req, res) => {
-
-  const tutorId = req.body.tutorId;
-  const courseDeleteStatus = await deleteCourse(tutorId);
-  if(courseDeleteStatus.success){
-
-      const response = courseDeleteStatus.message;
-
-      res.status(200).json({ message:response });
-
-  }else{
-
-      res.status(404);
-
-      const response = courseDeleteStatus.message;
-
-      throw new Error(response);
-
-  }
-
-});
 
 
 
@@ -429,7 +331,7 @@ const getAllCourses = asyncHandler(async (req, res) => {
 
 const videoDelete = asyncHandler(async (req, res) => {
   const { videoId, courseId } = req.body;
-
+ 
   try {
     // Find the course by its ID
     const course = await Courses.findById(courseId);

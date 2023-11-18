@@ -53,20 +53,25 @@ const CourseList = () => {
         ...prevErrors,
         [courseId]: "Course must have at least one Video",
       }));
+     // console.log(videoId, courseId);
     } else {
       dispatch(removeVideoFromCourse({ courseId, videoId }));
     }
   };
+
+
   const handleApproveCourse = async (courseId) => {
     const res = await approveCourse({ courseId });
 
     dispatch(setApproveCourse({ courseId }));
   };
+
   const handleRejectCourse = async (courseId) => {
     const res = await rejectCourse({ courseId });
 
     dispatch(setRejectCourse({ courseId }));
   };
+
   const courses = useSelector((state) => state.courses.allCourses);
   const courseFilter = courses.filter(
     (course) =>
@@ -76,13 +81,13 @@ const CourseList = () => {
     //  course.tutorId.name.toUpperCase().includes(search.toUpperCase())
   );
 
-  console.log(courseFilter,"courseFilter in admincontro 79..");
+  // console.log(courseFilter,"courseFilter in admincontro 79..");
   return (
     <div>
       {courses ? (
         <div className="ml-6">
           <div className="flex ">
-            <div className="text-2xl font-bold mb-4">My Courses</div>
+            <div className="text-2xl font-bold mb-4">Course List:- </div>
             <div className="max-w-sm mx-auto">
               <div className="relative text-gray-600 focus-within:text-gray-400 w-full">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3">

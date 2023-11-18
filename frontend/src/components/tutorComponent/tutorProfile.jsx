@@ -7,7 +7,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { setTutorCredentials } from "../../slices/tutorAuthSlice";
 import { BiSolidEdit } from "react-icons/bi";
 import { FaUserCircle } from "react-icons/fa";
-import { toast,ToastContainer } from 'react-toastify'
+import { toast,ToastContainer } from 'react-toastify';
+// import { useHistory }  from 'react-router-dom'
 
 const TutorProfile = () => {
   const [name, setName] = useState("");
@@ -23,7 +24,6 @@ const TutorProfile = () => {
 
   const { tutorInfo } = useSelector((state) => state.tutorAuth);
   const [updateTutorProfile] = useUpdateTutorMutation();
-  console.log(tutorInfo,"tutorinfo mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmm");
   useEffect(() => {
     setName(tutorInfo.name);
     setEmail(tutorInfo.email);
@@ -48,6 +48,7 @@ const TutorProfile = () => {
 
   const sumbmitHandler = async (e) => {
     e.preventDefault();
+    
     try {
       const formData = new FormData();
 
@@ -56,19 +57,28 @@ const TutorProfile = () => {
       formData.append("name", tutorInfo.name);
       formData.append("email", email);
       formData.append("qualification", qualification);
-      // formData.append("about", about);
       formData.append("experience", experience);
 
-      // for (const [key, value] of formData.entries()) {
-      //   console.log(`Key: ${key}, Value: ${value}`);
-      // }
+      
       const res = await updateTutorProfile(formData).unwrap("");
 
       dispatch(setTutorCredentials({ ...res }));
 
       setSuccess(" Updated");
-      toast.success('Profile Updated');
-
+     
+      
+    await toast.promise(
+      Promise.resolve(),
+      {
+        pending: 'Updating profile...',
+        success: 'Profile Updated',
+        error: 'Failed to update profile',
+      }
+    );
+    setTimeout(() => {
+      window.location.href = '/tutor/home';
+    }, 900);
+     
     } catch (error) {
       setError(error?.data?.message || error.error);
 

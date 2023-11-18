@@ -11,6 +11,8 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 
 import Loader from "../Loader";
+import { toast } from 'react-toastify';
+
 
 const AddCourse = () => {
   const [domainName, setDomainName] = useState("");
@@ -20,6 +22,8 @@ const AddCourse = () => {
   const [price, setPrice] = useState("");
   const [image, setImage] = useState(null);
   const [caption, setCaption] = useState("");
+  const [prevVideo, setPrevVideo] = useState("");
+
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -48,27 +52,55 @@ const AddCourse = () => {
   useEffect(() => {
     getDomain();
   }, []);
-  const domains = useSelector((state) => state.domains.domains);
-  const submitHandler = async (e) => {
-    e.preventDefault();
-    try {
-      const formData = new FormData();
-      formData.append("domain", domainName);
-      formData.append("courseName", courseName);
-      formData.append("description", description);
-      formData.append("price", price);
-      formData.append("requiredSkill", requiredSkill);
-      formData.append("caption", caption);
-      formData.append("image", image);
 
-      const res = await addCourse(formData).unwrap();
-      dispatch(
-        setCourses({
-          ...res,
-        })
-      );
-    } catch (err) {}
-  };
+  const domains = useSelector((state) => state.domains.domains);
+
+  
+  
+
+const submitHandler = async (e) => {
+  e.preventDefault();
+
+  // Form validation
+  if (!domainName || !courseName || !description || !price || !requiredSkill || !caption || !image) {
+    toast.error('Please fill in all required fields');
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append("domain", domainName);
+    formData.append("courseName", courseName);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("requiredSkill", requiredSkill);
+    formData.append("caption", caption);
+    formData.append("image", image);
+    formData.append("previewVideo", prevVideo);
+
+    const res = await addCourse(formData).unwrap();
+    dispatch(
+      setCourses({
+        ...res,
+      })
+    );
+
+    // Display a success toast message using toast.promise
+    await toast.promise(
+      Promise.resolve(),
+      {
+        pending: 'Adding course...',
+        success: 'Course Added',
+        error: 'Failed to add course',
+      }
+    );
+
+  } catch (err) {
+    // Handle error if needed
+    toast.error('Failed to add course');
+  }
+};
+
 
   const [video, setVideo] = useState(null);
   const [videoName, setVideoName] = useState("");
@@ -82,6 +114,13 @@ const AddCourse = () => {
     const file = e.target.files[0];
     setVideo(file);
   };
+  const handlePrevVideoChange = (e) =>{
+    const file = e.target.files[0]
+    setPrevVideo(file)
+  }
+
+
+
   const handleclick = () => {
     navigate("/tutor/courses");
     window.location.reload();
@@ -314,6 +353,33 @@ const AddCourse = () => {
                     </div>
                   )}
                 </div>
+                {/* <div className="mb-4">
+                  <label
+                    htmlFor="thumbnail image"
+                    className="block text-blue-900 font-semibold"
+                  >
+                    Preview Video
+                  </label>
+                  <div>
+                    <label
+                      htmlFor="PreviewVideo"
+                      className="text-black cursor-pointer text-sm"
+                    >
+                    
+                      <input
+                        type="file"
+                        id="previewVideo"
+                        accept="video/*"
+                        className="w-full border border-gray-600 px-3 py-2"
+                        name="previewVideo"
+                        onChange={handlePrevVideoChange}
+                      />
+                      Add Preview Video
+                    </label>
+                  </div>
+                </div> */}
+
+
                 <div className="mb-4">
                   <label
                     htmlFor="price"
