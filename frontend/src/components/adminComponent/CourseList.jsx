@@ -1,12 +1,11 @@
 import axios, { all } from "axios";
 import React, { useEffect, useState } from "react";
-const getAllCouresesUrl = "http://localhost:5000/api/admin/get-courses"
+const getAllCouresesUrl = "http://localhost:5000/api/admin/get-courses";
 import { FcApproval } from "react-icons/fc";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import {
   useDeleteCourseMutation,
   useDeleteCourseVideoMutation,
-  
 } from "../../slices/tutorApiSlice";
 import { ImBin2 } from "react-icons/im";
 import {
@@ -28,6 +27,18 @@ const CourseList = () => {
   const dispatch = useDispatch();
 
   const [err, setErr] = useState("");
+
+  //reject reason
+  const rejectionReasons = [
+    "Incomplete content",
+    "Poor video quality",
+    "Inappropriate content",
+    "Not relevant to the course",
+    "Copyright violation",
+    "Other (please specify)"
+  ];
+  
+
 
   useEffect(() => {
     const getAllCourses = async () => {
@@ -53,12 +64,11 @@ const CourseList = () => {
         ...prevErrors,
         [courseId]: "Course must have at least one Video",
       }));
-     // console.log(videoId, courseId);
+      // console.log(videoId, courseId);
     } else {
       dispatch(removeVideoFromCourse({ courseId, videoId }));
     }
   };
-
 
   const handleApproveCourse = async (courseId) => {
     const res = await approveCourse({ courseId });
@@ -77,7 +87,7 @@ const CourseList = () => {
     (course) =>
       course.courseName.toUpperCase().includes(search.toUpperCase()) ||
       course.domain.domainName.toUpperCase().includes(search.toUpperCase()) ||
-      course.courseName.toUpperCase().includes(search.toUpperCase()) 
+      course.courseName.toUpperCase().includes(search.toUpperCase())
     //  course.tutorId.name.toUpperCase().includes(search.toUpperCase())
   );
 
@@ -161,19 +171,12 @@ const CourseList = () => {
                   </div>
                 </div>
 
-
-
-
-
                 <div>
                   <div className="font-bold mb-2">Course Details</div>
                   <div className="text-base font-medium">
                     {" "}
                     <p className="font-bold text-blue-700">
-
-                      
                       {/* Instrutor:{course.tutorId.name.toUpperCase()} */}
-                     
                     </p>
                     <p className="text-green-600">
                       Domain:{course.domain.domainName}
@@ -184,7 +187,7 @@ const CourseList = () => {
                     </p>
                   </div>
                 </div>
-                  {/* <button>Approve</button> */}
+                {/* <button>Approve</button> */}
                 {course.approved === false && course.rejected === false && (
                   <div className="bg-slate-100 text-lg font-semibold p-2 flex items-center justify-around">
                     <button
@@ -199,6 +202,21 @@ const CourseList = () => {
                     >
                       Reject
                     </button>
+
+                    {/* <select
+                      onChange={(e) =>
+                        handleRejectCourse(course._id, e.target.value)
+                      }
+                    >
+                      <option value="" disabled selected>
+                        Select a reason
+                      </option>
+                      {rejectionReasons.map((reason, index) => (
+                        <option key={index} value={reason}>
+                          {reason}
+                        </option>
+                      ))}
+                    </select> */}
                   </div>
                 )}
                 {course.approved === true && course.rejected === false && (

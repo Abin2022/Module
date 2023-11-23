@@ -7,6 +7,8 @@ import { adminLogout } from "../slices/adminAuthSlice";
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FaRedhat } from "react-icons/fa";
+import { BiLogOut } from "react-icons/bi";
+
 
 const AdminHeader = () => {
   const adminInfo = useSelector((state) => state.adminAuth.adminInfo);
@@ -35,6 +37,12 @@ const AdminHeader = () => {
       <div className="flex justify-between items-center">
         {adminInfo ? (
           <>
+
+            <Link to ="/admin" 
+             className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+            >
+              Home
+            </Link>
             <Link
               to="/admin/usersList"
               className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
@@ -69,9 +77,9 @@ const AdminHeader = () => {
               <button
                 type="button"
                 onClick={logoutHandler}
-                className="text-white bg-red-700 hover:bg-red-700 rounded p-2"
+                className="text-red  hover:bg-red-700  text-white font-bold py-2 px-2 rounded"
               >
-                Logout
+                Logout <BiLogOut className="inline-block ml-2" />
               </button>
             </div>
           </>

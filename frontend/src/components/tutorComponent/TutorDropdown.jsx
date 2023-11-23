@@ -34,7 +34,7 @@ const TutorDropdown = () => {
   to="/tutor/home"
   className="flex items-center text-xl font-bold  text-white"
 >
-  <FaRedhat className="mr-2" /> MODULE  - TUTOR 
+  <FaRedhat className="mr-2" /> MODULE  
 </Link>
 
 <div className="flex justify-between items-center">

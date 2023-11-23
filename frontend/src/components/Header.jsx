@@ -49,6 +49,9 @@ const Header = () => {
               >
                 <i className="fas fa-play"></i> Course
               </Link> */}
+              <Link to ="/"  className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
+                Home
+              </Link>
 
               <Link
                 to="/instructor"

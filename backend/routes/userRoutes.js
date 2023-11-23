@@ -31,7 +31,6 @@ router.post("/logout", logOutUser);
   .get(protect, getUserProfile)
    .put( multerImage.single("image"), updateUserProfile);
 
-  // router.put ("/profile",updateUserProfile)
 
 router.get("/instructor", getTutorList);
 router.get("/viedos",isBlocked, getAllVideo);

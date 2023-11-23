@@ -6,6 +6,7 @@ import {
 } from "../../slices/adminAdminApiSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setDomains } from "../../slices/domainSlice";
+import { toast } from "react-toastify";
 
 const DomainTable = () => {
   const [domainName, setDomainName] = useState("");
@@ -13,36 +14,50 @@ const DomainTable = () => {
   const [deleteDomain, setDeleteDomain] = useState("");
   const [editdomain, setEditDomain] = useState();
   const [showModal, setShowModal] = useState(false);
+  const [showDeleteConfirmation, setShowDeleteConfirmation] = useState(false);
   const dispatch = useDispatch();
   const [deleteDomainMutation] = useDeleteDomainMutation();
   const domains = useSelector((state) => state.domains.domains);
-  console.log(domains, "domains in tableeeeeeeee");
+
   const openModal = () => {
     setShowModal(true);
   };
 
   const closeModal = () => {
     setShowModal(false);
-     window.location.reload();
+    window.location.reload();
   };
-  
- 
+
+  const openDeleteConfirmation = (domainToDelete) => {
+    setDeleteDomain(domainToDelete);
+    setShowDeleteConfirmation(true);
+  };
+
+  const closeDeleteConfirmation = () => {
+    setDeleteDomain("");
+    setShowDeleteConfirmation(false);
+  };
+
   const [addDomain] = useAddDomainMutation();
   const handleAddDomain = async () => {
-    const res = await addDomain({ domainName }).unwrap();
-    console.log(res.domain, "responsee");
+    if (domains.includes(domainName.toUpperCase())) {
+      toast.error("Domain already exists.")
+      return;
+    }
 
+    // Domain doesn't exist, proceed with adding the domain
+    const res = await addDomain({ domainName }).unwrap();
     dispatch(setDomains([...domains, res.domain]));
     closeModal();
   };
-  const handleDeleteDomain = async (domainToDelete) => {
-    const res = await deleteDomainMutation(domainToDelete).unwrap();
 
-    const updatedDomains = domains.filter(
-      (domain) => domain !== domainToDelete
-    );
+  const handleDeleteDomain = async () => {
+    const res = await deleteDomainMutation(deleteDomain).unwrap();
+    const updatedDomains = domains.filter((domain) => domain !== deleteDomain);
     dispatch(setDomains(updatedDomains));
+    closeDeleteConfirmation();
   };
+
   return (
     <>
       <div>
@@ -72,13 +87,11 @@ const DomainTable = () => {
                 <td className="border px-4 py-2 text-center">
                   <button
                     className="bg-red-600 w-16 rounded text-white ml-2"
-                    onClick={() => handleDeleteDomain(domain)}
+                    onClick={() => openDeleteConfirmation(domain)}
                   >
                     Delete
                   </button>
-                  {/* <button className="bg-blue-600 w-16 rounded text-white ml-2">
-                    Edit
-                  </button> */}
+                 
                 </td>
               </tr>
             ))}
@@ -86,7 +99,7 @@ const DomainTable = () => {
         </table>
       </div>
 
-      {/* Modal */}
+      {/* Add Domain Modal */}
       {showModal && (
         <div className="fixed inset-0 flex items-center justify-center z-50">
           <div className="bg-white p-4 rounded shadow-md w-1/3">
@@ -106,10 +119,33 @@ const DomainTable = () => {
               >
                 Add
               </button>
-            
               <button
                 className="bg-red-500 text-white py-2 px-4 rounded"
                 onClick={closeModal}
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Delete Confirmation Modal */}
+      {showDeleteConfirmation && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div className="bg-white p-4 rounded shadow-md w-1/3">
+            <h2 className="text-xl mb-4">Confirm Delete</h2>
+            <p>Are you sure you want to delete this domain?</p>
+            <div className="text-right mt-4">
+              <button
+                className="bg-red-500 text-white py-2 px-4 rounded mr-2"
+                onClick={handleDeleteDomain}
+              >
+                Yes, delete
+              </button>
+              <button
+                className="bg-gray-300 text-gray-800 py-2 px-4 rounded"
+                onClick={closeDeleteConfirmation}
               >
                 Cancel
               </button>

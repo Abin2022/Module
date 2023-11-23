@@ -16,7 +16,6 @@ import HomeScreen from "./screens/HomeScreen.jsx";
 import LoginScreen from "./screens/LoginScreen.jsx";
 import RegisterScreen from "./screens/RegisterScreen.jsx";
 import ProfileScreen from "./screens/ProfileScreen.jsx";
-// import HomeScreenAdmin from "./screens/HomeScreenAdmin.jsx";
 import CourseList from "./components/userComponent/courseList.jsx";
 import Viedo from "./components/userComponent/viedos.jsx";
 
@@ -27,16 +26,15 @@ import AdminRegisterScreen from "./screens/AdminRegisterScreen.jsx";
 import UsersList from "./screens/usersList.jsx";
 import TutorList from "./components/tutorComponent/tutorList.jsx";
 import CourseLists from "./components/adminComponent/CourseList.jsx";
+
 //tutor
 import TutorLoginPage from "./components/tutorComponent/tutorLoginPage.jsx";
 import TutorPage from "./components/tutorComponent/tutorHome.jsx";
 import TutorSignPage from "./components/tutorComponent/TutorSignupPage.jsx";
 import TutorProfilePage from "./components/tutorComponent/tutorProfile.jsx";
 import DomainList from "./components/adminComponent/DomainList.jsx";
-// import CourseListing from "./components/tutorComponent/CourseListing.jsx"
 import TutorHomePage from "./components/tutorComponent/HomePage.jsx";
 import AddCourse from "./components/tutorComponent/AddCourse.jsx";
-// import AddVideo from "./components/tutorComponent/AddViedo.jsx";
 import AllCoursesPage from "./components/tutorComponent/AllCoursesPage.jsx";
 
 const router = createBrowserRouter(
@@ -64,6 +62,8 @@ const router = createBrowserRouter(
         <Route path="/tutor/add-course" element={<AddCourse />} />
         <Route path="/tutor/courses" element={<AllCoursesPage />} />
       </Route>
+
+
 
       {/* Admin side routes */}
       <Route path="/admin" element={<AdminHomeScreen />} />

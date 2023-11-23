@@ -83,7 +83,7 @@ const AllCoursesPage = () => {
             {searchCourses().map((course, index) => (
               <div key={index} className="bg-gray-50 p-4 rounded shadow-lg">
                 <div>
-                  <div className="font-bold mb-2">{course.courseName}</div>
+                  <div className="font-bold mb-2 ">{course.courseName}</div>
                   <div className="mt-1">
                     {course?.videos.map((video, index) => (
                       <a
@@ -92,15 +92,13 @@ const AllCoursesPage = () => {
                         rel="noopener noreferrer"
                         key={index}
                       >
-                        <div className="bg-white mt-1 p-4 rounded shadow-lg hover:translate-y-1 hover:translate-x-2 hover:bg-white flex justify-between items-center">
-                          {/* Display video thumbnail as the source for the image tag */}
-                          <img
-                            src={video.thumbnailUrl || 'default-thumbnail-url'} // replace with the actual property of video containing thumbnail URL
-                            alt={video.videoName}
-                            className="w-16 h-16 object-cover mr-2"
-                          />
-                          {video.videoName}
+                        {/* <div className="w-16 h-16 bg-gray-300 mr-2 flex justify-center items-center rounded">
+                          🎥
+                        </div> */}
+                        <div className="w-16 h-16 bg-gray-300 mx-auto mb-2 flex justify-center items-center rounded">
+                          🎥
                         </div>
+                        <p className="flex justify-center">{video.videoName}</p>
                       </a>
                     ))}
                   </div>

@@ -71,8 +71,9 @@ const TutorTable = ({ tutor }) => {
   const tutorfilter = tutor.filter(
     (tutor) =>
       tutor.name.toLowerCase().includes(search.toLowerCase()) ||
-      tutor.email.toLowerCase().includes(search.toLowerCase())
-  );
+      tutor.email.toLowerCase().includes(search.toLowerCase()) 
+      
+      );
 
   
   const [deleteUser, { isLoading }] = useDeleteTutorMutation();  
