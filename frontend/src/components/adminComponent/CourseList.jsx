@@ -58,6 +58,7 @@ const CourseList = () => {
   };
 
   const handleVideoDelete = async (videoId, courseId) => {
+    console.log(videoId, courseId,'videoId, courseId');
     const res = await deleteVideos({ videoId, courseId });
     if (res.error) {
       setErr((prevErrors) => ({
@@ -271,6 +272,7 @@ const CourseList = () => {
                     ))}
                   </div>
                 </div>
+
                 {/* <div className="flex justify-center mt-6">
                   <button
                     className="bg-red-600  text-white hover:bg-gray-900 hover:text-red-500  px-4 py-2  border-black"
@@ -279,6 +281,7 @@ const CourseList = () => {
                     Delete Course
                   </button>
                 </div> */}
+
               </div>
             ))}
           </div>

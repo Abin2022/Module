@@ -23,7 +23,7 @@ const tutorHome = () => {
       } catch (error) {
         toast.error(error);
         console.error("Error fetching users:", error);
-        console.log("Error response data:", error.response.data); // Log the response data if available
+        console.log("Error response data:", error.response.data); 
         setLoading(false);
       }
     };

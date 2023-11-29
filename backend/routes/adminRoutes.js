@@ -24,6 +24,8 @@ import { authAdmin,
     allCourses,
     approveCourse,
     rejectCourse,
+    addPlans,
+    getPlans,
  } from '../controllers/adminController.js'
 
  import {protect } from '../middleware/authAdminMiddleware.js'
@@ -53,6 +55,12 @@ router.get("/get-courses",  allCourses);
 
 router.post("/approve-course",  approveCourse);
 router.post("/reject-course",  rejectCourse);
+
+//new plan router
+
+router.post("/add-plans",addPlans)
+router.get('/get-plans',getPlans)
+
 
 
 

@@ -1,30 +1,4 @@
-// import Header from "./components/Header";
-// import AdminHeader from "./components/AdminHeader";
-// import TutorDropdown from "./components/tutorComponent/TutorDropdown";
 
-// import React from "react";
-// import { Outlet,useLocation } from "react-router-dom";
-// import { ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-
-// const App = () => {
-//    const location = useLocation()
-//    const isAdminSide = location.pathname.startsWith("/admin" );
-//    const isTutorSide = location.pathname.startsWith("/tutor/login")
-//   return (
-//     <>
-//        {isAdminSide && <AdminHeader />}
-//       {!isAdminSide && !isTutorSide && <Header />}
-//       {isTutorSide && <TutorDropdown />}
-//       <ToastContainer />
-//       <div className="my-2">
-//         <Outlet />
-//       </div>
-//     </>
-//   );
-// };
-
-// export default App;
 
 import Header from "./components/Header";
 import AdminHeader from "./components/AdminHeader";

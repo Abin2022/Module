@@ -24,13 +24,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: "POST",
       }),
     }),
-    // updateUser: builder.mutation({
-    //   query: (data) => ({
-    //     url: `${USERS_URL}/profile`,
-    //     method: "PUT",
-    //     body: data,
-    //   }),
-    // }),
+   
 
 
     updateProfile: builder.mutation({
@@ -45,7 +39,9 @@ export const userApiSlice = apiSlice.injectEndpoints({
         url: `${USERS_URL}/courseList`,
         method: "GET",
       }),
-    }),
+    }), 
+   
+
     viedo: builder.mutation({
       query: () => ({
         url: `${USERS_URL}/viedo`,
@@ -59,12 +55,72 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+
+
     getCourse: builder.mutation({
-      query: (courseId) => ({
-        url: `${USERS_URL}/single-course/${courseId}`,
-        method: "get",
+      query: () => ({
+        url: `${USERS_URL}/single-course`,
+        method: "GET",
       }),
     }),
+
+
+   
+
+
+
+    //subcribe
+
+    getUserPlans: builder.mutation({
+      query: () => ({
+        url: `${USERS_URL}/get-user-plans`,
+        method: "GET",
+      }),
+    }),
+
+
+    getApprovedCourse: builder.mutation({
+      query: () => ({
+        url: `${USERS_URL}/getApprovedCourses`,
+        method: "GET",
+      }),
+    }),
+
+
+
+    createOrder: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/create-order`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    
+   verifyPayment: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/verify-payment`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    addPayment: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/add-payment`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    checkPlanStatus: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/check-plan-status`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
+    
 
   }),
 });
@@ -78,4 +134,14 @@ export const {
   useViedoMutation,
   useTutorHomeMutation,
   useGetCourseMutation,
+
+  useGetUserPlansMutation,
+  useGetApprovedCourseMutation,
+
+  useCreateOrderMutation,
+  useVerifyPaymentMutation,
+  useAddPaymentMutation,
+  useCheckPlanStatusMutation,
+                
+ 
 } = userApiSlice;

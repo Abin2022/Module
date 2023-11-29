@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setDomains } from "../../slices/domainSlice";
+// import { usePrefetch } from "../../slices/userApiSlice"
 
 const getCoursesUrl = "http://localhost:5000/api/admin/get-courses";
 

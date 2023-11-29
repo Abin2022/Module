@@ -331,7 +331,7 @@ const getAllCourses = asyncHandler(async (req, res) => {
 
 const videoDelete = asyncHandler(async (req, res) => {
   const { videoId, courseId } = req.body;
- 
+  console.log(req.body,"tutro controller 334");
   try {
     // Find the course by its ID
     const course = await Courses.findById(courseId);
@@ -360,7 +360,7 @@ const videoDelete = asyncHandler(async (req, res) => {
 
           // Save the updated course document
           await course.save();
-
+          toast.error.status()
           res.status(200).json({ message: "Video deleted successfully" });
         } else {
           res.status(404).json({ error: "Video not found in course" });

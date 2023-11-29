@@ -24,10 +24,8 @@ const protect = (role = "user") => {
           req.admin = await Admin.findById(decoded.id).select("-password");
         } else if (role === "tutor") {
           req.tutor = await Tutor.findById(decoded.id).select("-password");
-          // req.tutor = await Tutor.findById(decoded.tutorId).select("-password");
         } else {
           req.user = await User.findById(decoded.id).select("-password");
-          // req.user = await User.findById(decoded.userId).select("-password");
         }
         next();
       } catch (error) {

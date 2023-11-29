@@ -1,160 +1,168 @@
-// import React from "react";
-// // import Link from 'react-router-dom';
-// import { Link, useNavigate } from "react-router-dom";
-// import { useCourseMutation } from "../../slices/userApiSlice";
-
-// const courseList = () => {
-//   return (
-//     <>
-//       <div className="flex justify-center mt-10 mb-10">
-//         <h2 className="flex justify-center mt-10 mb-10">
-//           {" "}
-         
-//               <Link to="/">
-//     {/* <button class="bg-red-500 hover:bg-red-700 text-black font-bold py-2 px-4 rounded" >  
-//       Live Viedo
-//     </button> */}
-//     <br></br>
-//     </Link>
-         
-//         </h2>
-//       </div>
-//        <h2 className="flex justify-center mt-10 mb-10">ALL Course list available for the Student </h2>   {" "}
-//     </>
-//   );
-// };
-
-// export default courseList;
-
-
-import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
-import { setCourses } from "../../slices/courseDetailsSlice";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-// import { getApprovedAllCouresesUrl } from "../../url";
-// export const getApprovedAllCouresesUrl =
-//   "http://localhost:5000/api/get-approvedCourses";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setDomains } from "../../slices/domainSlice";
+//  import { RiFolderVideoLine } from "react-icons/ri";
 
- const getApprovedAllCouresesUrl =  "http://localhost:5000/api/get-approvedCourses" 
+// import { ImBin2 } from "react-icons/im";
 
-import { RiFolderVideoLine } from "react-icons/ri";
-import { useGetCourseMutation } from "../../slices/userApiSlice";
+const getCoursesUrl = "http://localhost:5000/api/admin/get-courses";
 
-const courseList = () => {
-  const { courseId } = useParams();
-  
+const CourseList = () => {
+  const [courses, setCourses] = useState([]);
+  const [err, setErr] = useState({});
+  const [domainName, setDomainName] = useState("");
+
   const dispatch = useDispatch();
-  const [getcourse] = useGetCourseMutation();
-  console.log(courseId);
 
-  const CourseData = async () => {
-    const res = await getcourse(courseId).unwrap();
-    dispatch(setCourses(res));
-    console.log(res, "fffffffffff");
+  const getDomain = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/api/admin/domain", {
+        withCredentials: true,
+      });
+
+      const domains = res.data;
+      const domainNames = domains.map((domain) => domain.domainName);
+
+      dispatch(setDomains(domainNames));
+    } catch (err) {
+      console.error("Error fetching domain data:", err);
+    }
+  };
+
+  const getCourse = async () => {
+    try {
+      const res = await axios.get(getCoursesUrl, {
+        withCredentials: true,
+        params: { domain: domainName },
+      });
+      setCourses(res.data);
+    } catch (error) {
+      console.error("Error fetching courses:", error);
+    }
   };
 
   useEffect(() => {
-    CourseData();
+    getDomain();
   }, []);
-  const courses = useSelector((state) => state.courses.courses);
-  const course = courses.course;
-  // console.log(courses.purchased, "hhhhhhhhhhhhhh");
+
+  useEffect(() => {
+    getCourse();
+  }, [domainName]);
+
+  const domains = useSelector((state) => state.domains.domains);
 
   return (
-    
-    <div className="mb-5 overflow-hidden">
-      
-      <Link to="/tutor/login">
-          <button className="bg-blue-500 hover:bg-blue-700 text-black font-bold py-2 px-4 rounded">
-            Instructor Register
-          </button>
-        </Link>
-      <div className="bg-slate-600 w-screen mb-4  justify-center items-center flex">
-        <div className=" pr-2">
-          <img className="w-40 h-40" src={course?.thumbnail} alt="thumbnail" />
-        </div>
-        <div className="w-5/12 pt-6">
-          <p className="font-extrabold text-xl text-white  p-2">
-            {course?.courseName}
-          </p>
-          <p className="font-semibold text-base text-white  p-2">
-            {" "}
-            {course?.caption}
-          </p>
-          <p className="font-semibold text-base text-white  p-2">
-            Instructor: {course?.tutorId?.name.toUpperCase()}
-          </p>{" "}
-          <p className="font-medium text-base text-white  p-2">
-            Created On: {new Date(course?.createdAt).toDateString()}
-          </p>
-        </div>
-      </div>
-      <div className="flex items-center justify-center">
-        <div className="w-1/2 p-2 border-2">
-          <div className=" bg-slate-50">
-            <h4 className="text-blue-800 text-lg font-semibold">Description</h4>
-            <div className=" leading-loose">{course?.description}</div>
-          </div>
-          <div className=" mt-5 mb-5 bg-slate-50 ">
-            <h4 className="text-blue-800 text-lg font-semibold">
-              Requirements
-            </h4>
-            {course?.requiredSkills ? (
-              <div className=" leading-loose">{course?.requiredSkills}</div>
-            ) : (
-              "No additional requirements"
-            )}
-          </div>
-        </div>
-        <div className="mt-5 ml-3">
-          <div className=" border-[2px] p-3">
-            <div className="flex justify-center items-center">
-              Preview Video
-            </div>
-            <video width="220" height="140" controls>
-              <source src={course?.previewVideo} type="video/mp4" />
-            </video>
-          </div>
-
-          <div className="p-5 border-2 mt-2">
-            <div className="text-lg p-2 font-semibold"> Course Videos</div>
-            <span className="text-sm text-slate-400 ">
-              Purchase to access videos
-            </span>
-            {course?.videos?.map((video) => (
-              <div key={video.videoUniqueId}>
-                <div className="bg-slate-50 mt-1 p-4 rounded shadow-lg hover:translate-y-1 hover:translate-x-2 hover:bg-white flex justify-between items-center">
-                  {" "}
-                  {video.videoName}
-                  <div className="pl-2">
-                    <RiFolderVideoLine />
+    <div>
+      {courses.length > 0 ? (
+        <div className="ml-6">
+          <div className="text-2xl font-bold mb-4">My Courses in user side</div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+            {courses.map((course, index) => (
+              <div key={index} className="bg-black-90 p-4 rounded shadow-lg">
+                <div className="flex mb-4">
+                  <div className="w-1/4 bg-slate-50 h-50">
+                    <img src={course.thumbnail} alt="thumbnail" className="" />
+                    <div className="text-sm mt-1">{course.caption}</div>
+                  </div>
+                  <div className="w-3/4 pl-4">
+                    <div className="font-bold mb-2">{course.courseName}</div>
+                    <p>{course.description}</p>
                   </div>
                 </div>
+                <div>
+                  {/* <div className="font-bold mb-2">Course Details</div>
+                  <div className="text-base font-medium">        
+                    <p>Skills Required: {course.requiredSkills}</p>
+                    <p>
+                      Created On: {new Date(course.createdAt).toDateString()}
+                    </p>
+                  </div> */}
+                </div>
+
+                {/* <div className="border-[2px] p-3"> */}
+                <div className="text-lg p-2 font-semibold"> Course Videos</div>
+
+                {course?.videos.map((video, index) => (
+                  <div
+                    key={video.videoUniqueId}
+                    className="bg-slate-50 mt-1 p-4 rounded shadow-lg hover:translate-y-1 hover:translate-x-2 hover:bg-white flex justify-between items-center"
+                  >
+                    <video width="220" height="140" controls className="mr-4">
+                      <source src={video.videoUrl} type="video/mp4" />
+                    </video>
+                    <span>{video.videoName}</span>
+                  </div>
+                ))}
+
+                {/* <div className="pl-2">
+                    <RiFolderVideoLine />
+
+                  </div> */}
+
+                <br></br>
+                <br />
+                <div className="font-bold mb-2">Course Details</div>
+                <div className="text-base font-medium">
+                  <p>Skills Required : {course.requiredSkills}</p>
+                  <p>
+                    Created On : {new Date(course.createdAt).toDateString()}
+                  </p>
+                </div>
+
+                <div>
+                  <h2 className=" hover:bg-slate-200   drop-shadow-lg">
+                    Price :
+                    <span className="text-red-500"> ₹ {course.price}</span>
+                  </h2>
+                </div>
+
+              
+                <br />
+                <br />
+
+                {/* {!courses.purchased && (
+                  <div className=" flex justify-center items-center">
+                    <Link to={`/order/${course?._id}`}>
+                      <button className="bg-green-400 text-white text-lg font-semibold p-2 hover:bg-green-700 w-44 drop-shadow-lg">
+                        Purchase
+                      </button>
+                    </Link>
+                  </div>
+                )} */}
+
+                <button
+                  id="rzp-button1"
+                  onClick={() => handleSubscribeClick(plan)}
+                  className="text-white bg-yellow-900 rounded mt-3 flex items-center justify-center"
+                >
+                  <span className="mr-2 text-4xl font-extrabold text-yellow-100 hover:bg-red-700 w-12 h-12  ">
+                    $
+                  </span>
+                  <span className="ml-9 mr-9 hover:text-red-100  flex items-center justify-center">Subscribe For Video Access</span>
+                </button>
               </div>
             ))}
           </div>
         </div>
-      </div>
-
-      <div className="flex justify-center items-center mb-5 mt-10 ">
-        <div className="  bg-slate-50 h-16 w-1/2 m-2 flex items-center justify-evenly shadow-lg">
-          <p className="text-gray-600 tracking-wider text-xl font-extrabold">
-            Price:{course?.price}
-          </p>{" "}
-        </div>
-      </div>
-      {!courses.purchased && (
-        <div className=" flex justify-center items-center">
-          <Link to={`/order/${course?._id}`}>
-            <button className="bg-green-600 text-white text-lg font-semibold p-2 hover:bg-green-700 w-44 drop-shadow-lg">
-              Purchase
-            </button>
-          </Link>
+      ) : (
+        <div className="flex flex-col h-screen justify-center items-center">
+          {" "}
+          <div className="w-60 h-60">
+            <img
+              src="https://s.udemycdn.com/teaching/support-1-v3.jpg"
+              alt="Right Image"
+            />
+          </div>
+          <div className="text-4xl font-serif">No Course Available</div>
+          <div className="mt-4">
+            {/* Add Link component or button to navigate to add-course page */}
+          </div>
         </div>
       )}
     </div>
   );
-}; 
+};
 
-export default courseList;
+export default CourseList;

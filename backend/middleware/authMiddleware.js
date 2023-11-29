@@ -1,62 +1,106 @@
+
 import jwt from "jsonwebtoken";
 import asyncHandler from "express-async-handler";
-import User from "../models/userModel.js";
+ import userHelper from "../helpers/userHelpers.js";
+const JWT_SECRET = "abc123"
 
-const protect = asyncHandler(async (req, res, next) => {
+
+const protectRoute = asyncHandler(async (req, res, next) => {
+  console.log("Entered into user auth middleware..");
+
   let token;
+
   token = req.cookies.jwt;
+
+  // req.user = await User.findById(decoded.id).select("-password");
+
+  console.log(token,"token in authmiddle");
   if (token) {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.user = await User.findById(decoded.userId).select("-password");
+      const decoded = jwt.verify(token, JWT_SECRET);
+
+      req.user = await userHelper.findUserByIdForMiddleWare(decoded.userId);
+
+      console.log(req.user,"req.user in authmiddleware");
+
       next();
     } catch (error) {
       res.status(401);
-      throw new Error("invalid token");
+
+      throw new Error("not authorizes,invalid token");
     }
   } else {
     res.status(401);
-    throw new Error("not authorized");
+
+    throw new Error("not authorizes,no token");
   }
 });
 
-
-
 const isBlocked = asyncHandler(async (req, res, next) => {
+  console.log("Entered into user auth middleware..");
+
   let token;
 
   token = req.cookies.jwt;
 
   if (token) {
     try {
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
+      const decoded = jwt.verify(token, JWT_SECRET);
 
-      const user = await User.findById(decoded.userId);
-
+      const user = await userHelper.findUserByIdForMiddleWare(
+        decoded.userId
+      );
+      console.log(!user.blocked,"!user.blocked");
       if (!user.blocked) {
+
         next();
-      } else {
-        // Clear the JWT cookie
+      }
+
+      // else if (user.blocked === true) {
+      //   res.status(403); // Forbidden
+    
+      //   throw new Error("User is blocked. Please contact support for assistance.");
+      // }
+      
+      else {
+       
         res.cookie("jwt", "", { httpOnly: true, expires: new Date(0) });
 
-        // Redirect to the login page
-        res.redirect('/login');
+        res.status(401);
+
+        throw new Error("not authorizes,invalid token");
+        
       }
     } catch (error) {
-      // Clear the JWT cookie on token verification failure
-      res.cookie("jwt", "", { httpOnly: true, expires: new Date(0) });
+      res.status(401);
 
-      // Redirect to the login page
-      res.redirect('/login');
+      throw new Error("not authorizes,invalid token");
     }
   } else {
-    // No token provided
     res.status(401);
-    throw new Error("not authorized, no token");
+
+    throw new Error("not authorizes,no token");
   }
 });
 
+const loginBlockCheck = asyncHandler(async (req, res, next) => {
+  const email = req.body.email;
 
-export { protect,isBlocked };
+  const user = await userHelper.findByEmail({ email });
 
+  if (!user) {
+    res.status(403); // Forbidden
 
+    throw new Error("please signup to login");
+  }
+
+  if (user.blocked === true) {
+    res.status(403); // Forbidden
+
+    throw new Error("User is blocked. Please contact support for assistance.");
+  }
+
+  next();
+});
+
+export { protectRoute, isBlocked, loginBlockCheck };

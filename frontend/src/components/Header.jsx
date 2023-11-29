@@ -49,9 +49,9 @@ const Header = () => {
               >
                 <i className="fas fa-play"></i> Course
               </Link> */}
-              <Link to ="/"  className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
+              {/* <Link to ="/"  className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
                 Home
-              </Link>
+              </Link> */}
 
               <Link
                 to="/instructor"
@@ -67,12 +67,41 @@ const Header = () => {
                 Videos
               </Link>
 
+
+
+              <Link
+                to="/getApprovedCourses"
+                className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+              >
+               Course 
+              </Link>
+
+              <Link
+                to="/my-learning"
+                className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+              >
+               Learn 
+              </Link>
+
+              
               <Link
                 to="/profile"
                 className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
               >
                 Profile
               </Link>
+
+              <Link
+                to="/subscription-plans"
+                // className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+                className="mr-2 text-1xl font-extrabold text-yellow-100 hover:text-yellow-700 w-12 h-12  "
+              >
+                $
+              </Link>
+
+
+
+
 
               {userInfo ? (
                 <Link

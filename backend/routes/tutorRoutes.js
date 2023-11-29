@@ -1,7 +1,8 @@
 import express from "express";
 
 const router = express.Router();
- import { protect } from "../middleware/protect.js";
+//  import { protect } from "../middleware/protect.js";
+ import { protectRoute } from "../middleware/authTutorMiddleware.js";
 import { multerImage } from "../config/MulterConfiguration.js";
 
 import {
@@ -34,7 +35,10 @@ router.put("/profile", multerImage.single("image"), updateTutorProfile);
 
 router.post("/add-video", multerImage.single("video"), addVideo);
 
-router.get("/get-courses", getAllCourses);
+// router.get("/get-courses",protectRoute, getAllCourses);
+
+
+router.get("/get-courses", protectRoute, getAllCourses);
 
 router.delete("/delete-video", videoDelete);
 router.delete("/delete-course", courseDelete);

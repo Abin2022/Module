@@ -140,6 +140,21 @@ export const adminApiSlice = apiSlice.injectEndpoints({
     }),
   }),
 
+  AddPlans: builder.mutation({
+    query: (data) => ({
+      url: `${ADMIN_URL}/add-plans`,
+      method: "POST",
+      body: data,
+    }),
+  }),
+
+  getAdminPlans: builder.mutation({
+    query: () => ({
+      url: `${ADMIN_URL}/get-plans`,
+      method: "GET",
+    }),
+  }),
+
   
   }),
 });
@@ -164,6 +179,9 @@ export const {
 
   useApproveCourseMutation,
   useRejectCourseMutation,
+
+  useAddPlansMutation,
+  useGetAdminPlansMutation,
 
   
  

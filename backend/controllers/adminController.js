@@ -11,6 +11,8 @@ import { fetchAllUsers , updateUser, deleteUser, fetchAllTutors ,
 
 import Domain from '../models/domainModel.js'
 import Courses from "../models/courseModel.js";
+import Plan from "../models/plans.js";
+ import { toast } from 'react-toastify';
 
 //new admin auth
 const authAdmin =asyncHandler (async (req,res)=>{
@@ -348,6 +350,43 @@ const rejectCourse = asyncHandler(async (req, res) => {
   }
 });
 
+const addPlans = asyncHandler(async (req, res) => {
+  const plan = req.body;
+
+  try {
+    const addedPlan = await Plan.create(plan);
+
+    if (addedPlan) {
+      res.status(200).json({ success: true });
+    } else {
+      res.status(200).json({ success: false });
+    }
+  } catch (error) {
+    // Handle errors, you might want to customize this part based on your needs
+    console.error(error);
+    toast.error(ValidationError)
+    res.status(500).json({ success: false, error: "Internal Server Error" });
+  }
+});
+
+const getPlans = asyncHandler(async (req, res) => {
+  try {
+    const plans = await Plan.find({}).sort({ _id: -1 });
+
+    if (plans) {
+      res.status(200).json(plans);
+    } else {
+      res.status(404).json({ message: "Plans not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
+
+export default getPlans;
+
+
+
 
 export  {authAdmin ,
     registerAdmin,
@@ -376,6 +415,9 @@ export  {authAdmin ,
     allCourses,
     approveCourse,
     rejectCourse,
+
+    addPlans,
+    getPlans,
 
 
 }

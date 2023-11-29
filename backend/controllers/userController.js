@@ -3,7 +3,12 @@ import User from "../models/userModel.js";
 import genToken from "../utils/genToken.js";
 import Courses from "../models/courseModel.js";
 import { isBlocked } from "../middleware/authMiddleware.js";
+import userHelper from "../helpers/userHelpers.js";
+import Plan from "../models/plans.js";
+import instance from "../utils/instance.js";
+import crypto from "crypto";
 
+const KEY_SECRET= "yXjHwM7lO6wpSg5aVdD6tsbF"
 
 const authUser = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
@@ -148,12 +153,6 @@ const getSingleCourse = asyncHandler(async (req, res) => {
 
 const getAllVideo = asyncHandler (async (req,res)=>{
 
-
-  // if (user.isBlocked) {
-  //   res.status(401); // Unauthorized status code for blocked users
-  //   throw new Error("This account is blocked. Please contact support.");
-  // }
-
   const viedo = {
     _id:req.user.id,
     name:req.user.name,
@@ -167,15 +166,19 @@ const getAllVideo = asyncHandler (async (req,res)=>{
 
 
 const getApprovedCourses = asyncHandler(async (req, res) => {
+  console.log('here in usercontri 165');
   const course = await Courses.find({ approved: true })
     .populate("tutorId", "name")
     .populate("domain", "domainName");
+    console.log(course,"in controller.................");
   if (course) {
     res.status(200).json(course);
   } else {
     res.status(200).json({ message: "There is no approved course" });
   }
 });
+
+
 
 const getTutorList = asyncHandler(async (req, res) => {
   const user = {
@@ -188,6 +191,117 @@ const getTutorList = asyncHandler(async (req, res) => {
 });
 
 
+const getUserPlans = asyncHandler(async (req, res) => {
+  try {
+    const plans = await Plan.find({ status: "active" }).sort({ _id: -1 });
+
+    if (plans) {
+      res.status(200).json(plans);
+    } else {
+      throw new Error("Active plans not found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
+
+const createOrder = asyncHandler(async (req, res) => {
+  try {
+    const price = req.body.price;
+
+    const options = {
+      amount: Number(price * 100),
+      currency: "INR",
+      receipt: "order_rcptid_11" + Date.now(),
+    };
+
+    const order = await instance.orders.create(options);
+    // console.log(order,"in createorder 220..");
+
+
+    if (order) {
+      res.status(200).json({ statusCode: 200, order });
+    } else {
+      res.status(500).json({ statusCode: 500, error: "Failed to create order" });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ statusCode: 500, error: "Internal Server Error" });
+  }
+});
+
+
+
+
+const paymentVerification = async (req, res) => {
+  try {
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      plan,
+      userId,
+      duration,
+    } = req.body;
+    
+    // console.log(razorpay_payment_id,"id", razorpay_signature,"sign", razorpay_order_id);
+   
+    const generated_signature = crypto 
+      .createHmac("sha256", KEY_SECRET)
+      .update(razorpay_order_id + "|" + razorpay_payment_id)
+      .digest("hex");
+      
+    // console.log(generated_signature,"generated_signature");
+    // console.log(razorpay_signature,"razorpay_signature");
+
+    if (generated_signature === razorpay_signature) {
+      userHelper.addPayment(req.body);
+      await userHelper.addSubscription(userId, plan, duration);
+
+      res.status(200).json({
+        success: true,
+        message: "Payment verified successfully",
+      });
+    } else {
+      res.status(400).json({
+        success: false,
+        message: "Invalid payment signature",
+      });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal Server Error",
+    });
+  }
+};
+
+const checkPlanStatus = asyncHandler(async (req, res) => {
+  try {
+    const userId = req.body.userId;
+    const user = await User.findById(userId);
+  //  console.log(userId,"userid");
+
+    if (user) {
+      const status = user.subscription_status === "active";
+      // console.log(status,"status");
+      res.status(200).json({ statusCode: 200, data: { status } });
+    } else {
+      res.status(200).json({ statusCode: 200, data: { status: false } });
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ statusCode: 500, data: { status: false } });
+  }
+});
+
+
+
+
 export {
   authUser,
   registerUser,
@@ -197,5 +311,9 @@ export {
   getTutorList,
   getSingleCourse,
   getAllVideo,
-  getApprovedCourses
+  getApprovedCourses,
+  getUserPlans,
+  createOrder,
+  paymentVerification,
+  checkPlanStatus
 };

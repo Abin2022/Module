@@ -39,26 +39,26 @@ const AdminHeader = () => {
           <>
 
             <Link to ="/admin" 
-             className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+             className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
             >
               Home
             </Link>
             <Link
               to="/admin/usersList"
-              className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+              className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
             >
               User 
             </Link>
 
             <Link
               to="/admin/tutorList"
-              className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+              className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
             >
               Tutor 
             </Link>
 
               <Link to="/admin/domain"
-               className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+               className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
                  
               >
                 Domain
@@ -66,10 +66,18 @@ const AdminHeader = () => {
 
               
               <Link to="/admin/courseList"
-               className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+               className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
                  
               >
                 Course list
+              </Link>
+
+               
+              <Link to="/admin/get-plans"
+               className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+                 
+              >
+               Plans
               </Link>
 
             <div className="flex items-center">
@@ -77,7 +85,7 @@ const AdminHeader = () => {
               <button
                 type="button"
                 onClick={logoutHandler}
-                className="text-red  hover:bg-red-700  text-white font-bold py-2 px-2 rounded"
+                className="text-red  hover:text-red-700  text-white font-bold py-2 px-2 rounded"
               >
                 Logout <BiLogOut className="inline-block ml-2" />
               </button>
