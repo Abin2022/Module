@@ -38,11 +38,7 @@ const AdminHeader = () => {
         {adminInfo ? (
           <>
 
-            <Link to ="/admin" 
-             className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
-            >
-              Home
-            </Link>
+          
             <Link
               to="/admin/usersList"
               className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
@@ -69,7 +65,7 @@ const AdminHeader = () => {
                className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
                  
               >
-                Course list
+                Course
               </Link>
 
                
@@ -78,8 +74,16 @@ const AdminHeader = () => {
                  
               >
                Plans
-              </Link>
+              </Link>  
 
+
+              {/* <Link to="/admin/get-subscriptions"
+               className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+                 
+              >
+               subscription List
+              </Link> */}
+ 
             <div className="flex items-center">
               {/* <p className="text-white mr-2">User List</p> */}
               <button

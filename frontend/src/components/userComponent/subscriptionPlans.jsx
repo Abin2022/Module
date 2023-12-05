@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { useCreateOrderMutation } from "../../slices/userApiSlice";
 import { useVerifyPaymentMutation } from "../../slices/userApiSlice";
 import { useCheckPlanStatusMutation } from "../../slices/userApiSlice";
-import { useNavigate } from "react-router-dom";
+import { redirect, useNavigate } from "react-router-dom";
 import { useSelector,useDispatch } from "react-redux";
 import { toast } from "react-toastify";
 import { logout } from "../../slices/authSlice";
@@ -16,10 +16,13 @@ const SubscriptionPlans = () => {
   const [plans, setPlans] = useState([]);
   const [price, setPrice] = useState("");
   const [plan, setPlan] = useState("");
+
   const [getPlans] = useGetUserPlansMutation();
   const [createOrder] = useCreateOrderMutation();
   const [verifyPayment] = useVerifyPaymentMutation();
   const [checkStatus] = useCheckPlanStatusMutation();
+
+
   const navigate = useNavigate();
   const dispatch=useDispatch()
   useEffect(() => {
@@ -44,9 +47,12 @@ const SubscriptionPlans = () => {
     }
   };
 
+  
   const checkPlanStatus = async (plan) => {
     try {
       const planStatus = await checkStatus({ userId: userInfo._id }).unwrap();
+
+      console.log(planStatus,"planStatus");
       if (planStatus.status === false) {
         initiatePayment(plan);
       } else {
@@ -58,7 +64,7 @@ const SubscriptionPlans = () => {
   };
 
   const verifypayment = async (response, planId, plan, price, duration) => {
-    console.log(response, planId, plan, price, duration,"verifyPayment");
+    // console.log(response, planId, plan, price, duration,"verifyPayment");
     const result = await verifyPayment({
 
       ...response,
@@ -161,12 +167,13 @@ const SubscriptionPlans = () => {
                   id="rzp-button1"
                   onClick={() => {
                     checkPlanStatus(plan);
-                   initiatePayment(plan);
+                    // initiatePayment(plan);
                   }}
                   className="text-white bg-yellow-900 rounded mt-3"
                 >
                   Subscribe
                 </button>
+
               </div>
            ))}  
           </div>

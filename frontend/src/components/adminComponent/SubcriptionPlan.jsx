@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import AddPlanModal from "./AddPlanModel";
 import { useGetAdminPlansMutation } from "../../slices/adminAdminApiSlice";
 import { toast } from "react-toastify";
+import { Link } from 'react-router-dom';
+
 
 const SubscriptionPlans = () => {
   const [plans, setPlans] = useState([]);
@@ -41,14 +43,31 @@ const SubscriptionPlans = () => {
   return (
     <div className="container mx-auto p-6 bg-gray-100 rounded-lg shadow-lg">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-3xl font-bold text-gray-800">Subscription Plans</h2>
+        <div className="flex justify-start">
+
         <button
           onClick={openModal}
-          className="bg-blue-500 hover:bg-green-500 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+          className="bg-green-400 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out"
         >
           Add new Plan
-        </button>
+        </button> 
+        </div>
+
+
+        <div className="flex justify-end ">
+       
+        <Link to="/admin/get-subscriptions">
+        <button
+          
+          className="bg-green-400 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out"
+        >
+          Get Subscribers List
+        </button></Link>
+       </div>
+      
       </div>
+      <h2 className="text-3xl font-bold text-gray-800">Subscription Plans</h2>
+      <br></br>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white border border-gray-300 rounded shadow-lg">
           <thead className="bg-gray-800 text-white">

@@ -1,20 +1,57 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setDomains } from "../../slices/domainSlice";
-//  import { RiFolderVideoLine } from "react-icons/ri";
-
-// import { ImBin2 } from "react-icons/im";
+import {
+  useCourseRatingMutation,
+  useCourseRevewMutation,
+} from "../../slices/userApiSlice";
+import FeedbackModel from "./FeedbackModal";
+import { toast } from "react-toastify";
 
 const getCoursesUrl = "http://localhost:5000/api/admin/get-courses";
 
 const CourseList = () => {
+  const { courseId } = useParams();
+  console.log(courseId, "courseId");
   const [courses, setCourses] = useState([]);
   const [err, setErr] = useState({});
   const [domainName, setDomainName] = useState("");
+  // const [isListView, setIsListView] = useState(false);
+  const [showVideos, setShowVideos] = useState(false);
+
+  //rating
+  const [rating, setRating] = useState(0);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const dispatch = useDispatch();
+  const [courseRating] = useCourseRatingMutation();
+
+  const handleStarClick = async (clickedRating) => {
+    console.log(clickedRating, "click rating");
+    setRating(clickedRating);
+    console.log(rating, "rating");
+    const res = await courseRating({ courseId, clickedRating }).unwrap();
+    dispatch(setCourses(res));
+  };
+
+  // const courses = useSelector((state) => state.courses.courses);
+  const course = courses?.course;
+  const userId = useSelector((state) => state.auth.userInfo._id);
+
+  const isRated = course?.rating.some((rate) => rate.userId._id === userId);
+  console.log(course?.rating);
+  console.log(userId);
+  console.log(isRated, "sdhfsadjkfh");
+
+  const [coursefeedback] = useCourseRevewMutation();
+  const handleFeedbackSubmit = async (feedback) => {
+    console.log("Feedback submitted:", feedback);
+
+    const res = await coursefeedback({ feedback, courseId }).unwrap();
+    dispatch(setCourses(res));
+  };
 
   const getDomain = async () => {
     try {
@@ -43,6 +80,14 @@ const CourseList = () => {
     }
   };
 
+  // const toSubscribtionPage = async () => {
+  //   try {
+  //     res.redirect("/subscription-plans");
+  //   } catch (error) {
+  //     toast.error(error);
+  //   }
+  // };
+
   useEffect(() => {
     getDomain();
   }, []);
@@ -69,81 +114,85 @@ const CourseList = () => {
                   <div className="w-3/4 pl-4">
                     <div className="font-bold mb-2">{course.courseName}</div>
                     <p>{course.description}</p>
+                    <br />
+
+                    <div className="text-base font-medium">
+                      <p>Skills Required :</p>
+                    </div>
+                    {course.requiredSkills}
                   </div>
                 </div>
-                <div>
-                  {/* <div className="font-bold mb-2">Course Details</div>
-                  <div className="text-base font-medium">        
-                    <p>Skills Required: {course.requiredSkills}</p>
-                    <p>
-                      Created On: {new Date(course.createdAt).toDateString()}
-                    </p>
-                  </div> */}
-                </div>
+                <div></div>
 
-                {/* <div className="border-[2px] p-3"> */}
-                <div className="text-lg p-2 font-semibold"> Course Videos</div>
-
-                {course?.videos.map((video, index) => (
-                  <div
-                    key={video.videoUniqueId}
-                    className="bg-slate-50 mt-1 p-4 rounded shadow-lg hover:translate-y-1 hover:translate-x-2 hover:bg-white flex justify-between items-center"
+                <div className="text-lg p-2 font-semibold">
+                  {" "}
+                  Course Videos
+                  <button
+                    onClick={() => setShowVideos(!showVideos)}
+                    className="text-white bg-gradient-to-r from-gray-700 to-gray-800 rounded mt-2 flex items-center justify-center p-2 hover:shadow-lg"
                   >
-                    <video width="220" height="140" controls className="mr-4">
-                      <source src={video.videoUrl} type="video/mp4" />
-                    </video>
-                    <span>{video.videoName}</span>
-                  </div>
-                ))}
-
-                {/* <div className="pl-2">
-                    <RiFolderVideoLine />
-
-                  </div> */}
-
-                <br></br>
-                <br />
-                <div className="font-bold mb-2">Course Details</div>
-                <div className="text-base font-medium">
-                  <p>Skills Required : {course.requiredSkills}</p>
-                  <p>
-                    Created On : {new Date(course.createdAt).toDateString()}
-                  </p>
+                    {showVideos ? "Hide Videos" : "Show Videos"}
+                  </button>
                 </div>
-
-                <div>
-                  <h2 className=" hover:bg-slate-200   drop-shadow-lg">
-                    Price :
-                    <span className="text-red-500"> ₹ {course.price}</span>
-                  </h2>
-                </div>
-
-              
-                <br />
-                <br />
-
-                {/* {!courses.purchased && (
-                  <div className=" flex justify-center items-center">
-                    <Link to={`/order/${course?._id}`}>
-                      <button className="bg-green-400 text-white text-lg font-semibold p-2 hover:bg-green-700 w-44 drop-shadow-lg">
-                        Purchase
-                      </button>
-                    </Link>
+                {showVideos && (
+                  <div>
+                    {course?.videos.map((video, index) => (
+                      <div
+                        key={video.videoUniqueId}
+                        className="bg-slate-50 mt-1 p-4 rounded shadow-lg hover:translate-y-1 hover:translate-x-2 hover:bg-white flex justify-between items-center"
+                      >
+                        <video
+                          width="220"
+                          height="140"
+                          controls
+                          className="mr-4"
+                        >
+                          <source src={video.videoUrl} type="video/mp4" />
+                        </video>
+                        <span>{video.videoName}</span>
+                      </div>
+                    ))}
                   </div>
-                )} */}
+                )}
 
-                <button
-                  id="rzp-button1"
-                  onClick={() => handleSubscribeClick(plan)}
-                  className="text-white bg-yellow-900 rounded mt-3 flex items-center justify-center"
+                <br />
+
+                <div
+                  onClick={() => setIsModalOpen(true)}
+                  // className="border-2 border-gray-700 "
                 >
-                  <span className="mr-2 text-4xl font-extrabold text-yellow-100 hover:bg-red-700 w-12 h-12  ">
-                    $
-                  </span>
-                  <span className="ml-9 mr-9 hover:text-red-100  flex items-center justify-center">Subscribe For Video Access</span>
-                </button>
+                  <div 
+                  // className=" text-gray-700  w-2/4 
+                  className="text-white bg-gradient-to-r from-gray-700 to-gray-800 rounded mt-2 flex items-center justify-center p-2 hover:shadow-lg"
+
+                  >
+                    {" "}
+                    Give a Feedback!
+                  </div>
+                </div>
+                <FeedbackModel
+                  isOpen={isModalOpen}
+                  onRequestClose={() => setIsModalOpen(false)}
+                  onSubmit={handleFeedbackSubmit}
+                />
+                <br />
+
+                <div className="pr-3 text-center">Rate This Course</div>
+                <div className="flex items-center justify-center">
+                  {[1, 2, 3, 4, 5].map((index) => (
+                    <button
+                      key={index}
+                      onClick={() => handleStarClick(index)}
+                      className={`text-2xl ${
+                        index <= rating ? "text-yellow-500" : "text-gray-300"
+                      } focus:outline-none`}
+                    >
+                      ★
+                    </button>
+                  ))}
+                </div>
               </div>
-            ))}
+            ))}  
           </div>
         </div>
       ) : (

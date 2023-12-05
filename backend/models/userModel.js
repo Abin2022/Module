@@ -29,7 +29,25 @@ const userSchema = mongoose.Schema(
     },
     viedo:{
       type:String
-    }
+    },
+
+    subscription_status: {
+      type: String,
+      required: true,
+      default: "false", 
+    },
+    subscribed_plan: {
+      type: String,
+      required: true,
+      default: "no current plans", 
+    },
+    subscription_expire: {
+      type: Date, 
+    },
+
+    
+
+
   },
   {
     timestamps: true,

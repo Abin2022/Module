@@ -19,7 +19,9 @@ import {
   getUserPlans,
   createOrder,
   paymentVerification,
-  checkPlanStatus
+  checkPlanStatus,
+  addCourseRating,
+  addCourseReview
 
 } from "../controllers/userController.js";
 
@@ -49,7 +51,13 @@ router.get("/single-course",protectRoute, getSingleCourse);
  router.post('/create-order',createOrder)
  
  router.post('/verify-payment',protectRoute,paymentVerification)
- router.post('/check-plan-status',checkPlanStatus)
+ router.post('/check-plan-status',checkPlanStatus);
+
+
+
+ router.post("/course-rating", addCourseRating);
+
+router.post("/course-review", addCourseReview);
 
 
 

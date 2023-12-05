@@ -62,7 +62,7 @@ const submitHandler = async (e) => {
   e.preventDefault();
 
   // Form validation
-  if (!domainName || !courseName || !description || !price || !requiredSkill || !caption || !image) {
+  if (!domainName || !courseName || !description || !requiredSkill || !caption || !image) {
     toast.error('Please fill in all required fields');
     return;
   }
@@ -72,7 +72,7 @@ const submitHandler = async (e) => {
     formData.append("domain", domainName);
     formData.append("courseName", courseName);
     formData.append("description", description);
-    formData.append("price", price);
+    // formData.append("price", price);
     formData.append("requiredSkill", requiredSkill);
     formData.append("caption", caption);
     formData.append("image", image);
@@ -380,7 +380,7 @@ const submitHandler = async (e) => {
                 </div> */}
 
 
-                <div className="mb-4">
+                {/* <div className="mb-4">
                   <label
                     htmlFor="price"
                     className="block text-blue-900 font-semibold"
@@ -396,7 +396,8 @@ const submitHandler = async (e) => {
                     className="w-full border border-gray-600 px-3 py-2"
                     placeholder="Price"
                   />
-                </div>
+                </div> */}
+
                 <div className="flex justify-center">
                   <button
                     type="submit"

@@ -183,23 +183,24 @@ const TutorListUserSide = ({ tutor }) => {
       <br></br>
       <br></br>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {paginatedTutors.map((tutor, index) => (
-          <div
-            key={index}
-            className="bg-white border rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105"
-          >
-            <div className="p-4">
-              <h2 className="flex items-center font-bold justify-center mb-2">
-                {tutor.name.toUpperCase()}
-              </h2>
-              <p className="text-gray-700 mb-2">Contact: {tutor.email}</p>
-              <p className="text-gray-700 mb-2">Experience: {tutor.experience}</p>
-              <p className="text-gray-700 mb-2">Qualification: {tutor.qualification}</p>
-            </div>
-          </div>
-        ))}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-9 md:grid-cols-3 lg:grid-cols-4">
+  {paginatedTutors.map((tutor, index) => (
+    <div
+      key={index}
+      className="bg-white border rounded-lg overflow-hidden shadow-lg transition-transform transform hover:scale-105"
+    >
+      <div className="p-4">
+        <h2 className="flex items-center font-bold justify-center mb-2">
+          {tutor.name.toUpperCase()}
+        </h2>
+        <p className="text-gray-700 mb-2">Contact: {tutor.email}</p>
+        <p className="text-gray-700 mb-2">Experience: {tutor.experience}</p>
+        <p className="text-gray-700 mb-2">Qualification: {tutor.qualification}</p>
       </div>
+    </div>
+  ))}
+</div>
+
 
       {/* Pagination Controls */}
       <div className="mt-4 flex justify-center space-x-2 ">

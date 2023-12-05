@@ -9,6 +9,17 @@ const videoSchema = new mongoose.Schema({
   duration: {
     type: Number,
   },
+  
+  //new
+  viewers: [
+    {
+      userId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    },
+  ],
+
 });
 const courseSchema = mongoose.Schema(
   {
@@ -59,6 +70,33 @@ const courseSchema = mongoose.Schema(
     previewVideoName: {
       type: String,
     },
+
+    rating: [
+      {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        rate: {
+          type: Number,
+          default: 0,
+        },
+      },
+    ],
+    reviews: [
+      {
+        userId: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+        },
+        review: {
+          type: String,
+        },
+      },
+    ],
+
+
+
     caption: {
       type: String,
     },

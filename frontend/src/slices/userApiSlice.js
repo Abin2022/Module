@@ -120,6 +120,21 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
     }),
 
+    courseRating: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/course-rating`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    courseRevew: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/course-review`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
     
 
   }),
@@ -142,6 +157,8 @@ export const {
   useVerifyPaymentMutation,
   useAddPaymentMutation,
   useCheckPlanStatusMutation,
+  useCourseRatingMutation,
+  useCourseRevewMutation,
                 
  
 } = userApiSlice;

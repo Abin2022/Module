@@ -6,7 +6,7 @@ const JWT_SECRET = "abc123"
 
 
 const protectRoute = asyncHandler(async (req, res, next) => {
-  console.log("Entered into user auth middleware..");
+  // console.log("Entered into user auth middleware..");
 
   let token;
 
@@ -14,14 +14,14 @@ const protectRoute = asyncHandler(async (req, res, next) => {
 
   // req.user = await User.findById(decoded.id).select("-password");
 
-  console.log(token,"token in authmiddle");
+  // console.log(token,"token in authmiddle");
   if (token) {
     try {
       const decoded = jwt.verify(token, JWT_SECRET);
 
       req.user = await userHelper.findUserByIdForMiddleWare(decoded.userId);
 
-      console.log(req.user,"req.user in authmiddleware");
+      // console.log(req.user,"req.user in authmiddleware");
 
       next();
     } catch (error) {
@@ -37,7 +37,7 @@ const protectRoute = asyncHandler(async (req, res, next) => {
 });
 
 const isBlocked = asyncHandler(async (req, res, next) => {
-  console.log("Entered into user auth middleware..");
+  // console.log("Entered into user auth middleware..");
 
   let token;
 
@@ -50,7 +50,7 @@ const isBlocked = asyncHandler(async (req, res, next) => {
       const user = await userHelper.findUserByIdForMiddleWare(
         decoded.userId
       );
-      console.log(!user.blocked,"!user.blocked");
+      // console.log(!user.blocked,"!user.blocked");
       if (!user.blocked) {
 
         next();

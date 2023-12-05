@@ -32,6 +32,8 @@ import TutorList from "./components/tutorComponent/tutorList.jsx";
 import CourseLists from "./components/adminComponent/CourseList.jsx";
 // import AddPlanModel from "./components/adminComponent/AddPlanModel.jsx"
 import SubscriptionListAdminSide from "./components/adminComponent/SubcriptionPlan.jsx"
+import SubscribeList from "./components/adminComponent/Subscription.jsx"
+
 
 //tutor
 import TutorLoginPage from "./components/tutorComponent/tutorLoginPage.jsx";
@@ -56,7 +58,7 @@ const router = createBrowserRouter(
       <Route path="" element={<PrivateRoute />}>
         <Route path="/profile" element={<ProfileScreen />} />
         <Route path="/single-course" element={<CourseList />} />
-        <Route path="/videos" element={<Viedo />} />
+        {/* <Route path="/videos" element={<Viedo />} /> */}
         <Route path="/instructor" element={<TutorPage />} />
         <Route path="/getApprovedCourses" element={<CourseListUserSide/>}/>
         <Route path="/my-learning" element={<MyLearningPage />} />
@@ -89,6 +91,7 @@ const router = createBrowserRouter(
       <Route path="/admin/courseList" element={<CourseLists />} />
       {/* <Route path="/admin/add-plans" element={<AddPlanModel/>}/> */}
       <Route path="/admin/get-plans" element={<SubscriptionListAdminSide/>}/>
+      <Route path="/admin/get-subscriptions"  element={<SubscribeList/>}/>
 
       
     </Route>

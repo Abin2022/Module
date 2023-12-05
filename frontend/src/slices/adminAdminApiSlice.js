@@ -155,6 +155,13 @@ export const adminApiSlice = apiSlice.injectEndpoints({
     }),
   }),
 
+  getSubscriptions: builder.mutation({
+    query: () => ({
+      url: `${ADMIN_URL}/get-subscriptions`,
+      method: "GET",
+    }),
+  }),
+
   
   }),
 });
@@ -182,6 +189,7 @@ export const {
 
   useAddPlansMutation,
   useGetAdminPlansMutation,
+  useGetSubscriptionsMutation,
 
   
  

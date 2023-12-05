@@ -1,459 +1,168 @@
-<NavDropdown title={adminInfo.name} id = 'username'>
-                            <Link to = '/admin/usersList'>
-                                <NavDropdown.Item>
-                                User List
-                                </NavDropdown.Item>
-                            </Link>
-                           
-                            <Link to = '/admin/logout'>
-                                <NavDropdown.Item onClick={logoutHandler}>
-                                    Logout
-                                </NavDropdown.Item>
-                            </Link>
-                        </NavDropdown>
+import React, { useState, useEffect } from "react";
+import axios from "axios";
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setDomains } from "../../slices/domainSlice";
+//  import { RiFolderVideoLine } from "react-icons/ri";
 
+// import { ImBin2 } from "react-icons/im";
 
+const getCoursesUrl = "http://localhost:5000/api/admin/get-courses";
 
-import React,{useState,useEffect}  from 'react';
-// import Table from "react-bootstrap/Table";
-// import Form from 'react-bootstrap/Form';
-// import { Button, Modal,  Form as BootstrapForm } from "react-bootstrap";
-import { useDeleteUserMutation,useUpdateUserByAdminMutation,  useBlockUserMutation,
-  useUnblockUserMutation, } from "../slices/adminAdminApiSlice"
-import { toast } from "react-toastify";
+const CourseList = () => {
+  const [courses, setCourses] = useState([]);
+  const [err, setErr] = useState({});
+  const [domainName, setDomainName] = useState("");
 
+  const dispatch = useDispatch();
 
-function TableComponent({ users }) {
-       //to handle search
-      const [searchQuery, setSearchQuery] = useState('');
-      const [actualData, setActualData] = useState([]);
-
-      //delete things
-      const [deleteConfirmation,setDeleteConfirmation ]=useState(false)
-      const [userIdToDelete, setUserIdToDelete] = useState(null); // Track the user ID to delete
-
-    
-
-      //to handle search
-      const handleSearch = (event) => {
-        setSearchQuery(event.target.value);
-      };
-      
-      //to handle search
-      const filteredUsers = users.filter((user) =>
-      user.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-      user.email.toLowerCase().includes(searchQuery.toLowerCase()) 
-    );
-   
-
-    //delete things
-    const [deleteUser, { isLoading }] = useDeleteUserMutation();  
-    
-
-    const handleDelete = async () =>{
-        try{
-            const responseFromApiCall = await deleteUser( {userId : userIdToDelete});
-            toast.success("User Deleted Successfully");
-            setUserIdToDelete(null)
-            setDeleteConfirmation(false)
-            window.location.reload();
-        }catch(err){
-          toast.error(err?.data?.message || err?.error)
-        }
-    }
-   //update
-   const [updateUserByAdmin, { isLoading: isUpdating }] = useUpdateUserByAdminMutation();
-
-   const [userIdToUpdate, setUserIdToUpdate] = useState("");
-    const [updateUserName, setUpdateUserName]=useState("");
-    const [updateUserEmail, setUpdateUserEmail] = useState("");
-   const [ showUpdateModal, setShowUpdateModal ] = useState(false);
-
-   const handleOpenUpdateModal = (user) => {
-    setUserIdToUpdate(user._id)
-    setUpdateUserName(user.name);
-    setUpdateUserEmail(user.email);
-    setShowUpdateModal(true);
-  };
-
-  const handleUpdate = async () => {
+  const getDomain = async () => {
     try {
-      const responseFromApiCall = await updateUserByAdmin({
-        userId: userIdToUpdate,
-        name: updateUserName,
-        email: updateUserEmail
+      const res = await axios.get("http://localhost:5000/api/admin/domain", {
+        withCredentials: true,
       });
-      toast.success("User Updated Successfully.");
-      setUserIdToUpdate(null); // Clear the user ID to update
-      setShowUpdateModal(false); // Close the update modal
 
-      // Reload the page to reflect the updated data
-      window.location.reload();
-      
+      const domains = res.data;
+      const domainNames = domains.map((domain) => domain.domainName);
+
+      dispatch(setDomains(domainNames));
     } catch (err) {
-      toast.error(err?.data?.message || err?.error);
+      console.error("Error fetching domain data:", err);
     }
   };
 
-
-
-  //ss
-  const [blockUser] = useBlockUserMutation();
-  const [unblockUser] = useUnblockUserMutation();
-  const [refresher, setRefresher] = useState("");
-
-  const fetchUserData = async () => {
+  const getCourse = async () => {
     try {
-      const response = await axios.get("http://localhost:5000/api/admin/users");
-      setActualData(response.data);
+      const res = await axios.get(getCoursesUrl, {
+        withCredentials: true,
+        params: { domain: domainName },
+      });
+      setCourses(res.data);
     } catch (error) {
-      console.error("Error fetching user data:", error);
-      toast.error("Error fetching user data");
+      console.error("Error fetching courses:", error);
     }
   };
-
 
   useEffect(() => {
-    // Fetch user data from the backend
-    fetchUserData();
-  }, [refresher]);
+    getDomain();
+  }, []);
 
+  useEffect(() => {
+    getCourse();
+  }, [domainName]);
 
-  const handleBlockUser = async (userId) => {
-    const confirmBlock = window.confirm(
-      "are you sure you want to block this user?"
-    );
-    if (confirmBlock) {
-      try {
-        await blockUser({ userId });
-
-        toast.success("user blocked");
-
-        setRefresher("blocked");
-      } catch (err) {
-        console.error("Error blocking user:", err);
-        // Show an error toast
-        toast.error("An error occurred while blocking the user.");
-      }
-    }
-  };
-
-
-  
-  const handleUnBlockUser = async (userId) => {
-    const confirmUnblock = window.confirm(
-      "Are you sure you want to unblock this user?"
-    );
-    if (confirmUnblock) {
-      try {
-        await unblockUser({ userId });
-        toast.success("User unblocked successfully");
-        // Refetch user data and update state after unblocking
-        setRefresher("unblocked");
-      } catch (err) {
-        console.error("Error unblocking user:", err);
-        // Show an error toast
-        toast.error("An error occurred while unblocking the user.");
-      }
-    }
-  };
-
-
-  // const [isBlock] = useBlockUserMutation();  
-
-
-  // const [blockUser,setBlockUser ]=useState(false)
-  //     const [userIdToBlock, setUserIdToBlock] = useState(null);  // Track the user ID to delete
-
-  // const handleBlockuser = async () =>{
-  //     try{
-  //         const responseFromApiCall = await isBlock( {userId : userIdToBlock});
-  //         toast.success("User Blocked Successfully");
-  //         setUserIdToBlock(null)
-  //         setBlockUser(false)
-  //         window.location.reload();
-  //     }catch(err){
-  //       toast.error(err?.data?.message || err?.error)
-  //       // toast.success("User Blocked Successfully");
-  //     }
-  // }
-  // //unblock user
-
-  // const [isUnblock] =useUnblockUserMutation();
-
-  // const [unBlockUser,setUnBlockUser]= useState(false);
-  // const [userIdToUnBlockUser,setUserIdToUnBlockUser] = useState(null);
-  
-  //  const handleUnBlockuser = async()=>{
-  //   try{
-  //     const responseFromApiCall = await isUnblock( {userId :userIdToUnBlockUser } );
-  //     toast.success("user Unblocked Sucessfully");
-  //     setUserIdToUnBlockUser(null);
-  //     setUnBlockUser(false)
-  //     window.location.reload();
-  //   }catch(err){
-  //     toast.error(err?.data?.message || err?.error)
-  //   }
-  //  }
-
+  const domains = useSelector((state) => state.domains.domains);
 
   return (
-    <>
     <div>
-    <div className="mt-3" controlId="examplediv.ControlInput1">
-   
-      <div style={{width:"500px"}} value={searchQuery} type="text" placeholder="Search" onChange={handleSearch} />
-    </div>
-  </div>
-  <br/>
-  <div striped bordered hover responsive>
-    <thead>
-      <tr>
-        <th>SL NO</th>
-        <th>NAME</th>
-        <th>EMAIL</th>
-        <th>ACTION</th>
-        <th>ACTION</th>
-        <th>ACTION</th>
-      </tr>
-    </thead>
-    <tbody>
-      {filteredUsers.map((user, index) => (
-        <tr key={index}>
-          <td>{index + 1}</td>
-          <td>{user.name}</td>
-          <td>{user.email}</td>
-          
-          <td><button
-                type="button"
-                variant="danger"
-                className="mt-3"
-                onClick={() => {
-                    setUserIdToDelete(user._id); // Set the user ID to delete
-                    setDeleteConfirmation(true); // Open the confirmation dialog
-                  }}
-               
-              >
-                Delete
-              </button></td>
-              <td>  <button
-                type="button"
-                variant="primary"
-                className="mt-3"
-                onClick={() => handleOpenUpdateModal(user)}
-               
-              >
-                Update
-              </button></td>
+      {courses.length > 0 ? (
+        <div className="ml-6">
+          <div className="text-2xl font-bold mb-4">My Courses in user side</div>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
+            {courses.map((course, index) => (
+              <div key={index} className="bg-black-90 p-4 rounded shadow-lg">
+                <div className="flex mb-4">
+                  <div className="w-1/4 bg-slate-50 h-50">
+                    <img src={course.thumbnail} alt="thumbnail" className="" />
+                    <div className="text-sm mt-1">{course.caption}</div>
+                  </div>
+                  <div className="w-3/4 pl-4">
+                    <div className="font-bold mb-2">{course.courseName}</div>
+                    <p>{course.description}</p>
+                  </div>
+                </div>
+                <div>
+                  {/* <div className="font-bold mb-2">Course Details</div>
+                  <div className="text-base font-medium">        
+                    <p>Skills Required: {course.requiredSkills}</p>
+                    <p>
+                      Created On: {new Date(course.createdAt).toDateString()}
+                    </p>
+                  </div> */}
+                </div>
 
-              <td className="py-2 px-4 text-center">
-                  {user.isBlocked ? (
-                    <button
-                      
-                      type='button'  
-                      className="mt-3"
-                      variant='danger'
-                      onClick={() => handleUnBlockUser(user._id)}         >
-                      Unblock
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleBlockUser(user._id)}
-                      className="mt-3"
-                      variant='danger'
-                      type='button'
-                    >
-                      Block
-                    </button>
-                  )}
-                </td>
+                {/* <div className="border-[2px] p-3"> */}
+                <div className="text-lg p-2 font-semibold"> Course Videos</div>
 
-
-              {/* <td className="border px-4 py-2">
-                {user.isBlocked ? (
-                  <Button className="mt-3" 
-                  type="button"
-                  variant="danger" 
-                  onClick={()=>{
-                    setUserIdToUnBlockUser(user_id);
-                    setUnBlockUser(true)
-                  }}
+                {course?.videos.map((video, index) => (
+                  <div
+                    key={video.videoUniqueId}
+                    className="bg-slate-50 mt-1 p-4 rounded shadow-lg hover:translate-y-1 hover:translate-x-2 hover:bg-white flex justify-between items-center"
                   >
-                    UnBlock
-                  </Button>
-                ) : (
-                  <Button className="mt-3" type="button"
-                  variant="danger"   onClick={()=>{
-                    setUserIdToBlock(user._id); // Set the user ID to block
-                    setBlockUser(true); // Open the confirmation dialog
-                  }}>
-                    Block
-                  </Button>
-                )}
-              </td> */}
-               {/* <tbody>
-            {actualData.map((user, index) => (
-              <tr
-                key={user._id}
-                className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}
-              >
-                <td className="py-2 px-4 text-center">{user._id}</td>
-                <td className="py-2 px-4 text-center">{user.name}</td>
-                <td className="py-2 px-4 text-center">{user.email}</td>
-                <td className="py-2 px-4 text-center">
-                  {user.blocked ? (
-                    <button
-                      onClick={() => handleUnBlockUser(user._id)}
-                      className="mt-3"
-                      variant='danger'
-                      type='button'                    >
-                      Unblock
-                    </button>
-                  ) : (
-                    <button
-                      onClick={() => handleBlockUser(user._id)}
-                      className="mt-3"
-                      variant='danger'
-                      type='button'
-                    >
-                      Block
-                    </button>
-                  )}
-                </td>
-              </tr>
+                    <video width="220" height="140" controls className="mr-4">
+                      <source src={video.videoUrl} type="video/mp4" />
+                    </video>
+                    <span>{video.videoName}</span>
+                  </div>
+                ))}
+
+                {/* <div className="pl-2">
+                    <RiFolderVideoLine />
+
+                  </div> */}
+
+                <br></br>
+                <br />
+                <div className="font-bold mb-2">Course Details</div>
+                <div className="text-base font-medium">
+                  <p>Skills Required : {course.requiredSkills}</p>
+                  <p>
+                    Created On : {new Date(course.createdAt).toDateString()}
+                  </p>
+                </div>
+
+                <div>
+                  <h2 className=" hover:bg-slate-200   drop-shadow-lg">
+                    Price :
+                    <span className="text-red-500"> ₹ {course.price}</span>
+                  </h2>
+                </div>
+
+              
+                <br />
+                <br />
+
+                {/* {!courses.purchased && (
+                  <div className=" flex justify-center items-center">
+                    <Link to={`/order/${course?._id}`}>
+                      <button className="bg-green-400 text-white text-lg font-semibold p-2 hover:bg-green-700 w-44 drop-shadow-lg">
+                        Purchase
+                      </button>
+                    </Link>
+                  </div>
+                )} */}
+
+                <button
+                  id="rzp-button1"
+                  onClick={() => handleSubscribeClick(plan)}
+                  className="text-white bg-yellow-900 rounded mt-3 flex items-center justify-center"
+                >
+                  <span className="mr-2 text-4xl font-extrabold text-yellow-100 hover:text-yellow-700 w-12 h-12  ">
+                    $
+                  </span>
+                  <span className="ml-9 mr-9 hover:text-red-100  flex items-center justify-center">Subscribe For Video Access</span>
+                </button>
+              </div>
             ))}
-          </tbody> */}
-        </tr>
-      ))}
-    </tbody>
-  </div>
- 
-
-   {/* update user model */}
-   <Modal show={showUpdateModal} onHide={()=>setShowUpdateModal(false)}>
-   <Modal.Header closeButton>
-          <Modal.Title>Update User</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          <BootstrapForm>
-            <BootstrapForm.Group controlId="name">
-              <BootstrapForm.Label>Name</BootstrapForm.Label>
-              <BootstrapForm.Control
-                type="text"
-                value={updateUserName}
-                onChange={(e) =>
-                    setUpdateUserName(e.target.value)
-                }
-              />
-            </BootstrapForm.Group>
-            <BootstrapForm.Group controlId="email">
-              <BootstrapForm.Label>Email</BootstrapForm.Label>
-              <BootstrapForm.Control
-                type="email"
-                value={updateUserEmail}
-                onChange={(e) =>
-                    setUpdateUserEmail(e.target.value)
-                }
-              />
-            </BootstrapForm.Group>
-          </BootstrapForm>
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowUpdateModal(false)}>
-            Cancel
-          </Button>
-          <Button variant="primary" onClick={handleUpdate} disabled={isUpdating}>
-            {isUpdating ? "Updating..." : "Update"}
-          </Button>
-        </Modal.Footer>
-
-   </Modal>
-      
-   
-
-    {/* Confirmation Dialog */}
-    <Modal show={deleteConfirmation} onHide={() => setDeleteConfirmation(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirm Deletion</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you sure you want to delete this user?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setDeleteConfirmation(false)}>
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={handleDelete} disabled={isLoading}>
-            {isLoading ? "Deleting..." : "Delete"}
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-       {/* block confirmation*/}
-      <Modal show={blockUser} onHide={() => setBlockUser(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirm Block</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you sure you want to Block this user?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setBlockUser(false)}>
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={handleBlockuser} disabled={isLoading}>
-            {isLoading ? "Blocking..." : "Block"}
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-
-         {/* Unblock confirmation*/}
-         <Modal show={unBlockUser} onHide={() => setUnBlockUser(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Confirm Un-Block</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>Are you sure you want to UnBlock this user?</Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setUnBlockUser(false)}>
-            Cancel
-          </Button>
-          <Button variant="danger" onClick={handleUnBlockuser} disabled={isLoading}>
-            {isLoading ? "UnBlocking..." : "UnBlock"}
-          </Button>
-        </Modal.Footer>
-      </Modal>
-
-
-  </>
+          </div>
+        </div>
+      ) : (
+        <div className="flex flex-col h-screen justify-center items-center">
+          {" "}
+          <div className="w-60 h-60">
+            <img
+              src="https://s.udemycdn.com/teaching/support-1-v3.jpg"
+              alt="Right Image"
+            />
+          </div>
+          <div className="text-4xl font-serif">No Course Available</div>
+          <div className="mt-4">
+            {/* Add Link component or button to navigate to add-course page */}
+          </div>
+        </div>
+      )}
+    </div>
   );
-}
+};
 
-export default TableComponent;
-
-
-
-// import Header from "./components/Header";
-// import AdminHeader from "./components/AdminHeader";
-
-// import React from "react";
-// // import { Container } from "react-bootstrap";
-// import { Outlet,useLocation } from "react-router-dom";
-// import { ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
-
-// const App = () => {
-//    const location = useLocation()
-//    const isAdminSide = location.pathname.startsWith("/admin" );
-   
-//   return (
-//     <>
-   
-//     {isAdminSide ? <AdminHeader/> : <Header/>}
-//       <ToastContainer />
-//       <div className="my-2">
-//         <Outlet />
-//       </div>
-//     </>
-//   );
-// };
-
-// export default App;
-
-
+export default CourseList;

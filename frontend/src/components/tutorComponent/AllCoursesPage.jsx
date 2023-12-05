@@ -128,7 +128,7 @@ const AllCoursesPage = () => {
                 <div>
                   <div className="font-bold mb-2">Course Details</div>
                   <div className="text-base font-medium">
-                    <p>Price: {course.price}</p>
+                    {/* <p>Price: {course.price}</p> */}
                     <p>
                       Created On: {new Date(course.createdAt).toDateString()}
                     </p>
@@ -164,7 +164,7 @@ const AllCoursesPage = () => {
                         <div className="bg-white mt-1 p-4 rounded shadow-lg hover:translate-y-1 hover:translate-x-2 hover:bg-white flex justify-between items-center">
                           {video.videoName}
                           <div className="">
-                            <ImBin2
+                            {/* <ImBin2
                               onClick={(e) => {
                                 e.preventDefault();
                                 handleVideoDelete(
@@ -172,7 +172,7 @@ const AllCoursesPage = () => {
                                   course._id
                                 );
                               }}
-                            />
+                            /> */}
                           </div>
                         </div>
                       </a>

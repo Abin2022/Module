@@ -1,13 +1,17 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux"; // Add this import
+import { useDispatch } from "react-redux";
 import { useAddVideoMutation } from "../../slices/tutorApiSlice";
 import Loader from "../Loader";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { Link } from "react-router-dom";
 
 const AddVideoModal = ({ isOpen, onClose, courseId }) => {
   const [video, setVideo] = useState(null);
   const [videoName, setVideoName] = useState("");
+  const [formValid, setFormValid] = useState(true); // Track form validity
   const [addVideos, { isLoading }] = useAddVideoMutation();
-  const dispatch = useDispatch(); // Get the dispatch function
+  const dispatch = useDispatch();
 
   if (!isOpen) {
     return null;
@@ -17,9 +21,19 @@ const AddVideoModal = ({ isOpen, onClose, courseId }) => {
     const file = e.target.files[0];
     setVideo(file);
   };
+  const handleCancelClick = () => {
+    window.location.reload()
+    // res.redirect("/tutor/courses");
+  };
 
   const submitVideoHandler = async (e) => {
     e.preventDefault();
+
+    if (!video || !videoName) {
+      setFormValid(false);
+      toast.error("Please fill in all fields");
+      return;
+    }
 
     try {
       const formData = new FormData();
@@ -30,7 +44,9 @@ const AddVideoModal = ({ isOpen, onClose, courseId }) => {
       const res = await addVideos(formData).unwrap();
 
       window.location.reload();
-    } catch (error) {}
+    } catch (error) {
+      // Handle other errors if needed
+    }
   };
 
   return (
@@ -60,12 +76,23 @@ const AddVideoModal = ({ isOpen, onClose, courseId }) => {
                 className="mb-4 p-2 w-full border rounded border-black"
                 rows="4"
               />
+              {!formValid && (
+                <p className="text-red-500 mb-4">Please fill in all fields</p>
+              )}
               <div className="flex justify-end">
                 <button
                   type="submit"
                   className="bg-gray-950 text-white hover:bg-gray-300 hover:text-slate-950 hover:font-bold px-4 py-2 rounded border-black"
                 >
                   Upload
+                </button>
+                
+                <button 
+                onClick={handleCancelClick}
+               className="bg-gray-950 text-white hover:bg-gray-300 hover:text-slate-950 hover:font-bold px-4 py-2 rounded border-black"
+
+                >
+                  Cancel
                 </button>
                
               </div>

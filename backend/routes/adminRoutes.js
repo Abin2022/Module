@@ -26,6 +26,7 @@ import { authAdmin,
     rejectCourse,
     addPlans,
     getPlans,
+    getSubscriptions,
  } from '../controllers/adminController.js'
 
  import {protect } from '../middleware/authAdminMiddleware.js'
@@ -62,6 +63,7 @@ router.post("/add-plans",addPlans)
 router.get('/get-plans',getPlans)
 
 
+router.get('/get-subscriptions',getSubscriptions)
 
 
 

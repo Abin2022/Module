@@ -13,6 +13,8 @@ import Domain from '../models/domainModel.js'
 import Courses from "../models/courseModel.js";
 import Plan from "../models/plans.js";
  import { toast } from 'react-toastify';
+import Payment from '../models/Payments.js'
+
 
 //new admin auth
 const authAdmin =asyncHandler (async (req,res)=>{
@@ -383,8 +385,24 @@ const getPlans = asyncHandler(async (req, res) => {
   }
 });
 
-export default getPlans;
+// export default getPlans;
 
+
+
+const getSubscriptions = asyncHandler(async (req, res) => {
+  try {
+    const subscriptions = await Payment.find({}).sort({ _id: -1 });
+  //  console.log(subscriptions,"subscriptions");
+
+    if (subscriptions) {
+      res.status(200).json(subscriptions);
+    } else {
+      res.status(404).json({ message: "Subscriptions not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+});
 
 
 
@@ -418,6 +436,7 @@ export  {authAdmin ,
 
     addPlans,
     getPlans,
+    getSubscriptions,
 
 
 }

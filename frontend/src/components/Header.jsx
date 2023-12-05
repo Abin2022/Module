@@ -42,7 +42,6 @@ const Header = () => {
 
           <div className="space-x-4">
             <div className="flex space-x-4">
-            
               {/* <Link
                 to="/course/:courseId"
                 className=" bg-gray-800   hover:bg-gray-400 text-white font-bold py-2 px-2 rounded"
@@ -55,58 +54,51 @@ const Header = () => {
 
               <Link
                 to="/instructor"
-                className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+                className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
               >
                 Tutors
               </Link>
 
-              <Link
+              {/* <Link
                 to="/videos"
-                className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+                className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
               >
                 Videos
-              </Link>
-
-
+              </Link> */}
 
               <Link
                 to="/getApprovedCourses"
-                className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+                className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
               >
-               Course 
+                Course
               </Link>
 
-              <Link
+              {/* <Link
                 to="/my-learning"
-                className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+                className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
               >
                Learn 
-              </Link>
-
-              
-              <Link
-                to="/profile"
-                className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
-              >
-                Profile
-              </Link>
+              </Link> */}
 
               <Link
                 to="/subscription-plans"
                 // className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
-                className="mr-2 text-1xl font-extrabold text-yellow-100 hover:text-yellow-700 w-12 h-12  "
+                className="hover:text-green-400  bg-gray-800 text-white font-bold py-2 px-2 rounded  "
               >
-                $
+                Subscribe <span className="hover:text-yellow-700">$</span>
               </Link>
 
-
-
-
+              <Link
+                to="/profile"
+                className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+              >
+                Profile
+              </Link>
 
               {userInfo ? (
                 <Link
                   onClick={logoutHandler}
-                  className="hover:bg-red-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
+                  className="hover:text-red-700 bg-gray-800 text-white font-bold py-2 px-2 rounded"
                 >
                   Logout
                 </Link>
@@ -114,7 +106,7 @@ const Header = () => {
                 <div className="space-x-2">
                   <Link
                     to="/login"
-                    className="flex items-center text-white hover:text-gray-300 transition duration-300"
+                    className="flex items-center text-white hover:text-gray-800 transition duration-300"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -133,7 +125,7 @@ const Header = () => {
 
                   <Link
                     to="/register"
-                    className="flex items-center text-white hover:text-gray-300 transition duration-300"
+                    className="flex items-center text-white hover:text-gray-800 transition duration-300"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
@@ -152,8 +144,6 @@ const Header = () => {
                 </div>
               )}
             </div>
-
-   
           </div>
         </div>
       </nav>

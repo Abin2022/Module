@@ -66,61 +66,50 @@ const AllCoursesPage = () => {
 
   return (
     <div>
-      <input
-        type="text"
-        placeholder="Search....."
-        value={searchTerm}
-        onChange={(e) => setSearchTerm(e.target.value)}
-        className="px-4 py-2 border w-64"
-      />
-      <br />
-      <br />
-      <br />
       {courses.length > 0 ? (
         <div className="ml-6">
-          <div className="text-2xl font-bold mb-4">Videos Available</div>
-
+          <div className="text-2xl font-bold mb-4">Viedo Avaliable</div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-            {searchCourses().map((course, index) => (
-              <div key={index} className="bg-gray-50 p-4 rounded shadow-lg">
-                <div>
-                  <div className="font-bold mb-2 ">{course.courseName}</div>
-                  <div className="mt-1">
-                    {course?.videos.map((video, index) => (
-                      <a
-                        href={video.videoUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        key={index}
-                      >
-                        {/* <div className="w-16 h-16 bg-gray-300 mr-2 flex justify-center items-center rounded">
-                          🎥
-                        </div> */}
-                        <div className="w-16 h-16 bg-gray-300 mx-auto mb-2 flex justify-center items-center rounded">
-                          🎥
-                        </div>
-                        <p className="flex justify-center">{video.videoName}</p>
-                      </a>
-                    ))}
+            {courses.map((course, index) => (
+              <div key={index} className="bg-black-90 p-4 rounded shadow-lg">
+               
+                <div></div>
+
+
+                {course?.videos.map((video, index) => (
+                  <div
+                    key={video.videoUniqueId}
+                    className="bg-slate-50 mt-1 p-4 rounded shadow-lg hover:translate-y-1 hover:translate-x-2 hover:bg-white flex justify-between items-center"
+                  >
+                    <video width="220" height="140" controls className="mr-4">
+                      <source src={video.videoUrl} type="video/mp4" />
+                    </video>
+                    <span>{video.videoName}</span>
                   </div>
-                </div>
+                ))}
+
+               
+             
+
+              
+
+                
+
+              
               </div>
             ))}
           </div>
         </div>
       ) : (
         <div className="flex flex-col h-screen justify-center items-center">
+          {" "}
           <div className="w-60 h-60">
             <img
               src="https://s.udemycdn.com/teaching/support-1-v3.jpg"
               alt="Right Image"
             />
           </div>
-          {searchTerm.trim() === "" ? (
-            <div className="text-4xl font-serif">No Course Available</div>
-          ) : (
-            <div className="text-red-500">No matching courses found.</div>
-          )}
+          <div className="text-4xl font-serif">No Course Available</div>
           <div className="mt-4">
             {/* Add Link component or button to navigate to add-course page */}
           </div>

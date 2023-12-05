@@ -7,6 +7,7 @@ import userHelper from "../helpers/userHelpers.js";
 import Plan from "../models/plans.js";
 import instance from "../utils/instance.js";
 import crypto from "crypto";
+import { log } from "console";
 
 const KEY_SECRET= "yXjHwM7lO6wpSg5aVdD6tsbF"
 
@@ -128,16 +129,8 @@ const updateUserProfile = asyncHandler(async (req, res) => {
 const getSingleCourse = asyncHandler(async (req, res) => {
   const { courseId } = req.params;
   console.log(courseId);
-  // const userId = req.user._id;
   let purchased = false;
-  // const order = await Orders.findOne({
-  //   userId: userId,
-  //   "purchasedCourses.courseId": courseId,
-  // });
-
-  // if (order) {
-  //   purchased = true;
-  // }
+  
   const course = await Courses.findById(courseId)
     .populate("tutorId", "name")
     .populate("domain", "domainName");
@@ -280,22 +273,108 @@ const paymentVerification = async (req, res) => {
   }
 };
 
+
+
+
 const checkPlanStatus = asyncHandler(async (req, res) => {
   try {
     const userId = req.body.userId;
-    const user = await User.findById(userId);
-  //  console.log(userId,"userid");
 
-    if (user) {
-      const status = user.subscription_status === "active";
-      // console.log(status,"status");
-      res.status(200).json({ statusCode: 200, data: { status } });
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const status = user.subscription_status === "active";
+    res.status(200).json({ status });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: "Something went wrong" });
+  }
+});
+
+
+
+
+
+
+
+const addCourseRating = asyncHandler(async (req, res) => {
+  console.log("Entered into addcourserating .......... ");
+  //  const { courseId } = req.params;
+  // console.log(courseId);
+  
+  const { clickedRating, courseId } = req.body;
+  console.log("req.body",req.body);
+  console.log(clickedRating, courseId, "clickedRating");
+
+  const userId = req.body.userId;
+  console.log(userId, "userId in backend");
+
+  const newRating = {
+    userId,
+    rate: clickedRating,
+  };
+  console.log(newRating, "newRating");
+
+  try {
+    const course = await Courses.findById(courseId)
+      .populate({
+        path: "tutorId",
+        select: "-password",
+      })
+      .populate("domain", "domainName")
+      .populate("rating.userId", "name")
+      .populate("reviews.userId", "name");
+
+    console.log("Found course:", course);
+
+    if (course) {
+      const purchased = true;
+      course.rating.push(newRating);
+      await course.save();
+      res.status(200).json({ course, purchased });
     } else {
-      res.status(200).json({ statusCode: 200, data: { status: false } });
+      res.status(404).json({ message: "Course not found" });
     }
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ statusCode: 500, data: { status: false } });
+    console.error("Error adding course rating:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
+
+
+const addCourseReview = asyncHandler(async (req, res) => {
+  const { courseId, feedback } = req.body;
+  console.log(feedback,"feedback");
+  // const userId = req.user._id;
+  const userId = req.body.userId;
+  console.log(userId,"userId");
+  const newReview = {
+    userId,
+    review: feedback,
+  };
+
+  try {
+    const course = await Courses.findById(courseId)
+      .populate({
+        path: "tutorId",
+        select: "-password",
+      })
+      .populate("domain", "domainName")
+      .populate("rating.userId", "name")
+      .populate("reviews.userId", "name");
+    if (course) {
+      // const purchased = true;
+      course.reviews.push(newReview);
+      await course.save();
+      res.status(200).json({ course, purchased });
+    } else {
+      res.status(404).json({ message: "Course not found" });
+    }
+  } catch (error) {
+    res.status(500).json({ message: "Server error" });
   }
 });
 
@@ -315,5 +394,8 @@ export {
   getUserPlans,
   createOrder,
   paymentVerification,
-  checkPlanStatus
+  checkPlanStatus,
+  addCourseReview,
+  addCourseRating,
+
 };
