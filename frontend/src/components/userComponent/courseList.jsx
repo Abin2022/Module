@@ -10,6 +10,8 @@ import {
 import FeedbackModel from "./FeedbackModal";
 import { toast } from "react-toastify";
 
+import { useCheckPlanStatusMutation } from "../../slices/userApiSlice";
+
 const getCoursesUrl = "http://localhost:5000/api/admin/get-courses";
 
 const CourseList = () => {
@@ -20,6 +22,8 @@ const CourseList = () => {
   const [domainName, setDomainName] = useState("");
   // const [isListView, setIsListView] = useState(false);
   const [showVideos, setShowVideos] = useState(false);
+  const [checkStatus] = useCheckPlanStatusMutation();
+  const { userInfo } = useSelector((state) => state.auth);
 
   //rating
   const [rating, setRating] = useState(0);
@@ -80,13 +84,50 @@ const CourseList = () => {
     }
   };
 
-  // const toSubscribtionPage = async () => {
+  // const checkPlanStatus = async (plan) => {
+  //   console.log("Entered into checkplans status......");
   //   try {
-  //     res.redirect("/subscription-plans");
-  //   } catch (error) {
-  //     toast.error(error);
+  //     const planStatus = await checkStatus({ userId: userInfo._id }).unwrap();
+
+  //     console.log(planStatus, "planStatus");
+  //     if (planStatus.status === false) {
+  //       initiatePayment(plan);
+  //     } else {
+  //       toast.error("already a plan exists");
+  //     }
+  //   } catch (err) {
+  //     console.log(err);
   //   }
   // };
+
+  // const checkPlanStatus = async () => {
+  //   console.log("Entered into checkplans status......");
+  //   try {
+  //     const planStatus = await checkStatus({ userId: userInfo._id }).unwrap();
+  //     console.log(planStatus, "planStatus");
+  //     return planStatus;
+  //   } catch (err) {
+  //     console.log(err);
+  //     return { status: false };
+  //   }
+  // };
+
+  const checkPlanStatus = async () => {
+    console.log("Entered into checkplans status......");
+    try {
+      const planStatus = await checkStatus({ userId: userInfo._id }).unwrap();
+      console.log(planStatus, "planStatus");
+
+      if (planStatus.status === false) {
+        toast.error("Please Subscribe To Watch Viedo");
+      } else {
+        setShowVideos(!showVideos);
+      }
+    } catch (err) {
+      console.log(err);
+      // Handle error or return a default value if needed
+    }
+  };
 
   useEffect(() => {
     getDomain();
@@ -109,7 +150,7 @@ const CourseList = () => {
                 <div className="flex mb-4">
                   <div className="w-1/4 bg-slate-50 h-50">
                     <img src={course.thumbnail} alt="thumbnail" className="" />
-                    <div className="text-sm mt-1">{course.caption}</div>
+                    <div className="text-sm mt-1 bg-gray-600 text-white text-center">{course.caption}</div>
                   </div>
                   <div className="w-3/4 pl-4">
                     <div className="font-bold mb-2">{course.courseName}</div>
@@ -124,21 +165,28 @@ const CourseList = () => {
                 </div>
                 <div></div>
 
-                <div className="text-lg p-2 font-semibold">
+                <div className="text-lg p-2 font-semibold text-center">
                   {" "}
-                  Course Videos
-                  <button
-                    onClick={() => setShowVideos(!showVideos)}
+                  {/* <button
+                    onClick={checkPlanStatus}
                     className="text-white bg-gradient-to-r from-gray-700 to-gray-800 rounded mt-2 flex items-center justify-center p-2 hover:shadow-lg"
+                  >
+                    {showVideos ? "Hide Videos" : "Show Videos"}
+                  </button> */}
+                  <button
+                    onClick={checkPlanStatus}
+                    className={`text-white bg-gradient-to-r from-gray-600 to-gray-700 rounded-full py-2 px-4 hover:shadow-lg focus:outline-none ${
+                      showVideos ? "bg-red-500" : ""
+                    }`}
                   >
                     {showVideos ? "Hide Videos" : "Show Videos"}
                   </button>
                 </div>
                 {showVideos && (
                   <div>
-                    {course?.videos.map((video, index) => (
+                    {course?.videos.map((video, videoUniqueId) => (
                       <div
-                        key={video.videoUniqueId}
+                        key={videoUniqueId}
                         className="bg-slate-50 mt-1 p-4 rounded shadow-lg hover:translate-y-1 hover:translate-x-2 hover:bg-white flex justify-between items-center"
                       >
                         <video
@@ -161,10 +209,9 @@ const CourseList = () => {
                   onClick={() => setIsModalOpen(true)}
                   // className="border-2 border-gray-700 "
                 >
-                  <div 
-                  // className=" text-gray-700  w-2/4 
-                  className="text-white bg-gradient-to-r from-gray-700 to-gray-800 rounded mt-2 flex items-center justify-center p-2 hover:shadow-lg"
-
+                  <div
+                    // className=" text-gray-700  w-2/4
+                    className="text-white bg-gradient-to-r from-gray-700 to-gray-800 rounded mt-2 flex items-center justify-center p-2 hover:shadow-lg"
                   >
                     {" "}
                     Give a Feedback!
@@ -192,7 +239,7 @@ const CourseList = () => {
                   ))}
                 </div>
               </div>
-            ))}  
+            ))}
           </div>
         </div>
       ) : (
