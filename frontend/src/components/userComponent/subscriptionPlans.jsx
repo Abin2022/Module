@@ -14,7 +14,7 @@ const SubscriptionPlans = () => {
   const { userInfo } = useSelector((state) => state.auth);
 
   const [plans, setPlans] = useState([]);
-  const [price, setPrice] = useState("");
+  // const [price, setPrice] = useState("");
   const [plan, setPlan] = useState("");
 
   const [getPlans] = useGetUserPlansMutation();
@@ -79,7 +79,7 @@ const SubscriptionPlans = () => {
 
     if (result.success === true) {
       toast.success(result.message);
-      navigate("/getApprovedCourses");
+      navigate("/get-subscriptions");
     } else if (result.success === false) {
       toast.error(result.message);
     }
@@ -143,7 +143,7 @@ const SubscriptionPlans = () => {
   return (
     <div>
       <section className="bg-gray-900 dark:bg-gray-900 ">
-        <div className="py-8 px-4 mx-auto max-w-screen-xl lg:py-16 lg:px-6 ">
+        <div className="py-8 px-4 mx-auto max-w-screen-xl h-full lg:py-16 lg:px-6 ">
           <div className="space-y-8 lg:grid lg:grid-cols-3 sm:gap-6 xl:gap-10 lg:space-y-0 mt-14 ">
             {plans.map((plan) => (
               <div
@@ -153,14 +153,14 @@ const SubscriptionPlans = () => {
                 <h3 className="mb-4 text-2xl font-semibold text-white">
                   {plan.plan}
                 </h3>
-                <div className="flex justify-center items-baseline my-8">
+                <div className="flex justify-center items-baseline my-6">
                   <span className="mr-2 text-4xl font-extrabold text-yellow-800">
-                    ${plan.price}
+                  ₹ {plan.price}
                   </span>
-                  <span className="text-white dark:text-gray-400">/month</span>
+                  {/* <span className="text-white dark:text-gray-400"></span> */}
                 </div>
-                <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400">
-                  {plan.description}
+                <p className="font-light text-gray-500 sm:text-lg dark:text-gray-400 my-6">
+             Purchase This Plan and have a duration for  {plan.duration} Month
                 </p>
 
                 <button
@@ -169,7 +169,9 @@ const SubscriptionPlans = () => {
                     checkPlanStatus(plan);
                     // initiatePayment(plan);
                   }}
-                  className="text-white bg-yellow-900 rounded mt-3"
+                  // className="text-white bg-yellow-900 rounded mt-3 hover:bg-green-600"
+                  className="text-white bg-yellow-800 rounded mt-3 hover:bg-yellow-900 py-2 px-4 text-lg transition duration-300 ease-in-out transform hover:scale-105"
+
                 >
                   Subscribe
                 </button>

@@ -7,6 +7,9 @@ import { useTutorlogoutMutation } from "../../slices/tutorApiSlice";
 import { tutorLogout } from "../../slices/tutorAuthSlice";
 import { FaRedhat } from "react-icons/fa";
 import { FaSignInAlt, FaSignOutAlt } from "react-icons/fa";
+import { useState } from "react"
+import { FaBars } from "react-icons/fa";
+
 
 const TutorDropdown = () => {
   const [tutorLogoutApi] = useTutorlogoutMutation();
@@ -23,16 +26,38 @@ const TutorDropdown = () => {
     }
   };
 
+  const [isDropdownOpen, setisDropdownOpen] = useState(false);
+  const toggleDropdown = () => {
+    setisDropdownOpen(!isDropdownOpen);
+  };
+
   return (
     <header className="flex justify-between items-center bg-gray-800 p-4">
+      <nav className="container mx-auto py-4 flex items-center justify-between flex-wrap">
+
       <Link
         to="/tutor/home"
-        className="flex items-center text-xl font-bold  text-white"
+        className="flex items-center text-sm font-bold text-white"
       >
-        <FaRedhat className="mr-2" /> MODULE
+        <FaRedhat className="mr-2 text-lg" /> MODULE
       </Link>
+      <div className="block lg:hidden">
+          {/* Hamburger Menu Icon */}
+          <button
+            onClick={toggleDropdown}
+            className="text-white hover:text-green-400 focus:outline-none"
+          >
+          
+            <FaBars className="h-6 w-6" />
+          </button>
+        </div>
 
-      <div className="flex justify-between items-center">
+      <div
+        className={`${
+          isDropdownOpen ? "block" : "hidden"
+        } lg:flex lg:items-center lg:w-auto w-full`}
+       >
+
         <>
           <Link
             to="/tutor/home"
@@ -77,6 +102,7 @@ const TutorDropdown = () => {
       Sign In <FaSignInAlt />
     </Link> */}
       </div>
+      </nav>
     </header>
   );
 };

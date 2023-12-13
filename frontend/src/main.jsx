@@ -17,10 +17,12 @@ import LoginScreen from "./screens/LoginScreen.jsx";
 import RegisterScreen from "./screens/RegisterScreen.jsx";
 import ProfileScreen from "./screens/ProfileScreen.jsx";
 import CourseList from "./components/userComponent/courseList.jsx";
-import Viedo from "./components/userComponent/viedos.jsx";
+// import Viedo from "./components/userComponent/viedos.jsx";
 import SubscriptionPlans from"./components/userComponent/subscriptionPlans.jsx";
 import CourseListUserSide from "./components/userComponent/courseList.jsx";
 import MyLearningPage from "./components/userComponent/MyLearningPage.jsx";
+ import SubscriptionHistory from "./components/userComponent/SubscriptionHistory.jsx"
+
 
 
 //admin
@@ -58,12 +60,14 @@ const router = createBrowserRouter(
       <Route path="" element={<PrivateRoute />}>
         <Route path="/profile" element={<ProfileScreen />} />
         <Route path="/single-course" element={<CourseList />} />
-        {/* <Route path="/videos" element={<Viedo />} /> */}
         <Route path="/instructor" element={<TutorPage />} />
         <Route path="/getApprovedCourses" element={<CourseListUserSide/>}/>
+        {/* <Route path="/getApprovedCourses/${courseId}" element={<CourseListUserSide/>} /> */}
+
+        
         <Route path="/my-learning" element={<MyLearningPage />} />
         <Route path="/subscription-plans" element={<SubscriptionPlans/>} />
-
+           <Route path="/get-subscriptions"  element={<SubscriptionHistory/>}/>
 
       </Route>
       
@@ -91,7 +95,7 @@ const router = createBrowserRouter(
       <Route path="/admin/courseList" element={<CourseLists />} />
       {/* <Route path="/admin/add-plans" element={<AddPlanModel/>}/> */}
       <Route path="/admin/get-plans" element={<SubscriptionListAdminSide/>}/>
-      <Route path="/admin/get-subscriptions"  element={<SubscribeList/>}/>
+      <Route path="/admin/getsubscriptionlist"  element={<SubscribeList/>}/>
 
       
     </Route>

@@ -8,9 +8,11 @@ import { tutorLogout } from "../slices/tutorAuthSlice";
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { FaRedhat } from "react-icons/fa";
-// import React ,{useEffect} from "react"
+import { BiMenu } from "react-icons/bi";
+import { FiMenu } from "react-icons/fi";
+import { AiOutlineMenu } from "react-icons/ai";
+import { FaBars } from "react-icons/fa";
 
-//
 const Header = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
@@ -34,116 +36,87 @@ const Header = () => {
 
   return (
     <header className="bg-gray-800 text-white">
-      <nav className="container mx-auto py-4">
-        <div className="flex items-center justify-between">
-          <Link to="/" className="flex items-center text-xl font-bold">
-            <FaRedhat className="mr-2" /> MODULE
-          </Link>
+      <nav className="container mx-auto py-4 flex items-center justify-between flex-wrap">
+        <Link to="/" className="flex items-center text-xl font-bold">
+          <FaRedhat className="mr-2" /> MODULE
+        </Link>
 
-          <div className="space-x-4">
-            <div className="flex space-x-4">
-              {/* <Link
-                to="/course/:courseId"
-                className=" bg-gray-800   hover:bg-gray-400 text-white font-bold py-2 px-2 rounded"
-              >
-                <i className="fas fa-play"></i> Course
-              </Link> */}
-              {/* <Link to ="/"  className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded">
-                Home
-              </Link> */}
+        <div className="block lg:hidden">
+          {/* Hamburger Menu Icon */}
+          <button
+            onClick={toggleDropdown}
+            className="text-white hover:text-green-400 focus:outline-none"
+          >
+          
+            <FaBars className="h-6 w-6" />
+          </button>
+        </div>
 
-              <Link
-                to="/instructor"
-                className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
-              >
-                Tutors
+        <div
+          className={`${
+            isDropdownOpen ? "block" : "hidden"
+          } lg:flex lg:items-center lg:w-auto w-full`}
+        >
+          <div className="flex flex-wrap items-center space-x-4">
+            <Link to="/instructor" className="nav-link">
+              Tutors
+            </Link>
+
+            {/* <Link to="/getApprovedCourses/${courseId}" className="nav-link"> */}
+            <Link to="/getApprovedCourses" className="nav-link">
+
+              Course
+            </Link>
+
+            <Link to="/subscription-plans" className="nav-link">
+              <span className="hover:text-yellow-700">₹</span> Subscribe
+            </Link>
+
+            <Link to="/profile" className="nav-link">
+              Profile
+            </Link>
+
+            {userInfo ? (
+              <Link onClick={logoutHandler} className="nav-link">
+                Logout
               </Link>
-
-              {/* <Link
-                to="/videos"
-                className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
-              >
-                Videos
-              </Link> */}
-
-              <Link
-                to="/getApprovedCourses"
-                className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
-              >
-                Course
-              </Link>
-
-              {/* <Link
-                to="/my-learning"
-                className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
-              >
-               Learn 
-              </Link> */}
-
-              <Link
-                to="/subscription-plans"
-                // className="hover:bg-gray-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
-                className="hover:text-green-400  bg-gray-800 text-white font-bold py-2 px-2 rounded  "
-              >
-                Subscribe <span className="hover:text-yellow-700">$</span>
-              </Link>
-
-              <Link
-                to="/profile"
-                className="hover:text-green-400 bg-gray-800 text-white font-bold py-2 px-2 rounded"
-              >
-                Profile
-              </Link>
-
-              {userInfo ? (
-                <Link
-                  onClick={logoutHandler}
-                  className="hover:text-red-700 bg-gray-800 text-white font-bold py-2 px-2 rounded"
-                >
-                  Logout
+            ) : (
+              <div className="space-x-2">
+                <Link to="/login" className="nav-link">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 mr-1"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                  >
+                    {/* Sign In Icon SVG Path */}
+                    <path
+                      fillRule="evenodd"
+                      d="M12.293 2.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 9H5a1 1 0 010-2h9.586l-1.293-1.293a1 1 0 010-1.414z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Sign In
                 </Link>
-              ) : (
-                <div className="space-x-2">
-                  <Link
-                    to="/login"
-                    className="flex items-center text-white hover:text-gray-800 transition duration-300"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 mr-1"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M12.293 2.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 9H5a1 1 0 010-2h9.586l-1.293-1.293a1 1 0 010-1.414z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    Sign In
-                  </Link>
 
-                  <Link
-                    to="/register"
-                    className="flex items-center text-white hover:text-gray-800 transition duration-300"
+                <Link to="/register" className="nav-link">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="h-5 w-5 mr-1"
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      className="h-5 w-5 mr-1"
-                      viewBox="0 0 20 20"
-                      fill="currentColor"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 11V9h2V7h-2V5H7v2H5v2h2v2h2z"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                    Sign Up
-                  </Link>
-                </div>
-              )}
-            </div>
+                    {/* Sign Up Icon SVG Path */}
+                    <path
+                      fillRule="evenodd"
+                      d="M10 2a8 8 0 100 16 8 8 0 000-16zM9 11V9h2V7h-2V5H7v2H5v2h2v2h2z"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                  Sign Up
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </nav>

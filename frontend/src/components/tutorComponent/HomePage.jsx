@@ -1,10 +1,7 @@
-{/* <video width="100%" autoPlay muted loop>
-          <source src={bannerVideo}/>
-        </video> */}
+
 
 
 import React from "react";
-// const bannerVideo =  "https://www.youtube.com/watch?v=uJS0sBoxOMo&ab_channel=Preply";
 
 import { useSelector } from "react-redux";
 
@@ -47,14 +44,6 @@ const HomePage = () => {
           alt="tutor-banner"
           className="w-full"
         />
-
-
-        {/* Become an instructor
-Instructors from around the world teach millions of learners on Udemy. We provide the tools and skills to teach what you love.
- */}
-
-          
-
 
 
 

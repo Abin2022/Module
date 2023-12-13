@@ -1,3 +1,5 @@
+ 
+ 
  import Razorpay from 'razorpay';
 
 var instance = new Razorpay({
@@ -5,6 +7,30 @@ var instance = new Razorpay({
   key_secret: "yXjHwM7lO6wpSg5aVdD6tsbF",
 });
 export default instance
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // import Razorpay from 'razorpay';
 

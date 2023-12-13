@@ -1,10 +1,12 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import Loader from "../components/Loader";
 import { useDispatch, useSelector } from "react-redux";
-import { useUpdateProfileMutation } from "../slices/userApiSlice";
+import { useUpdateProfileMutation ,useGetSubscriptionsMutation} from "../slices/userApiSlice";
 import { setCredentials } from "../slices/authSlice";
+// import SubscriptionHistory from "./components/userComponent/GetSubscriptionHistory.jsx"
+
 
 const ProfileScreen = () => {
   const [name, setName] = useState("");
@@ -50,6 +52,21 @@ const ProfileScreen = () => {
   return (
     <div className="max-w-md mx-auto mt-10 p-6 bg-white rounded shadow-lg">
       <h1 className="text-2xl font-semibold mb-6">Profile</h1>
+
+
+      {/* <Link to='/admin/get-subscriptions'>
+      <button className=" text-green-400 hover:text-yellow-700  text-2xl font-semibold mb-6   float-right ">
+      ₹ Subscription 
+      </button>
+      </Link> */}
+
+
+      <Link to='/get-subscriptions'>
+      <button className=" text-green-400 hover:text-yellow-700  text-2xl font-semibold mb-6   float-right ">
+      ₹ Subscription 
+      </button>
+      </Link>
+
       <img 
               src={PROFILE_URL + userInfo.image} 
               alt={userInfo.name}
@@ -58,12 +75,15 @@ const ProfileScreen = () => {
                 height: '150px',
                 borderRadius: '50%',
                 objectFit: 'cover',
-                objectPosition: 'center center', // Center the image both horizontally and vertically
-        display: 'block', // Ensures the image is displayed as a block element
-        margin: '0 auto' // Centers the image horizontally within its parent container
+                objectPosition: 'center center', 
+        display: 'block', 
+        margin: '0 auto' 
   
               }} 
-              />
+              />   
+             
+
+
       <form onSubmit={submitHandler}>
         <div className="mb-4">
           <label className="block text-sm font-medium text-gray-600">Name</label>

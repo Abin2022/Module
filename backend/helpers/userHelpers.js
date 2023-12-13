@@ -8,7 +8,6 @@ const findByEmail = async (email) => {
 
 const findUserByIdForMiddleWare = async (userId) => {
   return await User.findById(userId).select("-password");
-  // req.user = await User.findById(decoded.id).select("-password");
 
 };
 

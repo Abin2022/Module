@@ -93,8 +93,8 @@ const logoutTutor = asyncHandler(async (req, res) => {
 });
 
 const getTutorProfile = asyncHandler(async (req, res) => {
+
   const tutor = await Tutor.findById(req.tutor._id);
-  // const tutor = await Tutor.findOne({ email });
   const tutorData = {
     _id: req.tutor._id,
     name: req.tutor.name,
@@ -103,7 +103,7 @@ const getTutorProfile = asyncHandler(async (req, res) => {
     experience: tutor.experience,
     
   };
-  console.log("tutor._id",tutor._id)
+  // console.log("tutor._id",tutor._id)
 
   res.status(200).json(tutorData);
 });
@@ -209,6 +209,7 @@ const updateTutorProfile = asyncHandler(async (req, res) => {
     });
   } catch (error) {
     console.error('Unhandled Error:', error);
+  
     // Handle other unhandled errors
     res.status(500).json({ error: 'Internal Server Error' });
   }

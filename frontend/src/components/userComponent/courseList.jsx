@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setDomains } from "../../slices/domainSlice";
 import {
   useCourseRatingMutation,
   useCourseRevewMutation,
+  //  useGetApprovedCourseMutation
 } from "../../slices/userApiSlice";
 import FeedbackModel from "./FeedbackModal";
 import { toast } from "react-toastify";
@@ -14,23 +15,28 @@ import { useCheckPlanStatusMutation } from "../../slices/userApiSlice";
 
 const getCoursesUrl = "http://localhost:5000/api/admin/get-courses";
 
+// const extractCourseIdFromUrl = (url) => {
+//   const urlObject = new URL(url);
+//   return urlObject.searchParams.get("courseId");
+// };
+
 const CourseList = () => {
   const { courseId } = useParams();
-  console.log(courseId, "courseId");
+
   const [courses, setCourses] = useState([]);
   const [err, setErr] = useState({});
   const [domainName, setDomainName] = useState("");
-  // const [isListView, setIsListView] = useState(false);
   const [showVideos, setShowVideos] = useState(false);
   const [checkStatus] = useCheckPlanStatusMutation();
   const { userInfo } = useSelector((state) => state.auth);
+  // const [getCoursesUrl] =useGetCourseMutation()
 
-  //rating
   const [rating, setRating] = useState(0);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const dispatch = useDispatch();
   const [courseRating] = useCourseRatingMutation();
+  const domains = useSelector((state) => state.domains.domains);
 
   const handleStarClick = async (clickedRating) => {
     console.log(clickedRating, "click rating");
@@ -45,15 +51,14 @@ const CourseList = () => {
   const userId = useSelector((state) => state.auth.userInfo._id);
 
   const isRated = course?.rating.some((rate) => rate.userId._id === userId);
-  console.log(course?.rating);
-  console.log(userId);
-  console.log(isRated, "sdhfsadjkfh");
 
   const [coursefeedback] = useCourseRevewMutation();
   const handleFeedbackSubmit = async (feedback) => {
     console.log("Feedback submitted:", feedback);
-
+    // toast.success("Sended Feedback Sucessfully")
     const res = await coursefeedback({ feedback, courseId }).unwrap();
+    console.log(res,"resssssssss");
+    console.log(feedback, courseId,"feedback, courseId");
     dispatch(setCourses(res));
   };
 
@@ -76,47 +81,22 @@ const CourseList = () => {
     try {
       const res = await axios.get(getCoursesUrl, {
         withCredentials: true,
-        params: { domain: domainName },
+        params: { domain: domainName, courseId },
+       
       });
+
+      
       setCourses(res.data);
+      
     } catch (error) {
       console.error("Error fetching courses:", error);
     }
   };
 
-  // const checkPlanStatus = async (plan) => {
-  //   console.log("Entered into checkplans status......");
-  //   try {
-  //     const planStatus = await checkStatus({ userId: userInfo._id }).unwrap();
-
-  //     console.log(planStatus, "planStatus");
-  //     if (planStatus.status === false) {
-  //       initiatePayment(plan);
-  //     } else {
-  //       toast.error("already a plan exists");
-  //     }
-  //   } catch (err) {
-  //     console.log(err);
-  //   }
-  // };
-
-  // const checkPlanStatus = async () => {
-  //   console.log("Entered into checkplans status......");
-  //   try {
-  //     const planStatus = await checkStatus({ userId: userInfo._id }).unwrap();
-  //     console.log(planStatus, "planStatus");
-  //     return planStatus;
-  //   } catch (err) {
-  //     console.log(err);
-  //     return { status: false };
-  //   }
-  // };
-
   const checkPlanStatus = async () => {
-    console.log("Entered into checkplans status......");
     try {
       const planStatus = await checkStatus({ userId: userInfo._id }).unwrap();
-      console.log(planStatus, "planStatus");
+      toast.success("Plan is valid ");
 
       if (planStatus.status === false) {
         toast.error("Please Subscribe To Watch Viedo");
@@ -135,22 +115,23 @@ const CourseList = () => {
 
   useEffect(() => {
     getCourse();
-  }, [domainName]);
-
-  const domains = useSelector((state) => state.domains.domains);
+  }, [domainName, courseId]);
 
   return (
     <div>
+      {/* course.approved === true && */}
       {courses.length > 0 ? (
         <div className="ml-6">
           <div className="text-2xl font-bold mb-4">My Courses in user side</div>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
-            {courses.map((course, index) => (
-              <div key={index} className="bg-black-90 p-4 rounded shadow-lg">
+            {courses.map((course, _id) => (
+              <div key={_id} className="bg-black-90 p-4 rounded shadow-lg">
                 <div className="flex mb-4">
                   <div className="w-1/4 bg-slate-50 h-50">
                     <img src={course.thumbnail} alt="thumbnail" className="" />
-                    <div className="text-sm mt-1 bg-gray-600 text-white text-center">{course.caption}</div>
+                    <div className="text-sm mt-1 bg-gray-600 text-white text-center">
+                      {course.caption}
+                    </div>
                   </div>
                   <div className="w-3/4 pl-4">
                     <div className="font-bold mb-2">{course.courseName}</div>
@@ -167,12 +148,6 @@ const CourseList = () => {
 
                 <div className="text-lg p-2 font-semibold text-center">
                   {" "}
-                  {/* <button
-                    onClick={checkPlanStatus}
-                    className="text-white bg-gradient-to-r from-gray-700 to-gray-800 rounded mt-2 flex items-center justify-center p-2 hover:shadow-lg"
-                  >
-                    {showVideos ? "Hide Videos" : "Show Videos"}
-                  </button> */}
                   <button
                     onClick={checkPlanStatus}
                     className={`text-white bg-gradient-to-r from-gray-600 to-gray-700 rounded-full py-2 px-4 hover:shadow-lg focus:outline-none ${
@@ -200,44 +175,39 @@ const CourseList = () => {
                         <span>{video.videoName}</span>
                       </div>
                     ))}
+
+                    <br />
+
+                    <div onClick={() => setIsModalOpen(true)}>
+                      <div className="text-white bg-gradient-to-r from-gray-700 to-gray-800 rounded mt-2 flex items-center justify-center p-2 hover:shadow-lg">
+                        {" "}
+                        Give a Feedback!
+                      </div>
+                    </div>
+                    <FeedbackModel
+                      isOpen={isModalOpen}
+                      onRequestClose={() => setIsModalOpen(false)}
+                      onSubmit={handleFeedbackSubmit}
+                    />
+                    <br />
+                    <div className="pr-3 text-center">Rate This Course</div>
+                    <div className="flex items-center justify-center">
+                      {[1, 2, 3, 4, 5].map((index) => (
+                        <button
+                          key={index}
+                          onClick={() => handleStarClick(index)}
+                          className={`text-2xl ${
+                            index <= rating
+                              ? "text-yellow-500"
+                              : "text-gray-300"
+                          } focus:outline-none`}
+                        >
+                          ★
+                        </button>
+                      ))}
+                    </div>
                   </div>
                 )}
-
-                <br />
-
-                <div
-                  onClick={() => setIsModalOpen(true)}
-                  // className="border-2 border-gray-700 "
-                >
-                  <div
-                    // className=" text-gray-700  w-2/4
-                    className="text-white bg-gradient-to-r from-gray-700 to-gray-800 rounded mt-2 flex items-center justify-center p-2 hover:shadow-lg"
-                  >
-                    {" "}
-                    Give a Feedback!
-                  </div>
-                </div>
-                <FeedbackModel
-                  isOpen={isModalOpen}
-                  onRequestClose={() => setIsModalOpen(false)}
-                  onSubmit={handleFeedbackSubmit}
-                />
-                <br />
-
-                <div className="pr-3 text-center">Rate This Course</div>
-                <div className="flex items-center justify-center">
-                  {[1, 2, 3, 4, 5].map((index) => (
-                    <button
-                      key={index}
-                      onClick={() => handleStarClick(index)}
-                      className={`text-2xl ${
-                        index <= rating ? "text-yellow-500" : "text-gray-300"
-                      } focus:outline-none`}
-                    >
-                      ★
-                    </button>
-                  ))}
-                </div>
               </div>
             ))}
           </div>

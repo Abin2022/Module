@@ -7,7 +7,7 @@ const Subscriptions = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [refresher, setRefresher] = useState("");
 
-  const [getSubscriptions]=useGetSubscriptionsMutation();
+  const [getSubscription]= useGetSubscriptionsMutation();
 
   useEffect(()=>{
     fetchSubscriptionData();
@@ -16,10 +16,10 @@ const Subscriptions = () => {
 
   const fetchSubscriptionData=async ()=>{
     try {
-        const response=await getSubscriptions().unwrap()
-
+        const response=await getSubscription().unwrap()
         setSubscriptions(response)
-       
+        console.log(response,"response in admin subscriptiom");
+
     } catch (error) {
         console.log(error);
         toast.error('something went wrong')
@@ -38,7 +38,7 @@ const Subscriptions = () => {
         <table className="min-w-full bg-white border border-gray-300 rounded shadow-lg">
         <thead className="bg-gray-800 text-white">
             <tr>
-            <th className="py-2 px-4">UserId</th>
+            <th className="py-2 px-4">Index</th>
             <th className="py-2 px-4">User Name</th>
               <th className="py-2 px-4">Plan</th>
               <th className="py-2 px-4">Price</th>
@@ -48,8 +48,9 @@ const Subscriptions = () => {
           </thead>
           <tbody>
             {subscriptions?.map((subscription, index) => (
+              
               <tr key={subscription._id} className={index % 2 === 0 ? "bg-gray-100" : "bg-white"}>
-                <td className="py-2 px-4 text-center">{subscription?.user_id}</td>   
+                <td className="py-2 px-4 text-center">{index+1}</td>   
                 <td className="py-2 px-4 text-center">{subscription?.user_name}</td>
                 <td className="py-2 px-4 text-center">{subscription?.subscribed_plan} </td>
                 <td className="py-2 px-4 text-center">₹{subscription?.amount}</td>
@@ -64,3 +65,4 @@ const Subscriptions = () => {
 };
 
 export default Subscriptions;
+

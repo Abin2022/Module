@@ -313,16 +313,6 @@ const deleteDomain = asyncHandler(async (req, res) => {
 
 
 
-// const courseListing =asyncHandler(async (req,res ) => {
-//   fetchAllCoursesList()
-//   .then((course)=>{
-//     res.status(200).json({course})
-//   })
-//   .catch((error)=>{
-//     console.log(error)
-//     toast.error(err?.data?.message || err?.error)
-//   })
-// })
 
 const allCourses = asyncHandler(async (req, res) => {
   const courses = await Courses.find()
@@ -341,9 +331,22 @@ const approveCourse = asyncHandler(async (req, res) => {
     res.status(404).json({ Error: "Course not found" });
   }
 });
+
+
+// const rejectCourse = asyncHandler(async (req, res) => {
+//   const { courseId } = req.body;
+//   const reject = { approved: false, rejected: true };
+//   const course = await Courses.findByIdAndUpdate(courseId, reject);
+//   if (course) {
+//     res.status(200).json({ message: "successfully updated the course" });
+//   } else {
+//     res.status(404).json({ Error: "Course not found" });
+//   }
+// });
+
 const rejectCourse = asyncHandler(async (req, res) => {
-  const { courseId } = req.body;
-  const reject = { approved: false, rejected: true };
+  const { courseId, rejectionReason } = req.body;
+  const reject = { approved: false, rejected: true, rejectionReason };
   const course = await Courses.findByIdAndUpdate(courseId, reject);
   if (course) {
     res.status(200).json({ message: "successfully updated the course" });
@@ -351,6 +354,9 @@ const rejectCourse = asyncHandler(async (req, res) => {
     res.status(404).json({ Error: "Course not found" });
   }
 });
+
+
+
 
 const addPlans = asyncHandler(async (req, res) => {
   const plan = req.body;
@@ -391,6 +397,7 @@ const getPlans = asyncHandler(async (req, res) => {
 
 const getSubscriptions = asyncHandler(async (req, res) => {
   try {
+    console.log("In the admin getsubbbbbbbbbbbbbbbbbbbbbbbbbbbbbb");
     const subscriptions = await Payment.find({}).sort({ _id: -1 });
   //  console.log(subscriptions,"subscriptions");
 

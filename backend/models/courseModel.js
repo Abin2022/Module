@@ -54,6 +54,12 @@ const courseSchema = mongoose.Schema(
       type: Boolean,
       default: false,
     },
+
+    rejectionReason:{
+    type: String,
+    },
+    
+     String,
     caption: {
       type: String,
     },

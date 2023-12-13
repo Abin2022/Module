@@ -39,10 +39,7 @@ const tutorHome = () => {
           </button>
         </Link>
       </div>
-      {/* <h2 className="flex justify-center mt-10 mb-10">
-        {" "}
-        Video Available for Users....{" "}
-      </h2> */}
+     
       <div>
         <h1 className=" text-black font-bold flex items-center justify-center mb-4">
           TUTOR LIST

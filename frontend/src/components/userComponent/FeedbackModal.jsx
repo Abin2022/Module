@@ -27,7 +27,7 @@ const FeedbackModal = ({ isOpen, onRequestClose, onSubmit }) => {
         />
         <div className="flex justify-end">
           <button
-            className="bg-black text-white p-2 rounded"
+            className="bg-gray-800 text-white p-2 rounded"
             onClick={handleSubmit}
           >
             Submit Feedback

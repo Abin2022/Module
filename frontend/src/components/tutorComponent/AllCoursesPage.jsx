@@ -1,17 +1,16 @@
-
-
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { setDomains } from "../../slices/domainSlice";
-import { useDeleteCourseMutation, useDeleteCourseVideoMutation } from "../../slices/tutorApiSlice.js";
+import {
+  useDeleteCourseMutation,
+  useDeleteCourseVideoMutation,
+} from "../../slices/tutorApiSlice.js";
 import AddVideoModal from "../tutorComponent/AddViedo.jsx";
 import { FcApproval } from "react-icons/fc";
 import { IoMdCloseCircleOutline } from "react-icons/io";
 import { BsClockHistory } from "react-icons/bs";
 import { ImBin2 } from "react-icons/im";
-
 
 const getCoursesUrl = "http://localhost:5000/api/admin/get-courses";
 
@@ -25,7 +24,7 @@ const AllCoursesPage = () => {
   const dispatch = useDispatch();
   const [deleteCourse] = useDeleteCourseMutation();
   const [deleteVideos] = useDeleteCourseVideoMutation();
-  
+
   const handleDeleteCourse = async (courseId) => {
     const res = await deleteCourse({ courseId });
     console.log(courseId, "courseId from allcoursepage 39");
@@ -140,7 +139,8 @@ const AllCoursesPage = () => {
                   </div>
                 ) : course.rejected === true ? (
                   <div className="bg-red-400 text-lg font-semibold p-2 flex items-center justify-center">
-                    Course Rejected
+                     Oops Your Course is Rejected:<br/>
+                     Reason: {course.rejectionReason}{" "}
                     <IoMdCloseCircleOutline />
                   </div>
                 ) : (

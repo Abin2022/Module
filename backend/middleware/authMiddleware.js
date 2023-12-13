@@ -6,22 +6,15 @@ const JWT_SECRET = "abc123"
 
 
 const protectRoute = asyncHandler(async (req, res, next) => {
-  // console.log("Entered into user auth middleware..");
 
   let token;
 
   token = req.cookies.jwt;
 
-  // req.user = await User.findById(decoded.id).select("-password");
-
-  // console.log(token,"token in authmiddle");
   if (token) {
     try {
       const decoded = jwt.verify(token, JWT_SECRET);
-
-      req.user = await userHelper.findUserByIdForMiddleWare(decoded.userId);
-
-      // console.log(req.user,"req.user in authmiddleware");
+       req.user = await userHelper.findUserByIdForMiddleWare(decoded.userId);
 
       next();
     } catch (error) {
@@ -42,6 +35,7 @@ const isBlocked = asyncHandler(async (req, res, next) => {
   let token;
 
   token = req.cookies.jwt;
+  // console.log(token,"isblocked userauth token");
 
   if (token) {
     try {

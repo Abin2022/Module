@@ -48,7 +48,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
-    tutorHome: builder.mutation({
+    tutorList: builder.mutation({
       query: () => ({
         url: `${USERS_URL}/instructor`,
         method: "GET",
@@ -58,18 +58,12 @@ export const userApiSlice = apiSlice.injectEndpoints({
 
 
     getCourse: builder.mutation({
-      query: () => ({
-        url: `${USERS_URL}/single-course`,
+        query: () => ({
+        url: `${USERS_URL}/getApprovedCourses`,
         method: "GET",
       }),
     }),
-
-
-   
-
-
-
-    //subcribe
+ 
 
     getUserPlans: builder.mutation({
       query: () => ({
@@ -134,6 +128,22 @@ export const userApiSlice = apiSlice.injectEndpoints({
         body: data,
       }),
     }),
+    
+     
+    getSubscriptions: builder.mutation({
+      query: () => ({
+        url: `${USERS_URL}/get-subscriptions`,
+        method: "GET",
+      }),
+    }),
+     
+   
+     removePlan: builder.mutation({
+      query:() =>({
+        url: `${USERS_URL}/remove-plan`,
+        method: "POST"
+      }),
+     }),
 
     
 
@@ -147,7 +157,10 @@ export const {
   useUpdateProfileMutation,
   useCourseMutation,
   useViedoMutation,
-  useTutorHomeMutation,
+
+
+  // useTutorHomeMutation,
+  useTutorListMutation,
   useGetCourseMutation,
 
   useGetUserPlansMutation,
@@ -159,6 +172,8 @@ export const {
   useCheckPlanStatusMutation,
   useCourseRatingMutation,
   useCourseRevewMutation,
-                
+  useGetSubscriptionsMutation,
+  useRemovePlanMutation
+                 
  
 } = userApiSlice;
