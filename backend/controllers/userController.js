@@ -90,6 +90,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 
 const updateUserProfile = asyncHandler(async (req, res) => {
   const userId = req.body._id;
+  
   const user = await User.findById(userId);
   console.log(userId, "ssss");
   if (user) {
@@ -103,7 +104,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     if (req.body.password) {
       user.password = req.body.password;
     }
-    console.log(req.file, "filre");
 
     const updatedUser = await user.save();
     res.status(200).json({
@@ -197,7 +197,6 @@ const removePlanStatus = asyncHandler(async (req, res) => {
 
 const getSingleCourse = asyncHandler(async (req, res) => {
   const { courseId } = req.params;
-  console.log(courseId);
   let purchased = false;
 
   const course = await Courses.findById(courseId)
@@ -211,13 +210,10 @@ const getSingleCourse = asyncHandler(async (req, res) => {
 });
 
 const getApprovedCourses = asyncHandler(async (req, res) => {
-  console.log(
-    "here in usercontri 165==========================================="
-  );
+  
   const course = await Courses.find({ approved: true })
     .populate("tutorId", "name")
     .populate("domain", "domainName");
-  console.log(course, "in controller.................");
   if (course) {
     res.status(200).json(course);
   } else {

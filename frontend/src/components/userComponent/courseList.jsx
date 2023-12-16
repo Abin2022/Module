@@ -85,7 +85,6 @@ const CourseList = () => {
        
       });
 
-      
       setCourses(res.data);
       
     } catch (error) {
@@ -119,7 +118,7 @@ const CourseList = () => {
 
   return (
     <div>
-      {/* course.approved === true && */}
+     
       {courses.length > 0 ? (
         <div className="ml-6">
           <div className="text-2xl font-bold mb-4">My Courses in user side</div>

@@ -40,7 +40,7 @@ router.post ("/remove-plan",protectRoute,removePlanStatus)
 router.get("/instructor", protectRoute, getTutorList);
 
 // router.get("/getApprovedCourses/:courseId", protectRoute,getApprovedCourses);
-router.get("/getApprovedCourses", protectRoute, getApprovedCourses);
+router.get("/getApprovedCourses", getApprovedCourses);
 
 router.get("/single-course", protectRoute, getSingleCourse);
 

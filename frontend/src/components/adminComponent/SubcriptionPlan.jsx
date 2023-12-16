@@ -56,13 +56,13 @@ const SubscriptionPlans = () => {
 
         <div className="flex justify-end ">
         
-        <Link to="/admin/getsubscriptionlist">
+        {/* <Link to="/admin/getsubscriptionlist">
         <button
           
           className="bg-green-400 hover:bg-green-700 text-white font-bold py-2 px-4 rounded-lg transition duration-300 ease-in-out"
         >
           Get Subscribers List
-        </button></Link>
+        </button></Link> */}
        </div>
       
       </div>

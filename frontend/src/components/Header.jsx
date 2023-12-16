@@ -58,26 +58,27 @@ const Header = () => {
           } lg:flex lg:items-center lg:w-auto w-full`}
         >
           <div className="flex flex-wrap items-center space-x-4">
-            <Link to="/instructor" className="nav-link">
+            <Link to="/instructor" className="nav-link hover:text-green-500">
               Tutors
             </Link>
 
             {/* <Link to="/getApprovedCourses/${courseId}" className="nav-link"> */}
-            <Link to="/getApprovedCourses" className="nav-link">
+            <Link to="/getApprovedCourses" className="nav-link hover:text-green-500">
 
               Course
             </Link>
 
-            <Link to="/subscription-plans" className="nav-link">
-              <span className="hover:text-yellow-700">₹</span> Subscribe
+            <Link to="/subscription-plans" className="nav-link hover:text-green-500">
+              {/* <span className="hover:text-yellow-700">₹</span>  */}
+              Subscribe
             </Link>
 
-            <Link to="/profile" className="nav-link">
+            <Link to="/profile" className="nav-link hover:text-green-500">
               Profile
             </Link>
 
             {userInfo ? (
-              <Link onClick={logoutHandler} className="nav-link">
+              <Link onClick={logoutHandler} className="nav-link hover:text-red-500">
                 Logout
               </Link>
             ) : (

@@ -18,12 +18,10 @@ import RegisterScreen from "./screens/RegisterScreen.jsx";
 import ProfileScreen from "./screens/ProfileScreen.jsx";
 import CourseList from "./components/userComponent/courseList.jsx";
 // import Viedo from "./components/userComponent/viedos.jsx";
-import SubscriptionPlans from"./components/userComponent/subscriptionPlans.jsx";
+import SubscriptionPlans from "./components/userComponent/subscriptionPlans.jsx";
 import CourseListUserSide from "./components/userComponent/courseList.jsx";
 import MyLearningPage from "./components/userComponent/MyLearningPage.jsx";
- import SubscriptionHistory from "./components/userComponent/SubscriptionHistory.jsx"
-
-
+import SubscriptionHistory from "./components/userComponent/SubscriptionHistory.jsx";
 
 //admin
 import AdminHomeScreen from "./screens/AdminHomeScreen.jsx";
@@ -33,9 +31,8 @@ import UsersList from "./screens/usersList.jsx";
 import TutorList from "./components/tutorComponent/tutorList.jsx";
 import CourseLists from "./components/adminComponent/CourseList.jsx";
 // import AddPlanModel from "./components/adminComponent/AddPlanModel.jsx"
-import SubscriptionListAdminSide from "./components/adminComponent/SubcriptionPlan.jsx"
-import SubscribeList from "./components/adminComponent/Subscription.jsx"
-
+import SubscriptionListAdminSide from "./components/adminComponent/SubcriptionPlan.jsx";
+import SubscribeList from "./components/adminComponent/Subscription.jsx";
 
 //tutor
 import TutorLoginPage from "./components/tutorComponent/tutorLoginPage.jsx";
@@ -46,9 +43,6 @@ import DomainList from "./components/adminComponent/DomainList.jsx";
 import TutorHomePage from "./components/tutorComponent/HomePage.jsx";
 import AddCourse from "./components/tutorComponent/AddCourse.jsx";
 import AllCoursesPage from "./components/tutorComponent/AllCoursesPage.jsx";
-
-
-
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -61,17 +55,11 @@ const router = createBrowserRouter(
         <Route path="/profile" element={<ProfileScreen />} />
         <Route path="/single-course" element={<CourseList />} />
         <Route path="/instructor" element={<TutorPage />} />
-        <Route path="/getApprovedCourses" element={<CourseListUserSide/>}/>
-        {/* <Route path="/getApprovedCourses/${courseId}" element={<CourseListUserSide/>} /> */}
-
-        
+        <Route path="/getApprovedCourses" element={<CourseListUserSide />} />
         <Route path="/my-learning" element={<MyLearningPage />} />
-        <Route path="/subscription-plans" element={<SubscriptionPlans/>} />
-           <Route path="/get-subscriptions"  element={<SubscriptionHistory/>}/>
-
+        <Route path="/subscription-plans" element={<SubscriptionPlans />} />
+        <Route path="/get-subscriptions" element={<SubscriptionHistory />} />
       </Route>
-      
-
 
       {/* Tutor side routes */}
       <Route>
@@ -83,8 +71,6 @@ const router = createBrowserRouter(
         <Route path="/tutor/courses" element={<AllCoursesPage />} />
       </Route>
 
-
-
       {/* Admin side routes */}
       <Route path="/admin" element={<AdminHomeScreen />} />
       <Route path="/adminlogin" element={<AdminLoginScreen />} />
@@ -94,10 +80,8 @@ const router = createBrowserRouter(
       <Route path="/admin/domain" element={<DomainList />} />
       <Route path="/admin/courseList" element={<CourseLists />} />
       {/* <Route path="/admin/add-plans" element={<AddPlanModel/>}/> */}
-      <Route path="/admin/get-plans" element={<SubscriptionListAdminSide/>}/>
-      <Route path="/admin/getsubscriptionlist"  element={<SubscribeList/>}/>
-
-      
+      <Route path="/admin/get-plans" element={<SubscriptionListAdminSide />} />
+      <Route path="/admin/getsubscriptionlist" element={<SubscribeList />} />
     </Route>
   )
 );

@@ -7,6 +7,7 @@ import { useGetSubscriptionsMutation } from "../../slices/userApiSlice";
 import { toast } from "react-toastify";
 import { useSelector } from "react-redux";
 import { useGetUserPlansMutation, useRemovePlanMutation } from "../../slices/userApiSlice";
+import {Link} from "react-router-dom"
 
 const SubscriptionHistory = ({ userId }) => {
   const [userSubscriptions, setUserSubscriptions] = useState([]);
@@ -81,7 +82,7 @@ const SubscriptionHistory = ({ userId }) => {
     <div className="container mx-auto p-6 bg-white rounded-lg shadow-lg">
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-3xl font-bold text-gray-800">
-          Your Subscriptions History
+           Subscriptions Details
         </h2>
       </div>
       <div>
@@ -99,7 +100,7 @@ const SubscriptionHistory = ({ userId }) => {
             <p className="font-normal text-lg mb-2 text-center">
               Current Plan: {subscription?.subscribed_plan}
             </p>
-            <p className="font-semibold text-gray-600 mb-1 text-center">
+            {/* <p className="font-semibold text-gray-600 mb-1 text-center">
               Created On:{" "}
               {new Date(subscription?.createdAt).toLocaleString("en-IN", {
                 year: "numeric",
@@ -110,7 +111,7 @@ const SubscriptionHistory = ({ userId }) => {
                 second: "numeric",
                 hour12: true,
               })}
-            </p>
+            </p> */}
             <p className="font-semibold text-gray-600 mb-1 text-center">
               Plan Expires on:{" "}
               {new Date(subscription?.subscription_expire).toLocaleString(
@@ -139,8 +140,19 @@ const SubscriptionHistory = ({ userId }) => {
           </div>
         ))
       ):(
-        <div className="text-center text-gray-600 hover:text-red-600">
-        <p>No plans available</p>
+        <div className="text-center text-gray-600 hover:text-red-900">
+        <h2 className=" text-red-600  hover:text-red-800">No Vaild Plan Available Currently</h2>
+        <p className="font-semibold text-gray-600 mb-1 text-center">
+          <Link to="/subscription-plans">
+              <button
+                
+                className="text-white bg-yellow-800 rounded mt-3 hover:bg-yellow-900 py-2 px-4 text-lg transition duration-300 ease-in-out transform hover:scale-105"
+              >
+               Buy a new plan
+              </button>
+              </Link>
+            </p>
+
       </div>
       )}
       </div>
