@@ -77,6 +77,10 @@ const Header = () => {
               Profile
             </Link>
 
+            <Link to="/getrooms/:userId" className="nav-link hover:text-green-500">
+              Message
+            </Link>
+
             {userInfo ? (
               <Link onClick={logoutHandler} className="nav-link hover:text-red-500">
                 Logout

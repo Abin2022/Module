@@ -412,6 +412,207 @@ const getSubscriptions = asyncHandler(async (req, res) => {
 });
 
 
+const getCounts = asyncHandler(async (req, res) => {
+  try {
+    const usersCount = await User.countDocuments();
+    const tutorCount = await Tutor.countDocuments();
+    const coursesCount = await Courses.countDocuments();
+
+    res.status(200).json({
+      success: true,
+      data: {
+        usersCount,
+        tutorCount,
+        coursesCount,
+      },
+      message: "Total revenue and shares calculated successfully.",
+    });
+  } catch (error) {
+    console.error("Error :", error);
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
+    });
+  }
+});
+
+
+
+const getCourseCountPerDomain = asyncHandler(async (req, res) => {
+  try {
+    // Use aggregation to count courses for each domain
+    const domainCourseCounts = await Courses.aggregate([
+      {
+        $group: {
+          _id: "$domain",
+          count: { $sum: 1 },
+        },
+      },
+      {
+        $lookup: {
+          from: "domains", // Use the actual name of your Domain collection
+          localField: "_id",
+          foreignField: "_id",
+          as: "domainInfo",
+        },
+      },
+      {
+        $unwind: "$domainInfo",
+      },
+      {
+        $project: {
+          domainName: "$domainInfo.domainName",
+          count: 1,
+        },
+      },
+    ]);
+
+    // Map domainCourseCounts to an object for easy access in the frontend
+    const courseCountsPerDomain = {};
+    domainCourseCounts.forEach((entry) => {
+      courseCountsPerDomain[entry.domainName] = entry.count;
+    });
+
+    res.status(200).json(courseCountsPerDomain);
+  } catch (error) {
+    console.error("Error getting course count per domain:", error);
+    throw error;
+  }
+});
+
+
+const getCoursePurchaseData = asyncHandler(async (req, res) => {
+  try {
+    // Fetch course name and purchase count data
+    const courseData = await Courses.find({}, "courseName purchaseCount");
+
+    const payment = await Payment.find({})
+
+    const courseNames = courseData.map((course) => course.courseName);
+    
+    const purchaseCount = payment.map((payement)=> payement.purchaseCount )
+
+    res.status(200).json({
+      success: true,
+      data: {
+        courseNames,
+        
+        purchaseCount
+      },
+      message: "Course purchase data retrieved successfully.",
+    });
+  } catch (error) {
+    console.error("Error getting course purchase data:", error);
+    res.status(500).json({
+      success: false,
+      error: "Internal Server Error",
+    });
+  }
+});
+
+
+
+
+
+
+
+
+
+
+// const getTotalSalesPerMonth = asyncHandler(async (req, res) => {
+//   try {
+//     const result = await Orders.aggregate([
+//       {
+//         $unwind: "$purchasedCourses",
+//       },
+//       {
+//         $group: {
+//           _id: {
+//             year: { $year: "$purchasedCourses.date" },
+//             month: { $month: "$purchasedCourses.date" },
+//           },
+//           totalSales: { $sum: "$purchasedCourses.price" },
+//         },
+//       },
+//     ]);
+
+//     res.status(200).json({
+//       success: true,
+//       data: result,
+//       message: "Total sales per month retrieved successfully.",
+//     });
+//   } catch (error) {
+//     console.error("Error getting total sales per month:", error);
+//     res.status(500).json({
+//       success: false,
+//       error: "Internal Server Error",
+//     });
+//   }
+// });
+// const getTotalSalesPerDay = asyncHandler(async (req, res) => {
+//   try {
+//     const result = await Orders.aggregate([
+//       {
+//         $unwind: "$purchasedCourses",
+//       },
+//       {
+//         $group: {
+//           _id: {
+//             year: { $year: "$purchasedCourses.date" },
+//             month: { $month: "$purchasedCourses.date" },
+//             day: { $dayOfMonth: "$purchasedCourses.date" },
+//           },
+//           totalSales: { $sum: "$purchasedCourses.price" },
+//         },
+//       },
+//     ]);
+
+//     res.status(200).json({
+//       success: true,
+//       data: result,
+//       message: "Total sales per day retrieved successfully.",
+//     });
+//   } catch (error) {
+//     console.error("Error getting total sales per day:", error);
+//     res.status(500).json({
+//       success: false,
+//       error: "Internal Server Error",
+//     });
+//   }
+// });
+// const getTotalSalesPerWeek = asyncHandler(async (req, res) => {
+//   try {
+//     const result = await Orders.aggregate([
+//       {
+//         $unwind: "$purchasedCourses",
+//       },
+//       {
+//         $group: {
+//           _id: {
+//             year: { $year: "$purchasedCourses.date" },
+//             month: { $month: "$purchasedCourses.date" },
+//             week: { $week: "$purchasedCourses.date" },
+//           },
+//           totalSales: { $sum: "$purchasedCourses.price" },
+//         },
+//       },
+//     ]);
+//     res.status(200).json({
+//       success: true,
+//       data: result,
+//       message: "Total sales per week retrieved successfully.",
+//     });
+//   } catch (error) {
+//     console.error("Error getting total sales per week:", error);
+//     res.status(500).json({
+//       success: false,
+//       error: "Internal Server Error",
+//     });
+//   }
+// });
+
+
+
 
 export  {authAdmin ,
     registerAdmin,
@@ -444,6 +645,15 @@ export  {authAdmin ,
     addPlans,
     getPlans,
     getSubscriptions,
+
+    getCounts,
+    getCourseCountPerDomain,
+  //   getTotalSalesPerMonth,
+  // getTotalSalesPerDay,
+  // getTotalSalesPerWeek,
+
+   getCoursePurchaseData,
+
 
 
 }

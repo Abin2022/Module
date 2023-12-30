@@ -145,6 +145,35 @@ export const userApiSlice = apiSlice.injectEndpoints({
       }),
      }),
 
+     //chat
+
+     getIndividualRoom: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/get-or-createroom`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+    getRooms: builder.mutation({
+      query: (userId) => ({
+        url: `${USERS_URL}/getrooms/${userId}`,
+        method: "GET",
+      }),
+    }),
+    getMessages: builder.mutation({
+      query: (roomId) => ({
+        url: `${USERS_URL}/get-room-messages/${roomId}`,
+        method: "GET",
+      }),
+    }),
+    sendMessage: builder.mutation({
+      query: (data) => ({
+        url: `${USERS_URL}/send-message`,
+        method: "POST",
+        body: data,
+      }),
+    }),
+
     
 
   }),
@@ -173,7 +202,14 @@ export const {
   useCourseRatingMutation,
   useCourseRevewMutation,
   useGetSubscriptionsMutation,
-  useRemovePlanMutation
+  useRemovePlanMutation,
+
+ 
+  useGetIndividualRoomMutation,
+  useGetRoomsMutation,
+  useGetMessagesMutation,
+  useSendMessageMutation,
+  
                  
  
 } = userApiSlice;

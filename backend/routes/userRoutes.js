@@ -23,7 +23,16 @@ import {
   checkPlanStatus,
   addCourseRating,
   addCourseReview,
+  
 } from "../controllers/userController.js";
+
+
+import {
+  chatSend,
+  createRoom,
+  getMessages,
+  getRooms,
+} from "../controllers/chatController.js";
 
 router.post("/", registerUser);
 router.post("/auth", authUser);
@@ -52,5 +61,16 @@ router.post("/check-plan-status", checkPlanStatus);
 
 router.post("/course-rating", addCourseRating);
 router.post("/course-review", protectRoute, addCourseReview);
+
+
+//chat
+
+router.post("/get-or-createroom", createRoom);
+
+router.get("/getrooms/:userId",protectRoute, getRooms);
+
+router.post("/send-message", chatSend);
+
+router.get("/get-room-messages/:roomid", getMessages);
 
 export default router;

@@ -23,6 +23,11 @@ const PaymentSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    purchaseCount: {
+      type: Number,
+      default: 0,
+    },
+    
     amount: {
       type: Number,
       required: true,

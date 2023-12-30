@@ -22,6 +22,7 @@ import SubscriptionPlans from "./components/userComponent/subscriptionPlans.jsx"
 import CourseListUserSide from "./components/userComponent/courseList.jsx";
 import MyLearningPage from "./components/userComponent/MyLearningPage.jsx";
 import SubscriptionHistory from "./components/userComponent/SubscriptionHistory.jsx";
+import Messages from "./components/userComponent/Messages.jsx";
 
 //admin
 import AdminHomeScreen from "./screens/AdminHomeScreen.jsx";
@@ -59,6 +60,7 @@ const router = createBrowserRouter(
         <Route path="/my-learning" element={<MyLearningPage />} />
         <Route path="/subscription-plans" element={<SubscriptionPlans />} />
         <Route path="/get-subscriptions" element={<SubscriptionHistory />} />
+        <Route path="/getrooms/:userId" element={<Messages/>}/>
       </Route>
 
       {/* Tutor side routes */}

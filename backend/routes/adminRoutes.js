@@ -26,6 +26,13 @@ import {
   addPlans,
   getPlans,
   getSubscriptions,
+  getCounts,
+  getCourseCountPerDomain,
+  
+  getCoursePurchaseData,
+  // getTotalSalesPerMonth,
+  // getTotalSalesPerWeek,
+
 } from "../controllers/adminController.js";
 
 
@@ -55,6 +62,19 @@ router.post("/add-plans", addPlans);
 router.get("/get-plans", getPlans);
 // router.get("/get-subscription", getSubscriptions);
 router.get('/getsubscriptionlist',getSubscriptions)
+
+// dashboard
+router.get("/total-counts", getCounts);
+router.get("/domains-per-courses", getCourseCountPerDomain);
+
+ router.get("/purchase-counts", getCoursePurchaseData);
+
+// router.get("/yearly-sales", getTotalSalesPerMonth);
+
+// router.get("/weekly-sales", getTotalSalesPerWeek);
+
+
+
 
 
 export default router;

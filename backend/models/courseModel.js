@@ -59,7 +59,6 @@ const courseSchema = mongoose.Schema(
     type: String,
     },
     
-     String,
     caption: {
       type: String,
     },

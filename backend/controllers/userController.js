@@ -149,26 +149,7 @@ const subscriptionHistory = asyncHandler(async (req, res) => {
 });
 
 
-// const removePlanStatus = asyncHandler(async(req,res) =>{
-//   try{
-   
-//     const userId = req.user;
-//     console.log(userId,"ODDDDDDDDDDDD");
-//     const user = await User.find({ _id: userId,subscription_status: "active"  })
-//     console.log(user,"plansxxxxxxxxxxx");
 
-//     if (user) {  
-//       user.subscription_status = false; 
-//       // await user.save();
-//       res.status(200).json({ message: "Plans updated successfully" });
-//     }else{
-//       throw new Error("Plan is not removed")
-//     }
-//   }catch(error){
-//     console.error(error);
-//     res.status(500).json({ message: "Internal Server Error" });
-//   }
-// })
 const removePlanStatus = asyncHandler(async (req, res) => {
   try {
     const userId = req.user;
@@ -303,7 +284,18 @@ const paymentVerification = async (req, res) => {
       res.status(200).json({
         success: true,
         message: "Payment verified successfully",
+        
       });
+
+    
+
+      await Payment.updateOne(
+        {
+          $inc : { purchaseCount: 1}
+        }
+      )
+
+
     } else {
       res.status(400).json({
         success: false,
@@ -315,6 +307,7 @@ const paymentVerification = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Internal Server Error",
+     
     });
   }
 };
